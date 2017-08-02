@@ -6,14 +6,15 @@
 
 .greyed {
   color: #fff;
-  background-color: #e6e7e8 !important;
+  background-color: #000 !important;
   pointer-events: none; 
   cursor: default;
+  opacity: .2;
 }
 
 .button {
     color: #ffffff;
-    background-color: #666666;
+    background-color: #174a7c;
     display: inline-block;
     width: 20px;
     padding: 3px;

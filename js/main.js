@@ -39,15 +39,16 @@ function drawLineGraph(container_width) {
     var dataset1 = data.filter(function(d) { 
         return d.figure == 8;
     })
+    console.log(dataset1)
     //FILTER DATA FOR STEPS 4-5
     var dataset2 = data.filter(function(d) { 
         return d.figure == 19;
     })
+    console.log(dataset2)
     //FILTER DATA FOR STEP 6
     var dataset3 = data.filter(function(d) { 
         return d.figure == 24;
     })
-    console.log(dataset1)
 
     if (container_width == undefined || isNaN(container_width)) {
         container_width = 1170;
@@ -91,7 +92,7 @@ function drawLineGraph(container_width) {
     var line = d3.line()
       .x(function(d) { return x(d.year); })
       .y(function(d) { return y(d.actual); });
-    x.domain(d3.extent(dataset1, function(d) { console.log(d.year); return d.year; }));
+    x.domain(d3.extent(dataset1, function(d) { return d.year; }));
     y.domain(d3.extent(dataset1, function(d) { return d.actual; }));
   
     svg.append("g")
@@ -99,9 +100,11 @@ function drawLineGraph(container_width) {
       .call(d3.axisBottom(x)
         .tickFormat(d3.format(""))
       )
+      .attr("class", "x-axis")
 
     svg.append("g")
       .call(d3.axisLeft(y))
+      .attr("class", "y-axis")
       .append("text")
       .attr("fill", "#000")
    //   .attr("transform", "rotate(-90)")
@@ -114,7 +117,8 @@ function drawLineGraph(container_width) {
       .datum(dataset1)
       .attr("fill", "none")
       .attr("stroke", "black")
-      .attr("d", line);
+      .attr("d", line)
+      .attr("class", "line1");
   
     d3.select('#btnnext')
         .on("click", function () {
@@ -159,27 +163,95 @@ function drawLineGraph(container_width) {
     }
 
     function step1(direction) {
+      console.log('step1')
+      if (direction == "next"){
+
+      }else if (direction == "prev"){
+        x.domain(d3.extent(dataset1, function(d) { return d.year; }));
+        y.domain(d3.extent(dataset1, function(d) { return d.actual; }));
+        d3.selectAll("#graphic .y-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisLeft(y))
+        d3.select(".line2")
+          .transition()
+          .duration(1000)
+          .remove()
+
+      }
 
     }
 
-    function step2() {
-
+    function step2(direction) {
+      console.log('step2')
+      if (direction == "next"){
+      //ADD SYNTHETIC LINE
+        console.log('next')
+        d3.select("#graphic svg g")
+          .data(dataset1)
+        x.domain(d3.extent(dataset1, function(d) { return d.year; }));
+        y.domain(d3.extent(dataset1, function(d) { return d.synthetic; }));
+        d3.selectAll("#graphic .y-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisLeft(y))
+        var line2 = d3.line()
+          .x(function(d) { return x(d.year); })
+          .y(function(d) { return y(d.synthetic); });
+        var path = d3.select("#graphic svg g").append("path")
+            .datum(dataset1)
+            .attr("fill", "none")
+            .attr("stroke", "black")
+            .attr("d", line2);
+        var totalLength = path.node().getTotalLength();
+        console.log(totalLength)
+        path
+          .attr("stroke-dasharray", totalLength + " " + totalLength)
+          .attr("stroke-dashoffset", totalLength)
+          .attr("class", "line2")
+          .transition()
+          .duration(1800)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+      }else if (direction == "prev"){
+        
+      }
     }
 
-    function step3() {
+    function step3(direction) {
+      console.log('step3')
+      if (direction == "next"){
 
+      }else if (direction == "prev"){
+        
+      }
     }
 
-    function step4() {
+    function step4(direction) {
+      console.log('step4')
+      if (direction == "next"){
 
+      }else if (direction == "prev"){
+        
+      }
     }
 
-    function step5() {
+    function step5(direction) {
+    console.log('step5')
+      if (direction == "next"){
 
+      }else if (direction == "prev"){
+        
+      }
     }
 
-    function step6(){
+    function step6(direction){
+    console.log('step6')
+      if (direction == "next"){
 
+      }else if (direction == "prev"){
+        
+      }
     }
 
 
