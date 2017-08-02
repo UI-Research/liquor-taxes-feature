@@ -1,0 +1,28 @@
+#buttons {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+}
+
+.greyed {
+  color: #fff;
+  background-color: #e6e7e8 !important;
+  pointer-events: none; 
+  cursor: default;
+}
+
+.button {
+    color: #ffffff;
+    background-color: #666666;
+    display: inline-block;
+    width: 20px;
+    padding: 3px;
+    cursor: pointer;
+    font: 14px Lato;
+    font-weight: 900;
+    float: left;
+    text-align: center;
+    border: 1px solid #fff;
+    cursor: pointer;
+    pointer-events: visible;
+}
