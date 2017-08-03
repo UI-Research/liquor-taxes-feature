@@ -32,19 +32,21 @@ function drawLineGraph(container_width) {
         d.year = +d.year;
         d.actual = +d.actual;
         d.synthetic = +d.synthetic;
-        d.figure = d.figure;
-
       })
     //FILTER DATA FOR STEPS 1-3
-    var dataset1 = data.filter(function(d) { 
-        return d.figure == 8;
+    var dataset1a = data.filter(function(d) { 
+        return d.figure == "8a";
     })
-    console.log(dataset1)
+    console.log(dataset1a)
+
+    var dataset1b = data.filter(function(d) {
+      return d.figure == "8b";
+    })
+    console.log(dataset1b)
     //FILTER DATA FOR STEPS 4-5
     var dataset2 = data.filter(function(d) { 
         return d.figure == 19;
     })
-    console.log(dataset2)
     //FILTER DATA FOR STEP 6
     var dataset3 = data.filter(function(d) { 
         return d.figure == 24;
@@ -89,11 +91,16 @@ function drawLineGraph(container_width) {
     // Set the ranges
     var x = d3.scaleLinear().range([0, width]);
     var y = d3.scaleLinear().rangeRound([height, 0]);
-    var line = d3.line()
+    // Define actual and synthetic lines
+    var lineActual = d3.line()
       .x(function(d) { return x(d.year); })
       .y(function(d) { return y(d.actual); });
-    x.domain(d3.extent(dataset1, function(d) { return d.year; }));
-    y.domain(d3.extent(dataset1, function(d) { return d.actual; }));
+    var lineSynthetic = d3.line()
+      .x(function(d) { console.log(d.year); return x(d.year); })
+      .y(function(d) { console.log(d.synthetic); return y(d.synthetic); });
+    var yMax = d3.max(dataset1a, function(d) { return d.actual; })
+    x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
+    y.domain([0, yMax]);
   
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -114,11 +121,12 @@ function drawLineGraph(container_width) {
       .text("Percent");
 
     svg.append("path")
-      .datum(dataset1)
+      .datum(dataset1a)
       .attr("fill", "none")
-      .attr("stroke", "black")
-      .attr("d", line)
-      .attr("class", "line1");
+      .attr("stroke", "#154b7c")
+      .style("stroke-width", "1.5px")
+      .attr("d", lineActual)
+      .attr("class", "line line-actual");
   
     d3.select('#btnnext')
         .on("click", function () {
@@ -167,16 +175,21 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
 
       }else if (direction == "prev"){
-        x.domain(d3.extent(dataset1, function(d) { return d.year; }));
-        y.domain(d3.extent(dataset1, function(d) { return d.actual; }));
+        var yMax = d3.max(dataset1a, function(d) { return d.actual; })
+        x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
+        y.domain([0, yMax]);
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
           .call(d3.axisLeft(y))
-        d3.select(".line2")
+        d3.select(".line-synthetic")
           .transition()
-          .duration(1000)
+          .duration(500)
           .remove()
+        d3.select(".line-actual")
+          .transition()
+          .duration(1800)
+          .attr("d", lineActual(dataset1a))
 
       }
 
@@ -186,29 +199,29 @@ function drawLineGraph(container_width) {
       console.log('step2')
       if (direction == "next"){
       //ADD SYNTHETIC LINE
-        console.log('next')
-        d3.select("#graphic svg g")
-          .data(dataset1)
-        x.domain(d3.extent(dataset1, function(d) { return d.year; }));
-        y.domain(d3.extent(dataset1, function(d) { return d.synthetic; }));
+        var yMax = d3.max(dataset1a, function(d) { return d.synthetic; })
+        x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
+        y.domain([0, yMax]);
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
           .call(d3.axisLeft(y))
-        var line2 = d3.line()
-          .x(function(d) { return x(d.year); })
-          .y(function(d) { return y(d.synthetic); });
+        d3.select(".line-actual")
+          .transition()
+          .duration(1800)
+          .attr("d", lineActual(dataset1a))
         var path = d3.select("#graphic svg g").append("path")
-            .datum(dataset1)
+            .datum(dataset1a)
             .attr("fill", "none")
-            .attr("stroke", "black")
-            .attr("d", line2);
+            .attr("stroke", "#f0583f")
+            .style("stroke-width", "1.5px")
+            .attr("d", lineSynthetic)
+            .attr("class", "line line-synthetic");
+
         var totalLength = path.node().getTotalLength();
-        console.log(totalLength)
         path
-          .attr("stroke-dasharray", totalLength + " " + totalLength)
+          .attr("stroke-dasharray", totalLength + ", " + totalLength)
           .attr("stroke-dashoffset", totalLength)
-          .attr("class", "line2")
           .transition()
           .duration(1800)
           .ease(d3.easeLinear)
@@ -221,6 +234,30 @@ function drawLineGraph(container_width) {
     function step3(direction) {
       console.log('step3')
       if (direction == "next"){
+        d3.select("#graphic svg g")
+          .data(dataset1b)
+        var yMax = d3.max(dataset1b, function(d) { return d.synthetic; })
+        x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
+        y.domain([0, yMax]);
+        d3.select(".line-actual")
+          .transition()
+          .duration(1800)
+          .attr("d", lineActual(dataset1b))
+        d3.select(".line-synthetic")
+          .attr("stroke-dasharray", "none")
+          .transition()
+          .duration(1800)
+          .attr("d", lineSynthetic(dataset1b))
+        d3.selectAll("#graphic .x-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisBottom(x)
+            .tickFormat(d3.format(""))
+          )
+        d3.selectAll("#graphic .y-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisLeft(y))
 
       }else if (direction == "prev"){
         
