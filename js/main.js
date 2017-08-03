@@ -34,19 +34,24 @@ function drawLineGraph(container_width) {
         d.synthetic = +d.synthetic;
       })
     //FILTER DATA FOR STEPS 1-3
+
     var dataset1a = data.filter(function(d) { 
-        return d.figure == "8a";
+        return d.figure == "8a"; //DATA UP TO 2000
     })
     var dataset1b = data.filter(function(d) {
-      return d.figure == "8b";
+      return d.figure == "8b"; //DATA UP TO 2008
     })
+    console.log(dataset1b)
     var dataset1c = dataset1b.filter(function(d) {
-      return d.year > 1999;
+      return d.year > 1999; //DATA FROM 2000-2008
     })
     console.log(dataset1c)
     //FILTER DATA FOR STEPS 4-5
-    var dataset2 = data.filter(function(d) { 
+    var dataset2a = data.filter(function(d) { 
         return d.figure == 19;
+    })
+    var dataset2b = dataset2a.filter(function(d) { 
+        return d.year > 2007;
     })
     //FILTER DATA FOR STEP 6
     var dataset3 = data.filter(function(d) { 
@@ -295,7 +300,7 @@ function drawLineGraph(container_width) {
             .attr("stroke", "#f0583f")
             .style("stroke-width", "1.5px")
             .attr("d", lineSynthetic)
-            .attr("class", "line line-ext");
+            .attr("class", "line line-synthetic-ext");
         var syntheticExtLength = syntheticExt.node().getTotalLength();
         syntheticExt
           .attr("stroke-dasharray", syntheticExtLength + ", " + syntheticExtLength)
@@ -311,7 +316,7 @@ function drawLineGraph(container_width) {
             .attr("stroke", "#154b7c")
             .style("stroke-width", "1.5px")
             .attr("d", lineActual)
-            .attr("class", "line line-ext");
+            .attr("class", "line line-actual-ext");
         var actualExtLength = actualExt.node().getTotalLength();
         actualExt
           .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
@@ -323,14 +328,92 @@ function drawLineGraph(container_width) {
           .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
         console.log('prev')
+        d3.select(".line-actual-ext2")
+          .transition()
+          .duration(500)
+          .remove()
+        x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
+        d3.selectAll("#graphic .x-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisBottom(x)
+            .tickFormat(d3.format(""))
+          )
+        d3.select(".line-actual")
+          .transition()
+          .duration(1800)
+          .attr("d", lineActual(dataset1a))
+        d3.select(".line-actual-ext")
+          .transition()
+          .duration(1800)
+          .attr("stroke-dasharray", "none")
+          .attr("d", lineActual(dataset1c))
+        var synthetic = d3.select("#graphic svg g").append("path")
+            .attr("fill", "none")
+            .attr("stroke", "#f0583f")
+            .style("stroke-width", "1.5px")
+            .attr("d", lineSynthetic(dataset1a))
+            .attr("class", "line line-synthetic")
+
+        var syntheticExt = d3.select("#graphic svg g").append("path")
+            .attr("fill", "none")
+            .attr("stroke", "#f0583f")
+            .style("stroke-width", "1.5px")
+            .attr("d", lineSynthetic(dataset1c))
+            .attr("class", "line line-synthetic-ext")      
+
       }
     }
 
     function step4(direction) {
       console.log('step4')
       if (direction == "next"){
-
+        d3.select("#graphic svg g")
+          .data(dataset2a)
+        var yMax = d3.max(dataset2a, function(d) { return d.actual; })
+        x.domain(d3.extent(dataset2a, function(d) { return d.year; }));
+        y.domain([0, yMax]);
+        //Keep line data up to 2000
+        d3.select(".line-actual")
+          .transition()
+          .duration(1800)
+          .attr("d", lineActual(dataset1a))
+        d3.select(".line-actual-ext")
+          .transition()
+          .duration(1800)
+          .attr("d", lineActual(dataset1c))
+        d3.selectAll(".line-synthetic, .line-synthetic-ext")
+          .transition()
+          .duration(500)
+          .remove()
+        d3.selectAll("#graphic .x-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisBottom(x)
+            .tickFormat(d3.format(""))
+          )
+        d3.selectAll("#graphic .y-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisLeft(y))
+        var actualExt = d3.select("#graphic svg g").append("path")
+            .datum(dataset2b)
+            .attr("fill", "none")
+            .attr("stroke", "#154b7c")
+            .style("stroke-width", "1.5px")
+            .attr("d", lineActual)
+            .attr("class", "line line-actual-ext2");
+        var actualExtLength = actualExt.node().getTotalLength();
+        actualExt
+          .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
+          .attr("stroke-dashoffset", actualExtLength)
+          .transition()
+          .delay(1800)
+          .duration(1000)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
+
         
       }
     }
