@@ -51,10 +51,11 @@ function drawLineGraph(container_width) {
         return d.figure == 19;
     })
     var dataset2b = dataset2a.filter(function(d) { 
-        return d.year > 2007;
+        return d.year > 2007; //DATA FROM 2008-2015
     })
     //FILTER DATA FOR STEP 6
-    var dataset3 = data.filter(function(d) { 
+
+    var dataset3 = data.filter(function(d) { //FULL DATA 
         return d.figure == 24;
     })
 
@@ -210,11 +211,11 @@ function drawLineGraph(container_width) {
         y.domain([0, yMax]);
         d3.selectAll("#graphic .y-axis")
           .transition()
-          .duration(1800)
+          .duration(1000)
           .call(d3.axisLeft(y))
         d3.select(".line-actual")
           .transition()
-          .duration(1800)
+          .duration(1000)
           .attr("d", lineActual(dataset1a))
         var path = d3.select("#graphic svg g").append("path")
             .datum(dataset1a)
@@ -229,6 +230,7 @@ function drawLineGraph(container_width) {
           .attr("stroke-dasharray", totalLength + ", " + totalLength)
           .attr("stroke-dashoffset", totalLength)
           .transition()
+          .delay(1000)
           .duration(1800)
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0);
@@ -239,7 +241,7 @@ function drawLineGraph(container_width) {
         var yMax = d3.max(dataset1a, function(d) { return d.synthetic; })
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
         y.domain([0, yMax]);
-        d3.selectAll(".line-ext")
+        d3.selectAll(".line-actual-ext, .line-synthetic-ext")
           .transition()
           .duration(500)
           .remove()
@@ -330,7 +332,7 @@ function drawLineGraph(container_width) {
         console.log('prev')
         d3.select(".line-actual-ext2")
           .transition()
-          .duration(500)
+          .duration(300)
           .remove()
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
         d3.selectAll("#graphic .x-axis")
@@ -341,26 +343,33 @@ function drawLineGraph(container_width) {
           )
         d3.select(".line-actual")
           .transition()
+          .delay(300)
           .duration(1800)
           .attr("d", lineActual(dataset1a))
         d3.select(".line-actual-ext")
           .transition()
+          .delay(300)
           .duration(1800)
           .attr("stroke-dasharray", "none")
           .attr("d", lineActual(dataset1c))
-        var synthetic = d3.select("#graphic svg g").append("path")
+        var synthetic = d3.select("#graphic svg g")
+            .append("path")
             .attr("fill", "none")
             .attr("stroke", "#f0583f")
             .style("stroke-width", "1.5px")
             .attr("d", lineSynthetic(dataset1a))
-            .attr("class", "line line-synthetic")
+            .attr("class", "line line-synthetic");
+          synthetic
+            .transition()
+            .delay(1000)
+            .duration(1000)
 
         var syntheticExt = d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
             .attr("stroke", "#f0583f")
             .style("stroke-width", "1.5px")
             .attr("d", lineSynthetic(dataset1c))
-            .attr("class", "line line-synthetic-ext")      
+            .attr("class", "line line-synthetic-ext");      
 
       }
     }
@@ -413,24 +422,91 @@ function drawLineGraph(container_width) {
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
-
-        
+        d3.selectAll(".line-synthetic, .line-actual")
+          .transition()
+          .duration(500)
+          .remove()
+        d3.select("#graphic svg g").append("path")
+            .attr("fill", "none")
+            .attr("stroke", "#154b7c")
+            .style("stroke-width", "1.5px")
+            .attr("d", lineActual(dataset1a))
+            .attr("class", "line line-actual");     
+        d3.select("#graphic svg g").append("path")
+            .attr("fill", "none")
+            .attr("stroke", "#154b7c")
+            .style("stroke-width", "1.5px")
+            .attr("d", lineActual(dataset1c))
+            .attr("class", "line line-actual-ext");  
+        d3.select("#graphic svg g").append("path")
+            .attr("fill", "none")
+            .attr("stroke", "#154b7c")
+            .style("stroke-width", "1.5px")
+            .attr("d", lineActual(dataset2b))
+            .attr("class", "line line-actual-ext2");   
       }
     }
 
     function step5(direction) {
     console.log('step5')
       if (direction == "next"){
-
+        var synthetic = d3.select("#graphic svg g").append("path")
+          .attr("fill", "none")
+          .attr("stroke", "#f0583f")
+          .style("stroke-width", "1.5px")
+          .attr("d", lineSynthetic(dataset2a))
+          .attr("class", "line line-synthetic");
+        var syntheticLength = synthetic.node().getTotalLength();
+        synthetic
+          .attr("stroke-dasharray", syntheticLength + ", " + syntheticLength)
+          .attr("stroke-dashoffset", syntheticLength)
+          .transition()
+          .duration(1800)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+        d3.selectAll(".line-actual, .line-actual-ext, .line-actual-ext2")
+          .remove()
+        d3.select("#graphic svg g").append("path")
+            .datum(dataset2a)
+            .attr("fill", "none")
+            .attr("stroke", "#154b7c")
+            .style("stroke-width", "1.5px")
+            .attr("d", lineActual)
+            .attr("class", "line line-actual");
       }else if (direction == "prev"){
-        
+        d3.select(".line-synthetic")
+          .attr("stroke-dasharray", "none")
+          .transition()
+          .duration(1800)
+          .attr("d", lineSynthetic(dataset2a))
+
+        d3.select(".line-actual")
+          .transition()
+          .duration(1800)
+          .attr("d", lineActual(dataset2a))
       }
     }
 
     function step6(direction){
     console.log('step6')
       if (direction == "next"){
+        var yMax = d3.max(dataset3, function(d) { return d.synthetic; })
+        y.domain([0, yMax]);
+        d3.selectAll("#graphic .y-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisLeft(y))
+        d3.select(".line-synthetic")
+          .attr("stroke-dasharray", "none")
+          .transition()
+          .duration(1800)
+          .attr("d", lineSynthetic(dataset3))
 
+        d3.select(".line-actual")
+          .transition()
+          .duration(1800)
+          .attr("d", lineActual(dataset3))
+      
       }else if (direction == "prev"){
         
       }
