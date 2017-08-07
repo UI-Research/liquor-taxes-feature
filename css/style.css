@@ -1,3 +1,7 @@
+body, html {
+font-family: "Avenir", sans-serif;
+font-size: 12px;
+}
 #buttons {
   display: block;
   width: 100%;
@@ -30,4 +34,20 @@
 
 g.y-axis .domain {
   stroke: #fff;
+}
+
+g.grid .tick line {
+  stroke: #dedddd;
+}
+
+g.grid path.domain {
+  stroke: #fff;
+}
+
+.y-axis g.tick line {
+  stroke: #fff;
+}
+
+.y-axis-label {
+  font-style: italic;
 }

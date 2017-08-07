@@ -22,6 +22,32 @@ function buttonStyle(step) {
 
 }
 
+function wrapText(text, width) {
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        x = text.attr("x"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+    while (word = words.pop()) {
+      line.push(word);
+      tspan.text(line.join(" "));
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+      }
+    }
+  });
+}
+
+
 buttonStyle(1);
 
 function drawLineGraph(container_width) {
@@ -107,7 +133,25 @@ function drawLineGraph(container_width) {
       .y(function(d) { return y(d.synthetic); });
     x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
     y.domain([0, .5]);
-  
+
+
+    svg.append("text")
+      .attr("x", width/3)
+      .attr("y", height/2)
+      .text("step1 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+      .attr("dy", 0)
+      .attr("class", "step1-text")
+      .call(wrapText, 170)
+
+    function make_y_gridlines() {   
+    return d3.axisLeft(y)
+    }
+    svg.append("g")
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+      )
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x)
@@ -124,6 +168,7 @@ function drawLineGraph(container_width) {
       .attr("y", -15)
       .attr("dy", "0.71em")
       .attr("text-anchor", "end")
+      .attr("class", "y-axis-label")
       .text("Percent");
 
     svg.append("path")
@@ -195,7 +240,10 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1800)
           .attr("d", lineActual(dataset1a))
-
+        d3.select(".step2-text")
+          .transition()
+          .duration(500)
+          .remove()
       }
 
     }
@@ -203,6 +251,15 @@ function drawLineGraph(container_width) {
     function step2(direction) {
       console.log('step2')
       if (direction == "next"){
+      svg.append("text")
+        .attr("x", width/1.5)
+        .attr("y", height/6)
+        .text("step2 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+        .attr("dy", 0)
+        .attr("class", "step2-text")
+        .call(wrapText, 170)
+
+
       //ADD SYNTHETIC LINE
         var path = d3.select("#graphic svg g").append("path")
             .datum(dataset1a)
@@ -223,6 +280,25 @@ function drawLineGraph(container_width) {
           .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
         console.log('prev')
+        d3.select(".step3-text")
+          .transition()
+          .duration(500)
+          .remove()
+        svg.append("text")
+          .attr("x", width/3)
+          .attr("y", height/2)
+          .text("step1 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step1-text")
+          .call(wrapText, 170)
+        svg.append("text")
+          .attr("x", width/1.5)
+          .attr("y", height/6)
+          .text("step2 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step2-text")
+          .call(wrapText, 170)
+
         d3.select("#graphic svg g")
           .data(dataset1a)
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
@@ -255,6 +331,17 @@ function drawLineGraph(container_width) {
     function step3(direction) {
       console.log('step3')
       if (direction == "next"){
+        d3.selectAll(".step1-text, .step2-text")
+          .transition()
+          .duration(500)
+          .remove()
+        svg.append("text")
+          .attr("x", width/1.5)
+          .attr("y", height/1.5)
+          .text("step3 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step3-text")
+          .call(wrapText, 170)
         d3.select("#graphic svg g")
           .data(dataset1b)
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
@@ -313,6 +400,17 @@ function drawLineGraph(container_width) {
           .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
         console.log('prev')
+        d3.select(".step4-text")
+          .transition()
+          .duration(300)
+          .remove()
+        svg.append("text")
+          .attr("x", width/1.5)
+          .attr("y", height/1.5)
+          .text("step3 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step3-text")
+          .call(wrapText, 170)
         d3.select("#graphic svg g")
           .data(dataset1b)
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
@@ -368,6 +466,17 @@ function drawLineGraph(container_width) {
     function step4(direction) {
       console.log('step4')
       if (direction == "next"){
+        svg.append("text")
+          .attr("x", width/1.3)
+          .attr("y", height/1.5)
+          .text("step4 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step4-text")
+          .call(wrapText, 120)
+        d3.select(".step3-text")
+          .transition()
+          .duration(300)
+          .remove()
         d3.select("#graphic svg g")
           .data(dataset2a)
         x.domain(d3.extent(dataset2a, function(d) { return d.year; }));
@@ -411,7 +520,7 @@ function drawLineGraph(container_width) {
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
-        d3.selectAll(".line-synthetic, .line-actual")
+        d3.selectAll(".line-synthetic, .line-actual, .step5-text")
           .transition()
           .duration(500)
           .remove()
@@ -439,6 +548,13 @@ function drawLineGraph(container_width) {
     function step5(direction) {
     console.log('step5')
       if (direction == "next"){
+        svg.append("text")
+          .attr("x", width/1.8)
+          .attr("y", height/6)
+          .text("step5 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step5-text")
+          .call(wrapText, 170)
         var synthetic = d3.select("#graphic svg g").append("path")
           .attr("fill", "none")
           .attr("stroke", "#f0583f")
@@ -463,6 +579,24 @@ function drawLineGraph(container_width) {
             .attr("d", lineActual)
             .attr("class", "line line-actual");
       }else if (direction == "prev"){
+        d3.selectAll(".step6-text")
+          .transition()
+          .duration(500)
+          .remove()
+        svg.append("text")
+          .attr("x", width/1.8)
+          .attr("y", height/6)
+          .text("step5 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step5-text")
+          .call(wrapText, 170)
+        svg.append("text")
+          .attr("x", width/1.3)
+          .attr("y", height/1.5)
+          .text("step4 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step4-text")
+          .call(wrapText, 120)
         d3.select(".line-synthetic")
           .attr("stroke-dasharray", "none")
           .transition()
@@ -479,6 +613,17 @@ function drawLineGraph(container_width) {
     function step6(direction){
     console.log('step6')
       if (direction == "next"){
+        d3.selectAll(".step5-text, .step4-text")
+          .transition()
+          .duration(500)
+          .remove()
+        svg.append("text")
+          .attr("x", width/1.8)
+          .attr("y", height/1.5)
+          .text("step6 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("dy", 0)
+          .attr("class", "step6-text")
+          .call(wrapText, 170)
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
