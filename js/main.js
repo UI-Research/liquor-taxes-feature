@@ -105,9 +105,8 @@ function drawLineGraph(container_width) {
     var lineSynthetic = d3.line()
       .x(function(d) { return x(d.year); })
       .y(function(d) { return y(d.synthetic); });
-    var yMax = d3.max(dataset1a, function(d) { return d.actual; })
     x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
-    y.domain([0, yMax]);
+    y.domain([0, .5]);
   
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -182,9 +181,8 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
 
       }else if (direction == "prev"){
-        var yMax = d3.max(dataset1a, function(d) { return d.actual; })
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
-        y.domain([0, yMax]);
+        y.domain([0, .5]);
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
@@ -206,17 +204,6 @@ function drawLineGraph(container_width) {
       console.log('step2')
       if (direction == "next"){
       //ADD SYNTHETIC LINE
-        var yMax = d3.max(dataset1a, function(d) { return d.synthetic; })
-        x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
-        y.domain([0, yMax]);
-        d3.selectAll("#graphic .y-axis")
-          .transition()
-          .duration(1000)
-          .call(d3.axisLeft(y))
-        d3.select(".line-actual")
-          .transition()
-          .duration(1000)
-          .attr("d", lineActual(dataset1a))
         var path = d3.select("#graphic svg g").append("path")
             .datum(dataset1a)
             .attr("fill", "none")
@@ -238,9 +225,7 @@ function drawLineGraph(container_width) {
         console.log('prev')
         d3.select("#graphic svg g")
           .data(dataset1a)
-        var yMax = d3.max(dataset1a, function(d) { return d.synthetic; })
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
-        y.domain([0, yMax]);
         d3.selectAll(".line-actual-ext, .line-synthetic-ext")
           .transition()
           .duration(500)
@@ -272,9 +257,7 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
         d3.select("#graphic svg g")
           .data(dataset1b)
-        var yMax = d3.max(dataset1b, function(d) { return d.synthetic; })
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
-        y.domain([0, yMax]);
         //Keep line data up to 2000
         d3.select(".line-actual")
           .transition()
@@ -330,6 +313,14 @@ function drawLineGraph(container_width) {
           .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
         console.log('prev')
+        d3.select("#graphic svg g")
+          .data(dataset1b)
+        x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
+        d3.selectAll("#graphic .y-axis")
+          .transition()
+          .duration(1800)
+          .call(d3.axisLeft(y))
+
         d3.select(".line-actual-ext2")
           .transition()
           .duration(300)
@@ -379,9 +370,7 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
         d3.select("#graphic svg g")
           .data(dataset2a)
-        var yMax = d3.max(dataset2a, function(d) { return d.actual; })
         x.domain(d3.extent(dataset2a, function(d) { return d.year; }));
-        y.domain([0, yMax]);
         //Keep line data up to 2000
         d3.select(".line-actual")
           .transition()
@@ -490,8 +479,6 @@ function drawLineGraph(container_width) {
     function step6(direction){
     console.log('step6')
       if (direction == "next"){
-        var yMax = d3.max(dataset3, function(d) { return d.synthetic; })
-        y.domain([0, yMax]);
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)

@@ -27,3 +27,7 @@
     cursor: pointer;
     pointer-events: visible;
 }
+
+g.y-axis .domain {
+  stroke: #fff;
+}
