@@ -32,6 +32,14 @@ font-size: 12px;
     pointer-events: visible;
 }
 
+.synthetic-label text {
+  fill: #f0583f;
+}
+
+.actual-label text {
+  fill: #154b7c;
+}
+
 g.y-axis .domain {
   stroke: #fff;
 }

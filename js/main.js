@@ -103,15 +103,16 @@ function drawLineGraph(container_width) {
             height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding;
     } else {
         isMobile = false;
-        var chart_aspect_height = 0.6;
+        var chart_aspect_height = 0.7;
         var margin = {
             top: 80,
-            right: 20,
+            right: 60,
             bottom: 15,
             left: 40
         };
         var width = container_width - margin.left - margin.right,
             height = Math.ceil(Math.max(350, width * chart_aspect_height)) - margin.top - margin.bottom - padding;
+            console.log(width)
     }
 
     $graphic.empty();
@@ -188,6 +189,16 @@ function drawLineGraph(container_width) {
         .on("click", function () {
             changeStep("prev");
         });
+
+    var actualG = svg.append("g")
+        .attr("class", "actual-label")
+        .attr("transform", function() { console.log(((dataset1a)))
+          return "translate("+(width)+","+ y((dataset1a)[18]["actual"])+")"
+        })
+    actualG.append("text")
+      .attr("transform", "translate(0,"+ (-3)+")")
+      .text("Actual")
+     // .attr("class", "actual-Label")
     //when changing the step, change the graph
     function changeStep(direction){
       if (direction == "next"){
@@ -240,7 +251,7 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1800)
           .attr("d", lineActual(dataset1a))
-        d3.select(".step2-text")
+        d3.selectAll(".step2-text, .synthetic-label")
           .transition()
           .duration(1000)
           .style("opacity", 0)
@@ -265,7 +276,6 @@ function drawLineGraph(container_width) {
         .duration(1000)
         .style("opacity", 1)
 
-
       //ADD SYNTHETIC LINE
       var path = d3.select("#graphic svg g").append("path")
         .datum(dataset1a)
@@ -283,6 +293,20 @@ function drawLineGraph(container_width) {
         .duration(1800)
         .ease(d3.easeLinear)
         .attr("stroke-dashoffset", 0);
+      var synG = svg.append("g")
+        .attr("class", "synthetic-label")
+        .attr("transform", function() { console.log(((dataset1a)))
+          return "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")"
+        })
+      synG.append("text")
+        .attr("transform", "translate(0,"+ 10+")")
+        .text("Synthetic")
+        .style("opacity", 0)
+        .transition()
+        .delay(1800)
+        .duration(1000)
+        .style("opacity", 1)
+
       }else if (direction == "prev"){
         console.log('prev')
         d3.select(".step3-text")
