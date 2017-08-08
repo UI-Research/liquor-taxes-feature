@@ -242,7 +242,8 @@ function drawLineGraph(container_width) {
           .attr("d", lineActual(dataset1a))
         d3.select(".step2-text")
           .transition()
-          .duration(500)
+          .duration(1000)
+          .style("opacity", 0)
           .remove()
       }
 
@@ -258,31 +259,36 @@ function drawLineGraph(container_width) {
         .attr("dy", 0)
         .attr("class", "step2-text")
         .call(wrapText, 170)
+        .style("opacity", 0)
+        .transition()
+        .delay(1800)
+        .duration(1000)
+        .style("opacity", 1)
 
 
       //ADD SYNTHETIC LINE
-        var path = d3.select("#graphic svg g").append("path")
-            .datum(dataset1a)
-            .attr("fill", "none")
-            .attr("stroke", "#f0583f")
-            .style("stroke-width", "1.5px")
-            .attr("d", lineSynthetic)
-            .attr("class", "line line-synthetic");
+      var path = d3.select("#graphic svg g").append("path")
+        .datum(dataset1a)
+        .attr("fill", "none")
+        .attr("stroke", "#f0583f")
+        .style("stroke-width", "1.5px")
+        .attr("d", lineSynthetic)
+        .attr("class", "line line-synthetic");
 
-        var totalLength = path.node().getTotalLength();
-        path
-          .attr("stroke-dasharray", totalLength + ", " + totalLength)
-          .attr("stroke-dashoffset", totalLength)
-          .transition()
-          .delay(1000)
-          .duration(1800)
-          .ease(d3.easeLinear)
-          .attr("stroke-dashoffset", 0);
+      var totalLength = path.node().getTotalLength();
+      path
+        .attr("stroke-dasharray", totalLength + ", " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition()
+        .duration(1800)
+        .ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
         console.log('prev')
         d3.select(".step3-text")
           .transition()
-          .duration(500)
+          .duration(1000)
+          .style("opacity", 0)
           .remove()
         svg.append("text")
           .attr("x", width/3)
@@ -291,6 +297,11 @@ function drawLineGraph(container_width) {
           .attr("dy", 0)
           .attr("class", "step1-text")
           .call(wrapText, 170)
+          .style("opacity", 0)
+          .transition()
+          .delay(1000)
+          .duration(1000)
+          .style("opacity", 1)
         svg.append("text")
           .attr("x", width/1.5)
           .attr("y", height/6)
@@ -298,6 +309,11 @@ function drawLineGraph(container_width) {
           .attr("dy", 0)
           .attr("class", "step2-text")
           .call(wrapText, 170)
+          .style("opacity", 0)
+          .transition()
+          .delay(1000)
+          .duration(1000)
+          .style("opacity", 1)
 
         d3.select("#graphic svg g")
           .data(dataset1a)
@@ -333,7 +349,8 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
         d3.selectAll(".step1-text, .step2-text")
           .transition()
-          .duration(500)
+          .duration(1000)
+          .style("opacity", 0)
           .remove()
         svg.append("text")
           .attr("x", width/1.5)
@@ -342,6 +359,11 @@ function drawLineGraph(container_width) {
           .attr("dy", 0)
           .attr("class", "step3-text")
           .call(wrapText, 170)
+          .style("opacity", 0)
+          .transition()
+          .delay(2500)
+          .duration(1000)
+          .style("opacity", 1)
         d3.select("#graphic svg g")
           .data(dataset1b)
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
@@ -403,6 +425,7 @@ function drawLineGraph(container_width) {
         d3.select(".step4-text")
           .transition()
           .duration(300)
+          .style("opacity", 0)
           .remove()
         svg.append("text")
           .attr("x", width/1.5)
@@ -411,6 +434,11 @@ function drawLineGraph(container_width) {
           .attr("dy", 0)
           .attr("class", "step3-text")
           .call(wrapText, 170)
+          .style("opacity", 0)
+          .transition()
+          .delay(1600)
+          .duration(500)
+          .style("opacity", 1)
         d3.select("#graphic svg g")
           .data(dataset1b)
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
@@ -447,19 +475,25 @@ function drawLineGraph(container_width) {
             .attr("stroke", "#f0583f")
             .style("stroke-width", "1.5px")
             .attr("d", lineSynthetic(dataset1a))
-            .attr("class", "line line-synthetic");
-          synthetic
+            .attr("class", "line line-synthetic")
+            .style("opacity", 0)
             .transition()
             .delay(1000)
             .duration(1000)
+            .style("opacity", 1)
+
 
         var syntheticExt = d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
             .attr("stroke", "#f0583f")
             .style("stroke-width", "1.5px")
             .attr("d", lineSynthetic(dataset1c))
-            .attr("class", "line line-synthetic-ext");      
-
+            .attr("class", "line line-synthetic-ext")    
+            .style("opacity", 0)
+            .transition()
+            .delay(1000)
+            .duration(1000)
+            .style("opacity", 1)
       }
     }
 
@@ -473,6 +507,11 @@ function drawLineGraph(container_width) {
           .attr("dy", 0)
           .attr("class", "step4-text")
           .call(wrapText, 120)
+          .style("opacity", 0)
+          .transition()
+          .delay(2500)
+          .duration(1000)
+          .style("opacity", 1)
         d3.select(".step3-text")
           .transition()
           .duration(300)
@@ -523,6 +562,7 @@ function drawLineGraph(container_width) {
         d3.selectAll(".line-synthetic, .line-actual, .step5-text")
           .transition()
           .duration(500)
+          .style("opacity", 0)
           .remove()
         d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
@@ -555,6 +595,11 @@ function drawLineGraph(container_width) {
           .attr("dy", 0)
           .attr("class", "step5-text")
           .call(wrapText, 170)
+          .style("opacity", 0)
+          .transition()
+          .delay(1800)
+          .duration(1000)
+          .style("opacity", 1)
         var synthetic = d3.select("#graphic svg g").append("path")
           .attr("fill", "none")
           .attr("stroke", "#f0583f")
