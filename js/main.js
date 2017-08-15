@@ -67,11 +67,9 @@ function drawLineGraph(container_width) {
     var dataset1b = data.filter(function(d) {
       return d.figure == "8b"; //DATA UP TO 2008
     })
-    console.log(dataset1b)
     var dataset1c = dataset1b.filter(function(d) {
       return d.year > 1999; //DATA FROM 2000-2008
     })
-    console.log(dataset1c)
     //FILTER DATA FOR STEPS 4-5
     var dataset2a = data.filter(function(d) { 
         return d.figure == 19;
@@ -112,7 +110,6 @@ function drawLineGraph(container_width) {
         };
         var width = container_width - margin.left - margin.right,
             height = Math.ceil(Math.max(350, width * chart_aspect_height)) - margin.top - margin.bottom - padding;
-            console.log(width)
     }
 
     $graphic.empty();
@@ -192,7 +189,7 @@ function drawLineGraph(container_width) {
 
     var actualG = svg.append("g")
       .attr("class", "actual-label")
-      .attr("transform", function() { console.log(((dataset1a)))
+      .attr("transform", function() { 
         return "translate("+(width)+","+ y((dataset1a)[18]["actual"])+")"
       })
       .append("text")
@@ -202,10 +199,8 @@ function drawLineGraph(container_width) {
     function changeStep(direction){
       if (direction == "next"){
         step = step < 6 ? step + 1 : step;
-        console.log(step)
       }else if (direction == "prev") {
         step = step > 1 ? step - 1 : step;
-        console.log(step)
       }
       buttonStyle(step);
       switch(step){
@@ -232,7 +227,6 @@ function drawLineGraph(container_width) {
     }
 
     function step1(direction) {
-      console.log('step1')
       if (direction == "next"){
 
       }else if (direction == "prev"){
@@ -260,7 +254,6 @@ function drawLineGraph(container_width) {
     }
 
     function step2(direction) {
-      console.log('step2')
       if (direction == "next"){
       svg.append("text")
         .attr("x", width/1.5)
@@ -294,7 +287,7 @@ function drawLineGraph(container_width) {
         .attr("stroke-dashoffset", 0);
       svg.append("g")
         .attr("class", "synthetic-label")
-        .attr("transform", function() { console.log(((dataset1a)))
+        .attr("transform", function() {
           return "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")"
         })
         .append("text")
@@ -314,7 +307,7 @@ function drawLineGraph(container_width) {
           .remove()
         svg.append("g")
           .attr("class", "synthetic-label")
-          .attr("transform", function() { console.log(((dataset1a)))
+          .attr("transform", function() { 
             return "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")"
           })
           .append("text")
@@ -327,7 +320,7 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
         svg.append("g")
           .attr("class", "actual-label")
-          .attr("transform", function() { console.log(((dataset1a)))
+          .attr("transform", function() { 
             return "translate("+(width)+","+ y((dataset1a)[18]["actual"])+")"
           })
           .append("text")
@@ -393,7 +386,6 @@ function drawLineGraph(container_width) {
     }
 
     function step3(direction) {
-      console.log('step3')
       if (direction == "next"){
         d3.selectAll(".step1-text, .step2-text, .actual-label, .synthetic-label")
           .transition()
@@ -402,7 +394,7 @@ function drawLineGraph(container_width) {
           .remove()
         svg.append("g")
           .attr("class", "actual-label")
-          .attr("transform", function() { console.log(dataset1c)
+          .attr("transform", function() { 
             return "translate("+(width)+","+ y((dataset1c)[5]["actual"])+")"
           })
           .append("text")
@@ -426,7 +418,7 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
         svg.append("g")
           .attr("class", "synthetic-label")
-          .attr("transform", function() { console.log(dataset1c)
+          .attr("transform", function() { 
             return "translate("+(width)+","+ (5+ y((dataset1c)[8]["synthetic"]))+")"
           })
           .append("text")
@@ -495,7 +487,7 @@ function drawLineGraph(container_width) {
       }else if (direction == "prev"){
         var synG = svg.append("g")
           .attr("class", "synthetic-label")
-          .attr("transform", function() { console.log(dataset1c)
+          .attr("transform", function() { 
             return "translate("+(width)+","+ y((dataset1c)[5]["synthetic"])+")"
           })
         synG.append("text")
@@ -513,7 +505,7 @@ function drawLineGraph(container_width) {
           .remove()
         svg.append("g")
           .attr("class", "actual-label")
-          .attr("transform", function() { console.log(dataset1c)
+          .attr("transform", function() { 
             return "translate("+(width)+","+ y((dataset1c)[7]["actual"])+")"
           })
           .append("text")
@@ -595,7 +587,6 @@ function drawLineGraph(container_width) {
     }
 
     function step4(direction) {
-      console.log('step4')
       if (direction == "next"){
         svg.append("text")
           .attr("x", width/1.3)
@@ -696,7 +687,6 @@ function drawLineGraph(container_width) {
     }
 
     function step5(direction) {
-    console.log('step5')
       if (direction == "next"){
         var synG = svg.append("g")
           .attr("class", "synthetic-label")
@@ -790,7 +780,6 @@ function drawLineGraph(container_width) {
     }
 
     function step6(direction){
-    console.log('step6')
       if (direction == "next"){
         if (d3.select(".step6-text").node() == undefined) {
           d3.selectAll(".step5-text, .step4-text")
