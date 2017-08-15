@@ -70,3 +70,12 @@ g.grid path.domain {
   font-style: italic;
   font-size: 12px;
 }
+
+@media screen and (max-width: 500px) {
+  g.y-axis, g.x-axis {
+    font-size:11px;
+  }
+  .step-text {
+    font-size: 11px;
+  }
+}

@@ -1,7 +1,8 @@
 var MOBILE_THRESHOLD = 600,
-isMobile = false,
-$graphic = $("#graphic")
-step = 1;
+    PHONE_THRESHOLD = 450,
+    isMobile = false,
+    $graphic = $("#graphic")
+    step = 1;
 
 
 function buttonStyle(step) {
@@ -88,7 +89,18 @@ function drawLineGraph(container_width) {
     }
     var padding = 20;
 
-    if (container_width <= MOBILE_THRESHOLD) {
+    if (container_width <= PHONE_THRESHOLD) {
+        isMobile = true;
+        var chart_aspect_height = 1.6;
+        var margin = {
+            top: 80,
+            right: 60,
+            bottom: 15,
+            left: 40
+        };
+        var width = container_width - margin.left - margin.right,
+            height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding;
+    }else if (container_width <= MOBILE_THRESHOLD) {console.log('hi')
         isMobile = true;
         var chart_aspect_height = 1.2;
         var margin = {
@@ -99,7 +111,9 @@ function drawLineGraph(container_width) {
         };
         var width = container_width - margin.left - margin.right,
             height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding;
-    } else {
+    }
+
+     else {
         isMobile = false;
         var chart_aspect_height = 0.7;
         var margin = {
@@ -148,7 +162,6 @@ function drawLineGraph(container_width) {
         .tickFormat(function(d) {
           if (isMobile == true){
             var string = d.toString()
-            console.log(string.slice(2,4))
             return "'" + string.slice(2,4)
           }else {
             return d
@@ -158,11 +171,14 @@ function drawLineGraph(container_width) {
       .attr("class", "x-axis")
 
     svg.append("g")
-      .call(d3.axisLeft(y))
+      .call(d3.axisLeft(y)
+        .tickFormat(d3.format(".0%"))
+
+      )
       .attr("class", "y-axis")
       .append("text")
       .attr("fill", "#000")
-      .attr("x", 5)
+      .attr("x", 7)
       .attr("y", -20)
       .attr("dy", "0.71em")
       .attr("text-anchor", "end")
@@ -242,7 +258,9 @@ function drawLineGraph(container_width) {
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
-          .call(d3.axisLeft(y))
+          .call(d3.axisLeft(y)
+            .tickFormat(d3.format(".0%"))
+          )
         d3.select(".line-synthetic")
           .transition()
           .duration(500)
@@ -396,7 +414,9 @@ function drawLineGraph(container_width) {
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
-          .call(d3.axisLeft(y))
+          .call(d3.axisLeft(y)
+            .tickFormat(d3.format(".0%"))
+          )
       }
     }
 
@@ -473,7 +493,9 @@ function drawLineGraph(container_width) {
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
-          .call(d3.axisLeft(y))
+          .call(d3.axisLeft(y)
+            .tickFormat(d3.format(".0%"))
+          )
         // Add extended line from 2000-2008
         var syntheticExt = d3.select("#graphic svg g").append("path")
             .datum(dataset1c)
@@ -557,7 +579,9 @@ function drawLineGraph(container_width) {
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
-          .call(d3.axisLeft(y))
+          .call(d3.axisLeft(y)
+            .tickFormat(d3.format(".0%"))
+          )
 
         d3.select(".line-actual-ext2")
           .transition()
@@ -667,7 +691,9 @@ function drawLineGraph(container_width) {
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
-          .call(d3.axisLeft(y))
+          .call(d3.axisLeft(y)
+            .tickFormat(d3.format(".0%"))
+          )
         svg.append("g")
           .attr("class", "actual-label")
           .attr("transform", function() { 
@@ -840,7 +866,9 @@ function drawLineGraph(container_width) {
           d3.selectAll("#graphic .y-axis")
             .transition()
             .duration(1800)
-            .call(d3.axisLeft(y))
+            .call(d3.axisLeft(y)
+              .tickFormat(d3.format(".0%"))
+            )
           d3.select(".line-synthetic")
             .attr("stroke-dasharray", "none")
             .transition()
