@@ -90,7 +90,7 @@ function drawLineGraph(container_width) {
     var padding = 20;
 
     if (container_width <= PHONE_THRESHOLD) {
-        isMobile = true;
+        isPhone = true;
         var chart_aspect_height = 1.6;
         var margin = {
             top: 80,
@@ -150,6 +150,19 @@ function drawLineGraph(container_width) {
     function make_y_gridlines() {   
     return d3.axisLeft(y)
     }
+
+    d3.select("#graphic svg").append("g")
+      .append("text")
+      .attr("class", "title")
+      .text("Title of the graph")
+      .attr("transform", function() {
+        if (isPhone == true) { console.log('hi')
+          return "translate("+ 5 + "," + height*.12 + ")"
+        }else {
+          return "translate("+ 5 + "," + height*.07 + ")"
+        }
+      })
+
     svg.append("g")
       .attr("class", "grid")
       .call(make_y_gridlines()
@@ -160,7 +173,7 @@ function drawLineGraph(container_width) {
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x)
         .tickFormat(function(d) {
-          if (isMobile == true){
+          if (isMobile == true || isPhone == true) {
             var string = d.toString()
             return "'" + string.slice(2,4)
           }else {
@@ -402,7 +415,7 @@ function drawLineGraph(container_width) {
           .duration(1800)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isMobile == true){
+              if (isMobile == true || isPhone == true){
                 var string = d.toString()
                 console.log(string.slice(2,4))
                 return "'" + string.slice(2,4)
@@ -481,7 +494,7 @@ function drawLineGraph(container_width) {
           .duration(1800)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isMobile == true){
+              if (isMobile == true || isPhone == true){
                 var string = d.toString()
                 console.log(string.slice(2,4))
                 return "'" + string.slice(2,4)
@@ -593,7 +606,7 @@ function drawLineGraph(container_width) {
           .duration(1800)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isMobile == true){
+              if (isMobile == true || isPhone == true) {
                 var string = d.toString()
                 console.log(string.slice(2,4))
                 return "'" + string.slice(2,4)
@@ -680,7 +693,7 @@ function drawLineGraph(container_width) {
           .duration(1800)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isMobile == true){
+              if (isMobile == true || isPhone == true){
                 var string = d.toString()
                 return "'" + string.slice(2,4)
               }else {
