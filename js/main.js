@@ -90,12 +90,12 @@ function drawLineGraph(container_width) {
 
     if (container_width <= MOBILE_THRESHOLD) {
         isMobile = true;
-        var chart_aspect_height = 1.75;
+        var chart_aspect_height = 1.2;
         var margin = {
-            top: 125,
-            right: 20,
+            top: 80,
+            right: 60,
             bottom: 15,
-            left: 60
+            left: 40
         };
         var width = container_width - margin.left - margin.right,
             height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding;
@@ -153,7 +153,15 @@ function drawLineGraph(container_width) {
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x)
-        .tickFormat(d3.format(""))
+        .tickFormat(function(d) {
+          if (isMobile == true){
+            var string = d.toString()
+            console.log(string.slice(2,4))
+            return "'" + string.slice(2,4)
+          }else {
+            return d
+          }
+        })
       )
       .attr("class", "x-axis")
 
@@ -376,7 +384,15 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1800)
           .call(d3.axisBottom(x)
-            .tickFormat(d3.format(""))
+            .tickFormat(function(d) {
+              if (isMobile == true){
+                var string = d.toString()
+                console.log(string.slice(2,4))
+                return "'" + string.slice(2,4)
+              }else {
+                return d
+              }
+            })
           )
         d3.selectAll("#graphic .y-axis")
           .transition()
@@ -445,7 +461,15 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1800)
           .call(d3.axisBottom(x)
-            .tickFormat(d3.format(""))
+            .tickFormat(function(d) {
+              if (isMobile == true){
+                var string = d.toString()
+                console.log(string.slice(2,4))
+                return "'" + string.slice(2,4)
+              }else {
+                return d
+              }
+            })
           )
         d3.selectAll("#graphic .y-axis")
           .transition()
@@ -545,7 +569,15 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1800)
           .call(d3.axisBottom(x)
-            .tickFormat(d3.format(""))
+            .tickFormat(function(d) {
+              if (isMobile == true){
+                var string = d.toString()
+                console.log(string.slice(2,4))
+                return "'" + string.slice(2,4)
+              }else {
+                return d
+              }
+            })
           )
         d3.select(".line-actual")
           .transition()
@@ -624,7 +656,15 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1800)
           .call(d3.axisBottom(x)
-            .tickFormat(d3.format(""))
+            .tickFormat(function(d) {
+              if (isMobile == true){
+                var string = d.toString()
+                console.log(string.slice(2,4))
+                return "'" + string.slice(2,4)
+              }else {
+                return d
+              }
+            })
           )
         d3.selectAll("#graphic .y-axis")
           .transition()
