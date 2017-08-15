@@ -133,14 +133,6 @@ function drawLineGraph(container_width) {
     y.domain([0, .5]);
 
 
-    svg.append("text")
-      .attr("x", width/3)
-      .attr("y", height/2)
-      .text("step1 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
-      .attr("dy", 0)
-      .attr("class", "step-text step1-text")
-      .call(wrapText, 170)
-
     function make_y_gridlines() {   
     return d3.axisLeft(y)
     }
@@ -202,6 +194,13 @@ function drawLineGraph(container_width) {
       })
       .append("text")
       .text("Actual")
+    svg.append("text")
+      .attr("x", width/3)
+      .attr("y", height/2.1)
+      .text("step1 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. Graeco moderatius sea et. ")
+      .attr("dy", 0)
+      .attr("class", "step-text step1-text")
+      .call(wrapText, 170)
 
     //when changing the step, change the graph
     function changeStep(direction){
@@ -659,7 +658,6 @@ function drawLineGraph(container_width) {
             .tickFormat(function(d) {
               if (isMobile == true){
                 var string = d.toString()
-                console.log(string.slice(2,4))
                 return "'" + string.slice(2,4)
               }else {
                 return d
