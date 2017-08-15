@@ -8,6 +8,10 @@ font-size: 12px;
   min-height: 30px;
 }
 
+g.y-axis, g.x-axis {
+  font-size: 12px;
+}
+
 .greyed {
   color: #fff;
   background-color: #000 !important;
@@ -34,10 +38,12 @@ font-size: 12px;
 
 .synthetic-label text {
   fill: #f0583f;
+  font-weight: 600;
 }
 
 .actual-label text {
   fill: #154b7c;
+  font-weight: 600;
 }
 
 g.y-axis .domain {
@@ -56,6 +62,11 @@ g.grid path.domain {
   stroke: #fff;
 }
 
+.step-text {
+  font-weight: 600;
+}
+
 .y-axis-label {
   font-style: italic;
+  font-size: 12px;
 }
