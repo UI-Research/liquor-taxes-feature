@@ -278,15 +278,11 @@ function drawLineGraph(container_width) {
 
       }else if (direction == "prev"){
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
-        d3.select(".line-synthetic")
-          .transition()
-          .duration(500)
-          .remove()
         d3.select(".line-actual")
           .transition()
           .duration(500)
           .attr("d", lineActual(dataset1a))
-        d3.selectAll(".step2-text, .synthetic-label")
+        d3.selectAll(".step2-text, .synthetic-label, .line-synthetic")
           .transition()
           .duration(500)
           .style("opacity", 0)
@@ -344,7 +340,12 @@ function drawLineGraph(container_width) {
       }else if (direction == "prev"){
         d3.selectAll(".line-actual-ext, .line-synthetic-ext")
           .transition()
-          .duration(500)
+          .ease(d3.easeLinear)
+          .duration(2000)
+          .attr("transform", function() { 
+            return "translate("+(width)+",0)"
+          })
+          .style("opacity", 0)
           .remove()
         d3.selectAll(".step3-text, .actual-label, .synthetic-label")
           .transition()
@@ -361,7 +362,7 @@ function drawLineGraph(container_width) {
           .text("Synthetic")
           .style("opacity", 0)
           .transition()
-          .delay(500)
+          .delay(608)
           .duration(500)
           .style("opacity", 1)
         svg.append("g")
@@ -373,7 +374,7 @@ function drawLineGraph(container_width) {
           .text("Actual")
           .style("opacity", 0)
           .transition()
-          .delay(500)
+          .delay(608)
           .duration(500)
           .style("opacity", 1)
 
@@ -386,7 +387,7 @@ function drawLineGraph(container_width) {
           .call(wrapText, 170)
           .style("opacity", 0)
           .transition()
-          .delay(500)
+          .delay(608)
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
@@ -398,7 +399,7 @@ function drawLineGraph(container_width) {
           .call(wrapText, 170)
           .style("opacity", 0)
           .transition()
-          .delay(500)
+          .delay(608)
           .duration(500)
           .style("opacity", 1)
 
@@ -407,19 +408,22 @@ function drawLineGraph(container_width) {
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
         d3.select(".line-actual")
           .transition()
-          .delay(500)
-          .duration(1000)
+           // .delay(500)
+          .ease(d3.easeLinear)
+          .duration(608)
           .attr("d", lineActual(dataset1a))
         d3.select(".line-synthetic")
           .attr("stroke-dasharray", "none")
           .transition()
-          .delay(500)
-          .duration(1000)
+           // .delay(500)
+          .ease(d3.easeLinear)
+          .duration(608)
           .attr("d", lineSynthetic(dataset1a))
+
         d3.selectAll("#graphic .x-axis")
           .transition()
-          .delay(500)
-          .duration(1000)
+          // .delay(500)
+          .duration(608)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
               if (isMobile == true || isPhone == true){
@@ -441,8 +445,8 @@ function drawLineGraph(container_width) {
         });
         d3.selectAll("#graphic .y-axis")
           .transition()
-          .delay(500)
-          .duration(1000)
+          // .delay(500)
+          .duration(608)
           .call(d3.axisLeft(y)
             .tickFormat(d3.format(".0%"))
           )
@@ -623,7 +627,9 @@ function drawLineGraph(container_width) {
 
         d3.select(".line-actual-ext2")
           .transition()
+          
           .duration(300)
+          .style("opacity", 0)
           .remove()
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
         d3.selectAll("#graphic .x-axis")
@@ -704,6 +710,7 @@ function drawLineGraph(container_width) {
         d3.selectAll(".step3-text")
           .transition()
           .duration(300)
+          .style("opacity", 0)
           .remove()
         d3.select("#graphic svg g")
           .data(dataset2a)
@@ -720,6 +727,7 @@ function drawLineGraph(container_width) {
         d3.selectAll(".line-synthetic, .line-synthetic-ext, .synthetic-label, .actual-label")
           .transition()
           .duration(300)
+          .style("opacity", 0)
           .remove()
         d3.selectAll("#graphic .x-axis")
           .transition()
@@ -893,7 +901,7 @@ function drawLineGraph(container_width) {
 
         d3.select(".line-actual")
           .transition()
-          .duration(1800)
+          .duration(1000)
           .attr("d", lineActual(dataset2a))
       }
     }
