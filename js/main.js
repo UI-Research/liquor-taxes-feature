@@ -582,7 +582,7 @@ function drawLineGraph(container_width) {
           .text("Synthetic")
           .style("opacity", 0)
           .transition()
-          .delay(1000)
+          .delay(800)
           .duration(500)
           .style("opacity", 1)
         d3.selectAll(".step4-text, .actual-label")
@@ -600,7 +600,7 @@ function drawLineGraph(container_width) {
           .text("Actual")
           .style("opacity", 0)
           .transition()
-          .delay(1000)
+          .delay(800)
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
@@ -612,7 +612,7 @@ function drawLineGraph(container_width) {
           .call(wrapText, 170)
           .style("opacity", 0)
           .transition()
-          .delay(1000)
+          .delay(800)
           .duration(500)
           .style("opacity", 1)
         d3.select("#graphic svg g")
@@ -627,14 +627,17 @@ function drawLineGraph(container_width) {
 
         d3.select(".line-actual-ext2")
           .transition()
-          
-          .duration(300)
+          .ease(d3.easeLinear)
+          .duration(2000)
+          .attr("transform", function() { 
+            return "translate("+(width)+",0)"
+          })
           .style("opacity", 0)
           .remove()
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
         d3.selectAll("#graphic .x-axis")
           .transition()
-          .duration(1000)
+          .duration(412)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
               if (isMobile == true || isPhone == true) {
@@ -656,13 +659,15 @@ function drawLineGraph(container_width) {
         });
         d3.select(".line-actual")
           .transition()
-          .delay(300)
-          .duration(1000)
+          // .delay(300)
+          .ease(d3.easeLinear)
+          .duration(412)
           .attr("d", lineActual(dataset1a))
         d3.select(".line-actual-ext")
           .transition()
-          .delay(300)
-          .duration(1000)
+          // .delay(300)
+          .ease(d3.easeLinear)
+          .duration(412)
           .attr("stroke-dasharray", "none")
           .attr("d", lineActual(dataset1c))
         var synthetic = d3.select("#graphic svg g")
@@ -674,7 +679,7 @@ function drawLineGraph(container_width) {
             .attr("class", "line line-synthetic")
             .style("opacity", 0)
             .transition()
-            .delay(1000)
+            .delay(800)
             .duration(500)
             .style("opacity", 1)
 
