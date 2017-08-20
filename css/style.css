@@ -20,6 +20,9 @@ g.y-axis, g.x-axis {
   opacity: .2;
 }
 
+.x-axis .tick text.remove {
+  opacity: 0;
+}
 .button {
     color: #ffffff;
     background-color: #174a7c;

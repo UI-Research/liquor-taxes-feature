@@ -99,7 +99,8 @@ function drawLineGraph(container_width) {
             left: 40
         };
         var width = container_width - margin.left - margin.right,
-            height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding;
+            height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding,
+            graphWidth = width*.992;
     }else if (container_width <= MOBILE_THRESHOLD) {console.log('hi')
         isMobile = true;
         var chart_aspect_height = 1.2;
@@ -110,7 +111,9 @@ function drawLineGraph(container_width) {
             left: 40
         };
         var width = container_width - margin.left - margin.right,
-            height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding;
+            height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding,
+            graphWidth = width*.992;
+
     }
 
      else {
@@ -123,7 +126,9 @@ function drawLineGraph(container_width) {
             left: 40
         };
         var width = container_width - margin.left - margin.right,
-            height = Math.ceil(Math.max(350, width * chart_aspect_height)) - margin.top - margin.bottom - padding;
+            height = Math.ceil(Math.max(350, width * chart_aspect_height)) - margin.top - margin.bottom - padding,
+            graphWidth = width*.992;
+
     }
 
     $graphic.empty();
@@ -134,7 +139,7 @@ function drawLineGraph(container_width) {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     // Set the ranges
-    var x = d3.scaleLinear().range([0, width]);
+    var x = d3.scaleLinear().range([0, graphWidth]);
     var y = d3.scaleLinear().rangeRound([height, 0]);
     // Define actual and synthetic lines
     var lineActual = d3.line()
@@ -145,7 +150,6 @@ function drawLineGraph(container_width) {
       .y(function(d) { return y(d.synthetic); });
     x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
     y.domain([0, .5]);
-
 
     function make_y_gridlines() {   
     return d3.axisLeft(y)
@@ -166,7 +170,7 @@ function drawLineGraph(container_width) {
     svg.append("g")
       .attr("class", "grid")
       .call(make_y_gridlines()
-          .tickSize(-width)
+          .tickSize(-graphWidth)
           .tickFormat("")
       )
     svg.append("g")
@@ -180,9 +184,16 @@ function drawLineGraph(container_width) {
             return d
           }
         })
+        .ticks(19)
       )
       .attr("class", "x-axis")
-
+    d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+      if(i%2 == 0) {
+          return false
+      }else {
+          return true
+      }
+    });
     svg.append("g")
       .call(d3.axisLeft(y)
         .tickFormat(d3.format(".0%"))
@@ -219,7 +230,7 @@ function drawLineGraph(container_width) {
     var actualG = svg.append("g")
       .attr("class", "actual-label")
       .attr("transform", function() { 
-        return "translate("+(width)+","+ y((dataset1a)[18]["actual"])+")"
+        return "translate("+(width) +","+ y((dataset1a)[18]["actual"])+")"
       })
       .append("text")
       .text("Actual")
@@ -423,7 +434,15 @@ function drawLineGraph(container_width) {
                 return d
               }
             })
+          .ticks(19)
           )
+        d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+          if(i%2 == 0) {
+              return false
+          }else {
+              return true
+          }
+        });
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
@@ -502,7 +521,16 @@ function drawLineGraph(container_width) {
                 return d
               }
             })
+          .ticks(27)
           )
+        var ticks = svg.selectAll(".tick text");
+        d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+          if(i%2 == 0) {
+              return false
+          }else {
+              return true
+          }
+        });
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
@@ -614,7 +642,15 @@ function drawLineGraph(container_width) {
                 return d
               }
             })
+          .ticks(27)
           )
+        d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+          if(i%2 == 0) {
+              return false
+          }else {
+              return true
+          }
+        });
         d3.select(".line-actual")
           .transition()
           .delay(300)
@@ -700,7 +736,16 @@ function drawLineGraph(container_width) {
                 return d
               }
             })
+          .ticks(34)
           )
+        var ticks = svg.selectAll(".tick text");
+        d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+          if(i%2 == 0) {
+              return false
+          }else {
+              return true
+          }
+        });
         d3.selectAll("#graphic .y-axis")
           .transition()
           .duration(1800)
