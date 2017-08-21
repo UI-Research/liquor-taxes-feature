@@ -2,8 +2,13 @@ var MOBILE_THRESHOLD = 600,
     PHONE_THRESHOLD = 450,
     isMobile = false,
     $graphic = $("#graphic")
-    step = 1;
-
+    step = 1,
+    step1Text = "Researchers studied the number of fatal alcohol-related motor vehicle crashes in the years leading to the state’s two major alcohol excise tax increases.",
+    step2Text = "The synthetic control method allowed the researchers to map out a trajectory of drunk driving fatalities in the hypothetical Illinois that closely aligned with the actual state.",
+    step3Text = "This alignment between the actual and synthetic Illinois continued in the years after the policy was enacted in 2000, signaling that drunk driving fatalities were not affected by the higher excise tax.",
+    step4Text = "Researchers tracked the same data for the years after the second excise tax increase was enacted in 2009.",
+    step5Text = "Once again, the number of drunk driving deaths in the real Illinois and the hypothetical Illinois were closely aligned – indicating the policy didn’t reduce drunk driving fatalities.",
+    step6Text = "When border counties were removed from consideration, the data showed a steep drop in drunk driving fatalities immediately after the 2009 tax increase. However, that drop was short-lived, and drunk driving deaths returned to previous levels (and aligned with the synthetic state’s trajectory) in 2013.";
 
 function buttonStyle(step) {
 
@@ -23,7 +28,7 @@ function buttonStyle(step) {
 
 }
 
-function wrapText(text, width) {
+function wrapText(text, width) { 
   text.each(function() {
     var text = d3.select(this),
         words = text.text().split(/\s+/).reverse(),
@@ -155,17 +160,15 @@ function drawLineGraph(container_width) {
     return d3.axisLeft(y)
     }
 
+
     d3.select("#graphic svg").append("g")
       .append("text")
       .attr("class", "title")
-      .text("Title of the graph")
-      .attr("transform", function() {
-        if (isPhone == true) { console.log('hi')
-          return "translate("+ 5 + "," + height*.12 + ")"
-        }else {
-          return "translate("+ 5 + "," + height*.07 + ")"
-        }
-      })
+      .text("Actual vs. synthetic fatal alcohol-related motor vehicle crashes’ share of total crashes in Illinois")
+      .attr("x", 0)
+      .attr("y", height*.07)
+      .attr("dy", 0)
+      .call(wrapText, width)
 
     svg.append("g")
       .attr("class", "grid")
@@ -237,7 +240,7 @@ function drawLineGraph(container_width) {
     svg.append("text")
       .attr("x", width/3)
       .attr("y", height/2.1)
-      .text("step1 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. Graeco moderatius sea et. ")
+      .text(step1Text)
       .attr("dy", 0)
       .attr("class", "step-text step1-text")
       .call(wrapText, 170)
@@ -295,11 +298,11 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
       svg.append("text")
         .attr("x", width/1.5)
-        .attr("y", height/6)
-        .text("step2 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+        .attr("y", height/15)
+        .text(step2Text)
         .attr("dy", 0)
         .attr("class", "step-text step2-text")
-        .call(wrapText, 170)
+        .call(wrapText, 180)
         .style("opacity", 0)
         .transition()
         .delay(1200)
@@ -381,7 +384,7 @@ function drawLineGraph(container_width) {
         svg.append("text")
           .attr("x", width/3)
           .attr("y", height/2)
-          .text("step1 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .text(step1Text)
           .attr("dy", 0)
           .attr("class", "step-text step1-text")
           .call(wrapText, 170)
@@ -392,11 +395,11 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
         svg.append("text")
           .attr("x", width/1.5)
-          .attr("y", height/6)
-          .text("step2 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("y", height/15)
+          .text(step2Text)
           .attr("dy", 0)
           .attr("class", "step-text step2-text")
-          .call(wrapText, 170)
+          .call(wrapText, 180)
           .style("opacity", 0)
           .transition()
           .delay(608)
@@ -474,11 +477,11 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
         svg.append("text")
           .attr("x", width/1.5)
-          .attr("y", height/1.5)
-          .text("step3 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("y", height/1.7)
+          .text(step3Text)
           .attr("dy", 0)
           .attr("class", "step-text step3-text")
-          .call(wrapText, 170)
+          .call(wrapText, 190)
           .style("opacity", 0)
           .transition()
           .delay(1600)
@@ -605,11 +608,11 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
         svg.append("text")
           .attr("x", width/1.5)
-          .attr("y", height/1.5)
-          .text("step3 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("y", height/1.7)
+          .text(step3Text)
           .attr("dy", 0)
           .attr("class", "step-text step3-text")
-          .call(wrapText, 170)
+          .call(wrapText, 190)
           .style("opacity", 0)
           .transition()
           .delay(800)
@@ -701,12 +704,12 @@ function drawLineGraph(container_width) {
     function step4(direction) {
       if (direction == "next"){
         svg.append("text")
-          .attr("x", width/1.3)
-          .attr("y", height/1.5)
-          .text("step4 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("x", width/1.6)
+          .attr("y", height/1.8)
+          .text(step4Text)
           .attr("dy", 0)
           .attr("class", "step-text step4-text")
-          .call(wrapText, 120)
+          .call(wrapText, 180)
           .style("opacity", 0)
           .transition()
           .delay(1300)
@@ -835,11 +838,11 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
         svg.append("text")
           .attr("x", width/1.8)
-          .attr("y", height/6)
-          .text("step5 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("y", height/13)
+          .text(step5Text)
           .attr("dy", 0)
           .attr("class", "step-text step5-text")
-          .call(wrapText, 170)
+          .call(wrapText, 190)
           .style("opacity", 0)
           .transition()
           .delay(1000)
@@ -876,23 +879,23 @@ function drawLineGraph(container_width) {
           .remove()
         svg.append("text")
           .attr("x", width/1.8)
-          .attr("y", height/6)
-          .text("step5 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("y", height/13)
+          .text(step5Text)
           .attr("dy", 0)
           .attr("class", "step-text step5-text")
-          .call(wrapText, 170)
+          .call(wrapText, 190)
           .style("opacity", 0)
           .transition()
           .delay(800)
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
-          .attr("x", width/1.3)
-          .attr("y", height/1.5)
-          .text("step4 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+          .attr("x", width/1.6)
+          .attr("y", height/1.8)
+          .text(step4Text)
           .attr("dy", 0)
           .attr("class", "step-text step4-text")
-          .call(wrapText, 120)
+          .call(wrapText, 180)
           .style("opacity", 0)
           .transition()
           .delay(800)
@@ -920,12 +923,12 @@ function drawLineGraph(container_width) {
             .style("opacity", 0)
             .remove()
           svg.append("text")
-            .attr("x", width/1.8)
-            .attr("y", height/1.5)
-            .text("step6 text: Lorem ipsum dolor sit amet, omnes quidam per ei, mutat commune sed ex. Graeco moderatius sea et. ")
+            .attr("x", width/2.3)
+            .attr("y", height/1.7)
+            .text(step6Text)
             .attr("dy", 0)
             .attr("class", "step-text step6-text")
-            .call(wrapText, 170)
+            .call(wrapText, 230)
             .style("opacity", 0)
             .transition()
             .delay(700)
