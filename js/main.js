@@ -125,7 +125,7 @@ function drawLineGraph(container_width) {
         isMobile = false;
         var chart_aspect_height = 0.7;
         var margin = {
-            top: 80,
+            top: 100,
             right: 60,
             bottom: 15,
             left: 40
@@ -167,6 +167,14 @@ function drawLineGraph(container_width) {
       .text("Actual vs. synthetic fatal alcohol-related motor vehicle crashes’ share of total crashes in Illinois")
       .attr("x", 0)
       .attr("y", height*.07)
+      .attr("dy", 0)
+      .call(wrapText, width)
+    d3.select("#graphic svg").append("g")
+      .append("text")
+      .attr("class", "subtitle")
+      .text("With border counties")
+      .attr("x", 0)
+      .attr("y", height*.23)
       .attr("dy", 0)
       .call(wrapText, width)
 
@@ -872,6 +880,13 @@ function drawLineGraph(container_width) {
             .attr("d", lineActual)
             .attr("class", "line line-actual");
       }else if (direction == "prev"){
+        d3.select(".subtitle")
+          .style("opacity", 0)
+          .transition()
+          .delay(800)
+          .duration(500)
+          .text("With border counties")
+          .style("opacity", 1)
         d3.selectAll(".step6-text")
           .transition()
           .duration(500)
@@ -917,6 +932,13 @@ function drawLineGraph(container_width) {
     function step6(direction){
       if (direction == "next"){
         if (d3.select(".step6-text").node() == undefined) {
+          d3.select(".subtitle")
+            .style("opacity", 0)
+            .transition()
+            .delay(700)
+            .duration(500)
+            .text("Without border counties")
+            .style("opacity", 1)
           d3.selectAll(".step5-text, .step4-text")
             .transition()
             .duration(500)
@@ -934,18 +956,11 @@ function drawLineGraph(container_width) {
             .delay(700)
             .duration(500)
             .style("opacity", 1)
-          d3.selectAll("#graphic .y-axis")
-            .transition()
-            .duration(1000)
-            .call(d3.axisLeft(y)
-              .tickFormat(d3.format(".0%"))
-            )
           d3.select(".line-synthetic")
             .attr("stroke-dasharray", "none")
             .transition()
             .duration(1000)
             .attr("d", lineSynthetic(dataset3))
-
           d3.select(".line-actual")
             .transition()
             .duration(1000)
