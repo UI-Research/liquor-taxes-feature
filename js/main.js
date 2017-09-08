@@ -247,7 +247,7 @@ function drawLineGraph(container_width) {
       .text("Actual")
     svg.append("text")
       .attr("x", width/1.7)
-      .attr("y", height/18)
+      .attr("y", 0)
       .text(step1Text)
       .attr("dy", 0)
       .attr("class", "step-text step1-text")
@@ -391,7 +391,7 @@ function drawLineGraph(container_width) {
 
         svg.append("text")
           .attr("x", width/1.7)
-          .attr("y", height/18)
+          .attr("y", 0)
           .text(step1Text)
           .attr("dy", 0)
           .attr("class", "step-text step1-text")
