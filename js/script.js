@@ -69,6 +69,7 @@ Highcharts.theme = {
                 fontSize: '12px'
             }
         },
+
         tickmarkPlacement: 'on'
     },
     yAxis: {
@@ -143,7 +144,31 @@ $(document).ready(function () {
                 x: 0,
                 y: 0
             },
-            xAxis: {
+            xAxis: [{
+                lineColor: '#fff',
+                gridLineWidth: '0',
+                lineWidth: 2,
+                tickInterval: 1,
+                categories: years,
+                plotLines: [{
+                    className: "line-1",
+                    value: 17,
+                    color: '#f0573e', 
+                    width: 2,
+                    dashStyle: "Dash"},
+                    {className: "line-2",
+                    value: 27,
+                    color: '#f0573e', 
+                    width: 2,
+                    dashStyle: "Dash"
+                        }],
+                labels: {
+                    step: 2,
+                    x: 0,
+                    y: 20,
+                    rotation: 0
+                }
+            },{
                 offset: -102,
                 gridLineWidth: '0',
                 lineWidth: 2,
@@ -167,7 +192,7 @@ $(document).ready(function () {
                     y: 20,
                     rotation: 0
                 }
-            },
+            }],
 
             yAxis: {
                 // min: -3,
