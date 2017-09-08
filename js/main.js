@@ -11,9 +11,9 @@ var MOBILE_THRESHOLD = 600,
     step6Text = "When border counties were removed from consideration, the data showed a steep drop in drunk driving fatalities immediately after the 2009 tax increase. However, that drop was short-lived, and drunk driving deaths returned to previous levels (and aligned with the synthetic state’s trajectory) in 2013.";
 
 function buttonStyle(step) {
-
-    d3.selectAll(".button.num").classed("greyed", true);
-    d3.select(".button.b" + step).classed("greyed", false);
+    d3.select("#page-nav").text(step + " of 6")
+    // d3.selectAll(".button.num").classed("greyed", true);
+    // d3.select(".button.b" + step).classed("greyed", false);
 
     if (step == 1) {
         d3.select("#btnprev").classed("greyed", true);
@@ -218,7 +218,7 @@ function drawLineGraph(container_width) {
       .attr("dy", "0.71em")
       .attr("text-anchor", "end")
       .attr("class", "y-axis-label")
-      .text("Percent");
+      // .text("Percent");
 
     svg.append("path")
       .datum(dataset1a)
@@ -858,7 +858,7 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
         var synthetic = d3.select("#graphic svg g").append("path")
           .attr("fill", "none")
-          .attr("stroke", "#f0583f")
+          .attr("stroke", "#fcb64b")
           .style("stroke-width", "2.25px")
           .attr("d", lineSynthetic(dataset2a))
           .attr("class", "line line-synthetic");

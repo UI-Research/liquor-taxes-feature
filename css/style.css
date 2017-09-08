@@ -23,6 +23,15 @@ g.y-axis, g.x-axis {
 .x-axis .tick text.remove {
   opacity: 0;
 }
+
+#page-nav {
+  display: inline-block;
+  float: left;
+  padding: 0 5px;
+  font: 14px Lato;
+  margin-top: 3px;
+
+}
 .button {
     color: #ffffff;
     background-color: #174a7c;
