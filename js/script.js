@@ -177,17 +177,18 @@ $(document).ready(function () {
                 // max: 150,
                 // tickInterval: 25,
                 title: {
-                    text: 'Percent from median',
+                    text: 'Percent from median tax rate',
                     rotation: 0,
                     align: 'high',
-                    offset: -77,
+                    offset: -120,
                     y: -15,
                     style: {
-                        color: '#000'
+                        color: '#000',
+                        fontStyle: 'italic'
                     }
                 },
                 labels: {
-                    format: '{value:,.0f}' 
+                    format: '{value:,.0f}', 
                  }
             },
             tooltip: {
