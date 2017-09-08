@@ -169,7 +169,7 @@ $(document).ready(function () {
                     rotation: 0
                 }
             },{
-                offset: -102,
+                offset: -104,
                 gridLineWidth: '0',
                 lineWidth: 1,
                 tickInterval: 1,
