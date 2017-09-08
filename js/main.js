@@ -223,8 +223,8 @@ function drawLineGraph(container_width) {
     svg.append("path")
       .datum(dataset1a)
       .attr("fill", "none")
-      .attr("stroke", "#154b7c")
-      .style("stroke-width", "1.5px")
+      .attr("stroke", "#008bb0")
+      .style("stroke-width", "2px")
       .attr("d", lineActual)
       .attr("class", "line line-actual");
   
@@ -246,8 +246,8 @@ function drawLineGraph(container_width) {
       .append("text")
       .text("Actual")
     svg.append("text")
-      .attr("x", width/3)
-      .attr("y", height/2.1)
+      .attr("x", width/1.7)
+      .attr("y", height/18)
       .text(step1Text)
       .attr("dy", 0)
       .attr("class", "step-text step1-text")
@@ -306,7 +306,7 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
       svg.append("text")
         .attr("x", width/1.5)
-        .attr("y", height/15)
+        .attr("y", height/2)
         .text(step2Text)
         .attr("dy", 0)
         .attr("class", "step-text step2-text")
@@ -321,8 +321,8 @@ function drawLineGraph(container_width) {
       var path = d3.select("#graphic svg g").append("path")
         .datum(dataset1a)
         .attr("fill", "none")
-        .attr("stroke", "#f0583f")
-        .style("stroke-width", "1.5px")
+        .attr("stroke", "#fcb64b")
+        .style("stroke-width", "2.25px")
         .attr("d", lineSynthetic)
         .attr("class", "line line-synthetic");
 
@@ -390,8 +390,8 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
 
         svg.append("text")
-          .attr("x", width/3)
-          .attr("y", height/2)
+          .attr("x", width/1.7)
+          .attr("y", height/18)
           .text(step1Text)
           .attr("dy", 0)
           .attr("class", "step-text step1-text")
@@ -403,7 +403,7 @@ function drawLineGraph(container_width) {
           .style("opacity", 1)
         svg.append("text")
           .attr("x", width/1.5)
-          .attr("y", height/15)
+          .attr("y", height/2)
           .text(step2Text)
           .attr("dy", 0)
           .attr("class", "step-text step2-text")
@@ -553,8 +553,8 @@ function drawLineGraph(container_width) {
         var syntheticExt = d3.select("#graphic svg g").append("path")
             .datum(dataset1c)
             .attr("fill", "none")
-            .attr("stroke", "#f0583f")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#fcb64b")
+            .style("stroke-width", "2.25px")
             .attr("d", lineSynthetic)
             .attr("class", "line line-synthetic-ext");
         var syntheticExtLength = syntheticExt.node().getTotalLength();
@@ -569,8 +569,8 @@ function drawLineGraph(container_width) {
         var actualExt = d3.select("#graphic svg g").append("path")
             .datum(dataset1c)
             .attr("fill", "none")
-            .attr("stroke", "#154b7c")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#008bb0")
+            .style("stroke-width", "2.25px")
             .attr("d", lineActual)
             .attr("class", "line line-actual-ext");
         var actualExtLength = actualExt.node().getTotalLength();
@@ -684,8 +684,8 @@ function drawLineGraph(container_width) {
         var synthetic = d3.select("#graphic svg g")
             .append("path")
             .attr("fill", "none")
-            .attr("stroke", "#f0583f")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#fcb64b")
+            .style("stroke-width", "2.25px")
             .attr("d", lineSynthetic(dataset1a))
             .attr("class", "line line-synthetic")
             .style("opacity", 0)
@@ -697,8 +697,8 @@ function drawLineGraph(container_width) {
 
         var syntheticExt = d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
-            .attr("stroke", "#f0583f")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#fcb64b")
+            .style("stroke-width", "2.25px")
             .attr("d", lineSynthetic(dataset1c))
             .attr("class", "line line-synthetic-ext")    
             .style("opacity", 0)
@@ -789,8 +789,8 @@ function drawLineGraph(container_width) {
         var actualExt = d3.select("#graphic svg g").append("path")
             .datum(dataset2b)
             .attr("fill", "none")
-            .attr("stroke", "#154b7c")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#008bb0")
+            .style("stroke-width", "2.25px")
             .attr("d", lineActual)
             .attr("class", "line line-actual-ext2");
         var actualExtLength = actualExt.node().getTotalLength();
@@ -810,20 +810,20 @@ function drawLineGraph(container_width) {
           .remove()
         d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
-            .attr("stroke", "#154b7c")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#008bb0")
+            .style("stroke-width", "2.25px")
             .attr("d", lineActual(dataset1a))
             .attr("class", "line line-actual");     
         d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
-            .attr("stroke", "#154b7c")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#008bb0")
+            .style("stroke-width", "2.25px")
             .attr("d", lineActual(dataset1c))
             .attr("class", "line line-actual-ext");  
         d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
-            .attr("stroke", "#154b7c")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#008bb0")
+            .style("stroke-width", "2.25px")
             .attr("d", lineActual(dataset2b))
             .attr("class", "line line-actual-ext2");   
       }
@@ -859,7 +859,7 @@ function drawLineGraph(container_width) {
         var synthetic = d3.select("#graphic svg g").append("path")
           .attr("fill", "none")
           .attr("stroke", "#f0583f")
-          .style("stroke-width", "1.5px")
+          .style("stroke-width", "2.25px")
           .attr("d", lineSynthetic(dataset2a))
           .attr("class", "line line-synthetic");
         var syntheticLength = synthetic.node().getTotalLength();
@@ -875,8 +875,8 @@ function drawLineGraph(container_width) {
         d3.select("#graphic svg g").append("path")
             .datum(dataset2a)
             .attr("fill", "none")
-            .attr("stroke", "#154b7c")
-            .style("stroke-width", "1.5px")
+            .attr("stroke", "#008bb0")
+            .style("stroke-width", "2.25px")
             .attr("d", lineActual)
             .attr("class", "line line-actual");
       }else if (direction == "prev"){

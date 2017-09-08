@@ -40,17 +40,24 @@ g.y-axis, g.x-axis {
 }
 
 .synthetic-label text {
-  fill: #f0583f;
+  fill: #000;
   font-weight: 600;
 }
 
+#btn1, #btn2, #btn3, #btn4, #btn5, #btn6 {
+  pointer-events: none;
+  cursor: none;
+}
 .actual-label text {
-  fill: #154b7c;
+  fill: #000;
   font-weight: 600;
 }
 
 g.y-axis .domain {
   stroke: #fff;
+}
+g.tick text {
+  font-weight: 550;
 }
 
 g.grid .tick line {
@@ -66,7 +73,7 @@ g.grid path.domain {
 }
 
 .step-text {
-  font-weight: 600;
+  font-size: 12px;
 }
 
 .title {
