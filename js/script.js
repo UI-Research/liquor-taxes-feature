@@ -144,6 +144,7 @@ $(document).ready(function () {
                 y: 0
             },
             xAxis: {
+                offset: -102,
                 gridLineWidth: '0',
                 lineWidth: 2,
                 tickInterval: 1,
@@ -161,9 +162,10 @@ $(document).ready(function () {
                     dashStyle: "Dash"
                         }],
                 labels: {
-                    step: 0,
+                    step: 2,
                     x: 0,
-                    y: 20
+                    y: 20,
+                    rotation: 0
                 }
             },
 
@@ -175,10 +177,17 @@ $(document).ready(function () {
                 // max: 150,
                 // tickInterval: 25,
                 title: {
-                    text: ''
+                    text: 'Percent from median',
+                    rotation: 0,
+                    align: 'high',
+                    offset: -77,
+                    y: -15,
+                    style: {
+                        color: '#000'
+                    }
                 },
                 labels: {
-                    format: '{value:,.0f}' + '%'
+                    format: '{value:,.0f}' 
                  }
             },
             tooltip: {
