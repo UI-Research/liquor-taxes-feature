@@ -171,7 +171,7 @@ $(document).ready(function () {
             },{
                 offset: -102,
                 gridLineWidth: '0',
-                lineWidth: 2,
+                lineWidth: 1,
                 tickInterval: 1,
                 categories: years,
                 plotLines: [{
