@@ -177,7 +177,7 @@ $(document).ready(function () {
                     text: ''
                 },
                 labels: {
-                    format: '{value:,.1f}' + '%'
+                    format: '{value:,.0f}' + '%'
                  }
             },
             tooltip: {
