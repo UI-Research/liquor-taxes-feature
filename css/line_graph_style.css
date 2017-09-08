@@ -6,7 +6,7 @@ input,
 select,
 textarea {
     color: #222;
-    font-family: Lato;
+    font-family: 'Avenir', Helvetica, Helvetica Neue, Arial;
 }
 html {
     font-size: 1em;
@@ -101,7 +101,7 @@ textarea {
     margin-left: 1em;
     font-size: 11px;
     line-height: 1.2em;
-    color: #666;
+    color: #000;
 }
 .chart {
     margin: 0 auto;
@@ -141,7 +141,7 @@ button:hover {
    ========================================================================== */
 
 body {
-    font: 16px/24px'Lato', Helvetica, Helvetica Neue, Arial;
+    font: 16px/24px'Avenir', Helvetica, Helvetica Neue, Arial;
 }
 .wrapper {
     width: 100%;
@@ -241,13 +241,22 @@ body {
     margin-left: -30px;
     padding-left: 30px;
     padding-top: 30px;
-    font: 400 30px/36px Lato, sans-serif;
+    font: 400 30px/36px Avenir, sans-serif;
 }
 .intro-text {
-    font: 400 20px/26px Lato, sans-serif;
+    font: 400 20px/26px Avenir, sans-serif;
+}
+
+.highcharts-axis-labels text {
+    fill: #000 !important;
+    color: #000 !important;
+
+}
+.highcharts-xaxis {
+    stroke: #000 !important;
 }
 .closing-text {
-    font: 400 16px/24px Lato, sans-serif;
+    font: 400 16px/24px Avenir, sans-serif;
 }
 .main-image {
     background-image: url("../img/AP173355447669.jpg");
@@ -573,7 +582,7 @@ nav a:visited {
     padding: 10px;
 }
 .popup-title > span {
-    font-family: Lato;
+    font-family: Avenir;
     color: #00ADEF;
 }
 .popup-image-container {

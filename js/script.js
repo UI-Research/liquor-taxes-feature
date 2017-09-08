@@ -7,7 +7,7 @@
 
 // Load the fonts
 Highcharts.createElement('link', {
-    href: 'http://fonts.googleapis.com/css?family=Lato:400,600',
+    // href: 'http://fonts.googleapis.com/css?family=Lato:400,600',
     rel: 'stylesheet',
     type: 'text/css'
 }, null, document.getElementsByTagName('head')[0]);
@@ -21,7 +21,7 @@ Highcharts.theme = {
     chart: {
         backgroundColor: null,
         style: {
-            fontFamily: "Lato, sans-serif"
+            fontFamily: "Avenir, sans-serif"
         },
         marginTop: 0,
         marginBottom: 40
@@ -29,7 +29,7 @@ Highcharts.theme = {
     title: {
         style: {
             fontSize: '18px',
-            color: '#5a5a5a'
+            color: '#000'
         },
         align: 'left'
     },
@@ -59,8 +59,10 @@ Highcharts.theme = {
         enabled: false
     },
     xAxis: {
+        lineColor: "#000",
+        lineWidth: 1,
         gridLineWidth: 0,
-        gridLineColor: 'rgba(219,219,216,0.5)',
+        gridLineColor: 'rgba(217,217,217,1)',
         labels: {
             style: {
                 fontSize: '12px'
@@ -167,7 +169,7 @@ $(document).ready(function () {
             yAxis: {
                 min: -3,
                 max: 6,
-                tickInterval: 3,
+                tickInterval: 1,
                 title: {
                     text: ''
                 },
