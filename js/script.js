@@ -48,8 +48,9 @@ Highcharts.theme = {
     },
     legend: {
         itemStyle: {
-            fontWeight: 'bold',
-            fontSize: '12px'
+            fontWeight: 500,
+            fontSize: '12px',
+            color: '#000'
         }
     },
     exporting: {

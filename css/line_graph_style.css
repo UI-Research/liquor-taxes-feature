@@ -250,9 +250,14 @@ body {
 .highcharts-axis-labels text {
     fill: #000 !important;
     color: #000 !important;
+    font-weight: 500;
 
 }
 .highcharts-xaxis {
+    stroke: #000 !important;
+}
+
+.highcharts-tick {
     stroke: #000 !important;
 }
 .closing-text {
