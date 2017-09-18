@@ -174,7 +174,7 @@ function drawLineGraph(container_width) {
       .attr("class", "subtitle")
       .text("With border counties")
       .attr("x", 0)
-      .attr("y", height*.23)
+      .attr("y", height*.12)
       .attr("dy", 0)
       .call(wrapText, width)
 
