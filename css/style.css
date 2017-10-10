@@ -12,6 +12,7 @@ font-size: 12px;
 #notes {
   font-size: 11px;
   opacity: 0;
+  width: 97%;
 }
 
 g.y-axis, g.x-axis {

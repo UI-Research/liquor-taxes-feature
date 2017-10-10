@@ -216,7 +216,7 @@ function drawLineGraph(container_width) {
       .attr("x", 7)
       .attr("y", -20)
       .attr("dy", "0.71em")
-      .attr("text-anchor", "end")
+      .attr("tanchor", "end")
       .attr("class", "y-axis-label")
       // .text("Percent");
 
@@ -287,7 +287,7 @@ function drawLineGraph(container_width) {
     function step1(direction) {
       if (direction == "next"){
 
-      }else if (direction == "prev"){
+      }else if (direction == "prev"){ console.log("1-prev")
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
         d3.select(".line-actual")
           .transition()
@@ -308,18 +308,7 @@ function drawLineGraph(container_width) {
     function step2(direction) {
       if (direction == "next"){
       $("#notes").css("opacity", "1")
-      svg.append("text")
-        .attr("x", width/1.5)
-        .attr("y", height/2)
-        .text(step2Text)
-        .attr("dy", 0)
-        .attr("class", "step-text step2-text")
-        .call(wrapText, 180)
-        .style("opacity", 0)
-        .transition()
-        .delay(1200)
-        .duration(500)
-        .style("opacity", 1)
+
 
       //ADD SYNTHETIC LINE
       var path = d3.select("#graphic svg g").append("path")
@@ -338,19 +327,32 @@ function drawLineGraph(container_width) {
         .duration(1200)
         .ease(d3.easeLinear)
         .attr("stroke-dashoffset", 0)
-      svg.append("g")
-        .attr("class", "synthetic-label")
-        .attr("transform", function() {
-          return "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")"
+        .on("end", function() {
+          svg.append("text")
+            .attr("x", width/1.5)
+            .attr("y", height/2)
+            .text(step2Text)
+            .attr("dy", 0)
+            .attr("class", "step-text step2-text")
+            .call(wrapText, 180)
+            .style("opacity", 0)
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
+          svg.append("g")
+            .attr("class", "synthetic-label")
+            .attr("transform", function() {
+              return "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")"
+            })
+            .append("text")
+            .attr("transform", "translate(0,"+ 10+")")
+            .text("Synthetic")
+            .style("opacity", 0)
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
         })
-        .append("text")
-        .attr("transform", "translate(0,"+ 10+")")
-        .text("Synthetic")
-        .style("opacity", 0)
-        .transition()
-        .delay(1200)
-        .duration(500)
-        .style("opacity", 1)
+
 
       }else if (direction == "prev"){
         d3.selectAll(".line-actual-ext, .line-synthetic-ext")
@@ -360,6 +362,11 @@ function drawLineGraph(container_width) {
           .attr("transform", function() { 
             return "translate("+(width)+",0)"
           })
+          .style("opacity", 0)
+          .remove()
+        d3.selectAll(".step3-text, .actual-label, .synthetic-label")
+          .transition()
+          .duration(200)
           .style("opacity", 0)
           .remove()
         //ATTEMPT AT SIMULTANEOUS TRANSITIONS
@@ -400,11 +407,7 @@ function drawLineGraph(container_width) {
         //       return function(t) { selection.attr("stroke-dashoffset", i(t)); };
         //     });
         // }
-        d3.selectAll(".step3-text, .actual-label, .synthetic-label")
-          .transition()
-          .duration(500)
-          .style("opacity", 0)
-          .remove()
+        function addText(duration) {
         svg.append("g")
           .attr("class", "synthetic-label")
           .attr("transform", function() { 
@@ -415,8 +418,7 @@ function drawLineGraph(container_width) {
           .text("Synthetic")
           .style("opacity", 0)
           .transition()
-          .delay(608)
-          .duration(500)
+          .duration(duration)
           .style("opacity", 1)
         svg.append("g")
           .attr("class", "actual-label")
@@ -427,8 +429,7 @@ function drawLineGraph(container_width) {
           .text("Actual")
           .style("opacity", 0)
           .transition()
-          .delay(608)
-          .duration(500)
+          .duration(duration)
           .style("opacity", 1)
 
         svg.append("text")
@@ -440,8 +441,7 @@ function drawLineGraph(container_width) {
           .call(wrapText, 170)
           .style("opacity", 0)
           .transition()
-          .delay(608)
-          .duration(500)
+          .duration(duration)
           .style("opacity", 1)
         svg.append("text")
           .attr("x", width/1.5)
@@ -452,31 +452,28 @@ function drawLineGraph(container_width) {
           .call(wrapText, 180)
           .style("opacity", 0)
           .transition()
-          .delay(608)
-          .duration(500)
+          .duration(duration)
           .style("opacity", 1)
-
+        }
         d3.select("#graphic svg g")
           .data(dataset1a)
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
         d3.select(".line-actual")
           .transition()
-           // .delay(500)
           .ease(d3.easeLinear)
-          .duration(608)
+          .duration(604)
           .attr("d", lineActual(dataset1a))
         d3.select(".line-synthetic")
           .attr("stroke-dasharray", "none")
           .transition()
-           // .delay(500)
           .ease(d3.easeLinear)
-          .duration(608)
+          .duration(604)
           .attr("d", lineSynthetic(dataset1a))
+
 
         d3.selectAll("#graphic .x-axis")
           .transition()
-          // .delay(500)
-          .duration(608)
+          .duration(604)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
               if (isMobile == true || isPhone == true){
@@ -489,6 +486,8 @@ function drawLineGraph(container_width) {
             })
           .ticks(19)
           )
+          .on('end', addText(550))
+          .on('interrupt', addText(0))
         d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
           if(i%2 == 0) {
               return false
@@ -507,12 +506,13 @@ function drawLineGraph(container_width) {
     }
 
     function step3(direction) {
-      if (direction == "next"){
+      if (direction == "next"){console.log('3')
         d3.selectAll(".step1-text, .step2-text, .actual-label, .synthetic-label")
           .transition()
           .duration(500)
           .style("opacity", 0)
           .remove()
+      function addText_Lines() {
         svg.append("g")
           .attr("class", "actual-label")
           .attr("transform", function() { 
@@ -522,7 +522,6 @@ function drawLineGraph(container_width) {
           .text("Actual")
           .style("opacity", 0)
           .transition()
-          .delay(1600)
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
@@ -534,7 +533,6 @@ function drawLineGraph(container_width) {
           .call(wrapText, 190)
           .style("opacity", 0)
           .transition()
-          .delay(1600)
           .duration(500)
           .style("opacity", 1)
         svg.append("g")
@@ -546,9 +544,39 @@ function drawLineGraph(container_width) {
           .text("Synthetic")
           .style("opacity", 0)
           .transition()
-          .delay(1600)
           .duration(500)
           .style("opacity", 1)
+        var syntheticExt = d3.select("#graphic svg g").append("path")
+          .datum(dataset1c)
+          .attr("fill", "none")
+          .attr("stroke", "#fcb64b")
+          .style("stroke-width", "2.25px")
+          .attr("d", lineSynthetic)
+          .attr("class", "line line-synthetic-ext");
+        var syntheticExtLength = syntheticExt.node().getTotalLength();
+        syntheticExt
+          .attr("stroke-dasharray", syntheticExtLength + ", " + syntheticExtLength)
+          .attr("stroke-dashoffset", syntheticExtLength)
+          .transition()
+          .duration(600)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+        var actualExt = d3.select("#graphic svg g").append("path")
+          .datum(dataset1c)
+          .attr("fill", "none")
+          .attr("stroke", "#008bb0")
+          .style("stroke-width", "2.25px")
+          .attr("d", lineActual)
+          .attr("class", "line line-actual-ext")
+        var actualExtLength = actualExt.node().getTotalLength();
+        actualExt
+          .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
+          .attr("stroke-dashoffset", actualExtLength)
+          .transition()
+          .duration(600)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+        }
         d3.select("#graphic svg g")
           .data(dataset1b)
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
@@ -557,6 +585,7 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1000)
           .attr("d", lineActual(dataset1a))
+          .on('end', addText_Lines)
         d3.select(".line-synthetic")
           .attr("stroke-dasharray", "none")
           .transition()
@@ -577,6 +606,28 @@ function drawLineGraph(container_width) {
             })
           .ticks(27)
           )
+          .on('interrupt', function(){
+            console.log('interrupt')
+            var actualExtLength = actualExt.node().getTotalLength();
+            actualExt
+              .attr("d", lineActual(dataset1c))
+              .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
+              .attr("stroke-dashoffset", actualExtLength)
+              // .transition()
+              // .delay(1000)
+              // .duration(600)
+              // .ease(d3.easeLinear)
+              .attr("stroke-dashoffset", 0);
+            var syntheticExtLength = syntheticExt.node().getTotalLength();
+            syntheticExt
+              .attr("stroke-dasharray", syntheticExtLength + ", " + syntheticExtLength)
+              .attr("stroke-dashoffset", syntheticExtLength)
+              // .transition()
+              // .delay(1000)
+              // .duration(600)
+              // .ease(d3.easeLinear)
+              .attr("stroke-dashoffset", 0);
+          })
         var ticks = svg.selectAll(".tick text");
         d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
           if(i%2 == 0) {
@@ -592,57 +643,48 @@ function drawLineGraph(container_width) {
             .tickFormat(d3.format(".0%"))
           )
         // Add extended line from 2000-2008
-        var syntheticExt = d3.select("#graphic svg g").append("path")
-            .datum(dataset1c)
-            .attr("fill", "none")
-            .attr("stroke", "#fcb64b")
-            .style("stroke-width", "2.25px")
-            .attr("d", lineSynthetic)
-            .attr("class", "line line-synthetic-ext");
-        var syntheticExtLength = syntheticExt.node().getTotalLength();
-        syntheticExt
-          .attr("stroke-dasharray", syntheticExtLength + ", " + syntheticExtLength)
-          .attr("stroke-dashoffset", syntheticExtLength)
-          .transition()
-          .delay(1000)
-          .duration(600)
-          .ease(d3.easeLinear)
-          .attr("stroke-dashoffset", 0);
-        var actualExt = d3.select("#graphic svg g").append("path")
-            .datum(dataset1c)
-            .attr("fill", "none")
-            .attr("stroke", "#008bb0")
-            .style("stroke-width", "2.25px")
-            .attr("d", lineActual)
-            .attr("class", "line line-actual-ext");
-        var actualExtLength = actualExt.node().getTotalLength();
-        actualExt
-          .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
-          .attr("stroke-dashoffset", actualExtLength)
-          .transition()
-          .delay(1000)
-          .duration(600)
-          .ease(d3.easeLinear)
-          .attr("stroke-dashoffset", 0);
-      }else if (direction == "prev"){
+
+      }else if (direction == "prev"){ console.log('3-prev')
         var synG = svg.append("g")
           .attr("class", "synthetic-label")
           .attr("transform", function() { 
             return "translate("+(width)+","+ y((dataset1c)[5]["synthetic"])+")"
           })
-        synG.append("text")
-          .attr("transform", "translate(0,"+ 10+")")
-          .text("Synthetic")
-          .style("opacity", 0)
-          .transition()
-          .delay(800)
-          .duration(500)
-          .style("opacity", 1)
+      
         d3.selectAll(".step4-text, .actual-label")
           .transition()
           .duration(300)
           .style("opacity", 0)
           .remove()
+        function addText_Lines() {
+        var synthetic = d3.select("#graphic svg g")
+          .append("path")
+          .attr("fill", "none")
+          .attr("stroke", "#fcb64b")
+          .style("stroke-width", "2.25px")
+          .attr("d", lineSynthetic(dataset1a))
+          .attr("class", "line line-synthetic")
+          .style("opacity", 0)
+          .transition()
+          .duration(500)
+          .style("opacity", 1)
+        var syntheticExt = d3.select("#graphic svg g").append("path")
+          .attr("fill", "none")
+          .attr("stroke", "#fcb64b")
+          .style("stroke-width", "2.25px")
+          .attr("d", lineSynthetic(dataset1c))
+          .attr("class", "line line-synthetic-ext")    
+          .style("opacity", 0)
+          .transition()
+          .duration(500)
+          .style("opacity", 1)
+        synG.append("text")
+          .attr("transform", "translate(0,"+ 10+")")
+          .text("Synthetic")
+          .style("opacity", 0)
+          .transition()
+          .duration(500)
+          .style("opacity", 1)
         svg.append("g")
           .attr("class", "actual-label")
           .attr("transform", function() { 
@@ -653,7 +695,6 @@ function drawLineGraph(container_width) {
           .text("Actual")
           .style("opacity", 0)
           .transition()
-          .delay(800)
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
@@ -665,9 +706,9 @@ function drawLineGraph(container_width) {
           .call(wrapText, 190)
           .style("opacity", 0)
           .transition()
-          .delay(800)
           .duration(500)
           .style("opacity", 1)
+        }
         d3.select("#graphic svg g")
           .data(dataset1b)
         x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
@@ -723,49 +764,53 @@ function drawLineGraph(container_width) {
           .duration(412)
           .attr("stroke-dasharray", "none")
           .attr("d", lineActual(dataset1c))
-        var synthetic = d3.select("#graphic svg g")
-            .append("path")
-            .attr("fill", "none")
-            .attr("stroke", "#fcb64b")
-            .style("stroke-width", "2.25px")
-            .attr("d", lineSynthetic(dataset1a))
-            .attr("class", "line line-synthetic")
-            .style("opacity", 0)
-            .transition()
-            .delay(800)
-            .duration(500)
-            .style("opacity", 1)
+          .on('end', addText_Lines)
 
-
-        var syntheticExt = d3.select("#graphic svg g").append("path")
-            .attr("fill", "none")
-            .attr("stroke", "#fcb64b")
-            .style("stroke-width", "2.25px")
-            .attr("d", lineSynthetic(dataset1c))
-            .attr("class", "line line-synthetic-ext")    
-            .style("opacity", 0)
-            .transition()
-            .delay(1000)
-            .duration(500)
-            .style("opacity", 1)
       }
     }
 
     function step4(direction) {
       if (direction == "next"){
-        console.log('hi')
-        svg.append("text")
-          .attr("x", width/1.6)
-          .attr("y", height/1.8)
-          .text(step4Text)
-          .attr("dy", 0)
-          .attr("class", "step-text step4-text")
-          .call(wrapText, 180)
-          .style("opacity", 0)
-          .transition()
-          .delay(1300)
-          .duration(500)
-          .style("opacity", 1)
+        function addText_Lines() {
+          svg.append("text")
+            .attr("x", width/1.6)
+            .attr("y", height/1.8)
+            .text(step4Text)
+            .attr("dy", 0)
+            .attr("class", "step-text step4-text")
+            .call(wrapText, 180)
+            .style("opacity", 0)
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
+          svg.append("g")
+            .attr("class", "actual-label")
+            .attr("transform", function() { 
+              return "translate("+(width)+","+ y((dataset2b)[6]["actual"])+")"
+            })
+            .append("text")
+            .attr("transform", "translate(0,"+ 10+")")
+            .text("Actual")
+            .style("opacity", 0)
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
+          var actualExt = d3.select("#graphic svg g").append("path")
+              .datum(dataset2b)
+              .attr("fill", "none")
+              .attr("stroke", "#008bb0")
+              .style("stroke-width", "2.25px")
+              .attr("d", lineActual)
+              .attr("class", "line line-actual-ext2");
+          var actualExtLength = actualExt.node().getTotalLength();
+          actualExt
+            .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
+            .attr("stroke-dashoffset", actualExtLength)
+            .transition()
+            .duration(500)
+            .ease(d3.easeLinear)
+            .attr("stroke-dashoffset", 0);
+        }
         d3.selectAll(".step3-text")
           .transition()
           .duration(300)
@@ -784,6 +829,7 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1000)
           .attr("d", lineActual(dataset1c))
+          .on('end', addText_Lines)
 
         d3.selectAll(".line-synthetic, .line-synthetic-ext, .synthetic-label, .actual-label")
           .transition()
@@ -818,54 +864,16 @@ function drawLineGraph(container_width) {
           .call(d3.axisLeft(y)
             .tickFormat(d3.format(".0%"))
           )
-        svg.append("g")
-          .attr("class", "actual-label")
-          .attr("transform", function() { 
-            return "translate("+(width)+","+ y((dataset2b)[6]["actual"])+")"
-          })
-          .append("text")
-          .attr("transform", "translate(0,"+ 10+")")
-          .text("Actual")
-          .style("opacity", 0)
-          .transition()
-          .delay(1300)
-          .duration(500)
-          .style("opacity", 1)
-        var actualExt = d3.select("#graphic svg g").append("path")
-            .datum(dataset2b)
-            .attr("fill", "none")
-            .attr("stroke", "#008bb0")
-            .style("stroke-width", "2.25px")
-            .attr("d", lineActual)
-            .attr("class", "line line-actual-ext2");
-        var actualExtLength = actualExt.node().getTotalLength();
-        actualExt
-          .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
-          .attr("stroke-dashoffset", actualExtLength)
-          .transition()
-          .delay(800)
-          .duration(500)
-          .ease(d3.easeLinear)
-          .attr("stroke-dashoffset", 0);
+
       }else if (direction == "prev"){
         d3.selectAll(".line-synthetic, .step5-text, .synthetic-label")
           .transition()
           .duration(500)
           .style("opacity", 0)
           .remove()
-          .on("interrupt", function() {
-              console.log('hi')
-            d3.selectAll(".line-synthetic, .line-actual, .step5-text, .synthetic-label")
-              .remove()
 
-          })
-        // d3.select("#graphic svg g").append("path")
-            // .attr("fill", "none")
-            // .attr("stroke", "#008bb0")
-            // .style("stroke-width", "2.25px")
-          d3.select(".line-actual")
-            .attr("d", lineActual(dataset1a))
-            // .attr("class", "line line-actual");     
+        d3.select(".line-actual")
+          .attr("d", lineActual(dataset1a))
         d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
             .attr("stroke", "#008bb0")
@@ -889,12 +897,12 @@ function drawLineGraph(container_width) {
           .attr("transform", function() { 
             return "translate("+(width)+","+ y((dataset2a)[33]["synthetic"])+")"
           })
+        function addText(){
         synG.append("text")
           .attr("transform", "translate(0,"+ 10+")")
           .text("Synthetic")
           .style("opacity", 0)
           .transition()
-          .delay(1000)
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
@@ -906,9 +914,9 @@ function drawLineGraph(container_width) {
           .call(wrapText, 190)
           .style("opacity", 0)
           .transition()
-          .delay(1000)
           .duration(500)
           .style("opacity", 1)
+        }
         var synthetic = d3.select("#graphic svg g").append("path")
           .attr("fill", "none")
           .attr("stroke", "#fcb64b")
@@ -922,7 +930,8 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1000)
           .ease(d3.easeLinear)
-          .attr("stroke-dashoffset", 0);
+          .attr("stroke-dashoffset", 0)
+          .on('end', addText)
         d3.selectAll(".line-actual, .line-actual-ext, .line-actual-ext2")
           .remove()
         d3.select("#graphic svg g").append("path")
@@ -933,18 +942,15 @@ function drawLineGraph(container_width) {
             .attr("d", lineActual)
             .attr("class", "line line-actual");
       }else if (direction == "prev"){
+        $("#notes").html("<b>Notes:</b>" + " The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+
+        function addText() {
         d3.select(".subtitle")
           .style("opacity", 0)
           .transition()
-          .delay(800)
           .duration(500)
           .text("With border counties")
           .style("opacity", 1)
-        d3.selectAll(".step6-text")
-          .transition()
-          .duration(500)
-          .style("opacity", 0)
-          .remove()
         svg.append("text")
           .attr("x", width/1.8)
           .attr("y", height/13)
@@ -954,7 +960,6 @@ function drawLineGraph(container_width) {
           .call(wrapText, 190)
           .style("opacity", 0)
           .transition()
-          .delay(800)
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
@@ -966,14 +971,21 @@ function drawLineGraph(container_width) {
           .call(wrapText, 180)
           .style("opacity", 0)
           .transition()
-          .delay(800)
           .duration(500)
           .style("opacity", 1)
+        }
+        d3.selectAll(".step6-text")
+          .transition()
+          .duration(500)
+          .style("opacity", 0)
+          .remove()
+       
         d3.select(".line-synthetic")
           .attr("stroke-dasharray", "none")
           .transition()
           .duration(1000)
           .attr("d", lineSynthetic(dataset2a))
+          .on('end', addText)
 
         d3.select(".line-actual")
           .transition()
@@ -985,6 +997,7 @@ function drawLineGraph(container_width) {
     function step6(direction){
       if (direction == "next"){
         if (d3.select(".step6-text").node() == undefined) {
+          $("#notes").html("<b>Notes:</b>" + " For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk driving fatality rates.")
           d3.select(".subtitle")
             .style("opacity", 0)
             .transition()
