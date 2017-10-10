@@ -137,7 +137,7 @@ $(document).ready(function () {
             },
 
             title: {
-                text: 'Illinois alcohol tax rates surged after two measures passed in 1999 and 2009'
+                text: 'Illinois alcohol tax rates surged after two measures enacted in 1999 and 2009'
             },
             subtitle: {
                 text: '',
@@ -220,7 +220,7 @@ $(document).ready(function () {
                 useHTML: true,
                 crosshairs: crosshairs,
                 shared: true,
-                valueDecimals: 2,
+                valueDecimals: 0,
                 valueSuffix: '%'
             },
             credits: {
