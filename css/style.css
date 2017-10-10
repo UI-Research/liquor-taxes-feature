@@ -6,6 +6,12 @@ font-size: 12px;
   display: block;
   width: 100%;
   min-height: 30px;
+  margin-top: 15px;
+}
+
+#notes {
+  font-size: 11px;
+  opacity: 0;
 }
 
 g.y-axis, g.x-axis {

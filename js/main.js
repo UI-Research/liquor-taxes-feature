@@ -298,12 +298,15 @@ function drawLineGraph(container_width) {
           .duration(500)
           .style("opacity", 0)
           .remove()
+        $("#notes").css("opacity", "0")
+
       }
 
     }
 
     function step2(direction) {
       if (direction == "next"){
+      $("#notes").css("opacity", "1")
       svg.append("text")
         .attr("x", width/1.5)
         .attr("y", height/2)
