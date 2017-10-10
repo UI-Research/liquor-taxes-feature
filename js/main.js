@@ -293,6 +293,7 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(500)
           .attr("d", lineActual(dataset1a))
+
         d3.selectAll(".step2-text, .synthetic-label, .line-synthetic")
           .transition()
           .duration(500)
@@ -336,7 +337,7 @@ function drawLineGraph(container_width) {
         .transition()
         .duration(1200)
         .ease(d3.easeLinear)
-        .attr("stroke-dashoffset", 0);
+        .attr("stroke-dashoffset", 0)
       svg.append("g")
         .attr("class", "synthetic-label")
         .attr("transform", function() {
@@ -361,6 +362,44 @@ function drawLineGraph(container_width) {
           })
           .style("opacity", 0)
           .remove()
+        //ATTEMPT AT SIMULTANEOUS TRANSITIONS
+        // var a = {};
+        // var b = {}
+
+        // var actualLength = d3.select(".line-actual-ext").node().getTotalLength();
+        // d3.selectAll(".line-actual-ext, .line-synthetic-ext")
+        //   .each(function() { console.log(d3.select(this).node())
+        //     d3.select(this)
+        //       .call(move, 1300)
+        //       .call(remove, 1300)
+        //   })
+
+        // // d3.select(".line-synthetic-ext")
+        // //   .call(move, 1300)
+        // //   .call(remove, 1300)
+        // function move(selection, duration) {
+        //   d3.select(a)
+        //     .transition()
+        //     .ease(d3.easeLinear)
+        //     .duration(duration)
+        //     .tween("attr:transform", function() {
+        //       var i = d3.interpolateString("translate(0)", "translate(350)");
+        //       return function(t) { selection.attr("transform", i(t)); };
+        //     });
+        // }
+
+        // function remove(selection, duration) {
+        //   d3.select(b)
+        //     .transition()
+        //     .duration(2000)
+        //     .ease(d3.easeLinear)
+        //     // .attr("stroke-dashoffset", actualLength)
+        //     .tween("attr:stroke-dashoffset", function() {
+        //       var i = d3.interpolateRound(0, actualLength);
+        //       console.log(i);
+        //       return function(t) { selection.attr("stroke-dashoffset", i(t)); };
+        //     });
+        // }
         d3.selectAll(".step3-text, .actual-label, .synthetic-label")
           .transition()
           .duration(500)
@@ -714,6 +753,7 @@ function drawLineGraph(container_width) {
 
     function step4(direction) {
       if (direction == "next"){
+        console.log('hi')
         svg.append("text")
           .attr("x", width/1.6)
           .attr("y", height/1.8)
@@ -739,10 +779,12 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1000)
           .attr("d", lineActual(dataset1a))
+
         d3.select(".line-actual-ext")
           .transition()
           .duration(1000)
           .attr("d", lineActual(dataset1c))
+
         d3.selectAll(".line-synthetic, .line-synthetic-ext, .synthetic-label, .actual-label")
           .transition()
           .duration(300)
@@ -806,17 +848,24 @@ function drawLineGraph(container_width) {
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0);
       }else if (direction == "prev"){
-        d3.selectAll(".line-synthetic, .line-actual, .step5-text, .synthetic-label")
+        d3.selectAll(".line-synthetic, .step5-text, .synthetic-label")
           .transition()
           .duration(500)
           .style("opacity", 0)
           .remove()
-        d3.select("#graphic svg g").append("path")
-            .attr("fill", "none")
-            .attr("stroke", "#008bb0")
-            .style("stroke-width", "2.25px")
+          .on("interrupt", function() {
+              console.log('hi')
+            d3.selectAll(".line-synthetic, .line-actual, .step5-text, .synthetic-label")
+              .remove()
+
+          })
+        // d3.select("#graphic svg g").append("path")
+            // .attr("fill", "none")
+            // .attr("stroke", "#008bb0")
+            // .style("stroke-width", "2.25px")
+          d3.select(".line-actual")
             .attr("d", lineActual(dataset1a))
-            .attr("class", "line line-actual");     
+            // .attr("class", "line line-actual");     
         d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
             .attr("stroke", "#008bb0")
@@ -829,6 +878,7 @@ function drawLineGraph(container_width) {
             .style("stroke-width", "2.25px")
             .attr("d", lineActual(dataset2b))
             .attr("class", "line line-actual-ext2");   
+  
       }
     }
 
