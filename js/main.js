@@ -3,12 +3,12 @@ var MOBILE_THRESHOLD = 600,
     isMobile = false,
     $graphic = $("#graphic")
     step = 1,
-    step1Text = "Researchers studied the number of fatal alcohol-related motor vehicle crashes in the years leading to the state’s two major alcohol excise tax increases.",
-    step2Text = "The synthetic control method allowed the researchers to map out a trajectory of drunk driving fatalities in the hypothetical Illinois that closely aligned with the actual state.",
-    step3Text = "This alignment between the actual and synthetic Illinois continued in the years after the policy was enacted in 2000, signaling that drunk driving fatalities were not affected by the higher excise tax.",
-    step4Text = "Researchers tracked the same data for the years after the second excise tax increase was enacted in 2009.",
-    step5Text = "Once again, the number of drunk driving deaths in the real Illinois and the hypothetical Illinois were closely aligned – indicating the policy didn’t reduce drunk driving fatalities.",
-    step6Text = "When border counties were removed from consideration, the data showed a steep drop in drunk driving fatalities immediately after the 2009 tax increase. However, that drop was short-lived, and drunk driving deaths returned to previous levels (and aligned with the synthetic state’s trajectory) in 2013.";
+    step1Text = "Researchers studied the number of fatal alcohol-related motor vehicle crashes in the years leading up to the state’s two major alcohol excise tax increases.",
+    step2Text = "The synthetic control method allowed the researchers to map out a trajectory of drunk-driving fatalities in the hypothetical Illinois that closely aligned with the actual state.",
+    step3Text = "This alignment between the actual and synthetic Illinois continued in the years after the policy was enacted in 2000, signaling that drunk-driving fatalities were not affected by the higher excise tax.",
+    step4Text = "Researchers tracked the same data for the years after the second excise tax increase, enacted in 2009.",
+    step5Text = "Once again, the number of drunk-driving deaths in the real Illinois and the hypothetical Illinois were closely aligned, indicating the policy didn’t reduce such deaths.",
+    step6Text = "When border counties were removed from consideration, the data showed a steep drop in drunk-driving fatalities immediately after the 2009 tax increase. However, that drop was short lived, and drunk-driving deaths returned to previous levels (and aligned with the synthetic state’s trajectory) in 2013.";
 
 function buttonStyle(step) {
     d3.select("#page-nav").text(step + " of 6")
@@ -164,7 +164,7 @@ function drawLineGraph(container_width) {
     d3.select("#graphic svg").append("g")
       .append("text")
       .attr("class", "title")
-      .text("Actual vs. synthetic fatal alcohol-related motor vehicle crashes’ share of total crashes in Illinois")
+      .text("Actual versus synthetic fatal alcohol-related motor vehicle crashes as a share of total crashes in Illinois")
       .attr("x", 0)
       .attr("y", height*.07)
       .attr("dy", 0)
