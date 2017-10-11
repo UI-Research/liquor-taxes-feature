@@ -13,6 +13,7 @@ font-size: 12px;
   font-size: 11px;
   opacity: 0;
   width: 97%;
+  margin-top: 10px;
 }
 
 g.y-axis, g.x-axis {
@@ -100,6 +101,7 @@ g.grid path.domain {
 
 .subtitle {
   font-size: 14px;
+  margin: 5px 0;
 }
 
 .y-axis-label {
@@ -107,7 +109,20 @@ g.grid path.domain {
   font-size: 12px;
 }
 
+  #isPhone{
+    display: none;
+  }
+  #isMobile{
+    display: none;
+  }
+@media screen and (max-width: 768px) {
+
+
+}
 @media screen and (max-width: 500px) {
+  #isPhone{
+    display: block;
+  }
   g.y-axis, g.x-axis {
     font-size:11px;
   }

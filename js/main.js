@@ -1,6 +1,6 @@
 var MOBILE_THRESHOLD = 600,
     PHONE_THRESHOLD = 450,
-    isMobile = false,
+    isPhone = false,
     $graphic = $("#graphic")
     step = 1,
     step1Text = "Researchers studied the number of fatal alcohol-related motor vehicle crashes in the years leading up to the state’s two major alcohol excise tax increases.",
@@ -57,7 +57,7 @@ function wrapText(text, width) {
 buttonStyle(1);
 
 function drawLineGraph(container_width) {
-
+  var IS_PHONE = d3.select("#isPhone").style("display") == "block";
    
   d3.csv("data/step-data.csv", function(data) {
       data.forEach(function(d) {
@@ -94,38 +94,24 @@ function drawLineGraph(container_width) {
     }
     var padding = 20;
 
-    if (container_width <= PHONE_THRESHOLD) {
+    if (IS_PHONE) {
         isPhone = true;
-        var chart_aspect_height = 1.6;
+        console.log('phone')
+        var chart_aspect_height = .9;
         var margin = {
-            top: 80,
+            top: 10,
             right: 60,
             bottom: 15,
-            left: 40
+            left: 30
         };
         var width = container_width - margin.left - margin.right,
             height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding,
-            graphWidth = width*.992;
-    }else if (container_width <= MOBILE_THRESHOLD) {console.log('hi')
-        isMobile = true;
-        var chart_aspect_height = 1.2;
-        var margin = {
-            top: 80,
-            right: 60,
-            bottom: 15,
-            left: 40
-        };
-        var width = container_width - margin.left - margin.right,
-            height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding,
-            graphWidth = width*.992;
-
+            graphWidth = width*1.2;
     }
-
      else {
-        isMobile = false;
         var chart_aspect_height = 0.7;
         var margin = {
-            top: 100,
+            top: 20,
             right: 60,
             bottom: 15,
             left: 40
@@ -161,23 +147,24 @@ function drawLineGraph(container_width) {
     }
 
 
-    d3.select("#graphic svg").append("g")
-      .append("text")
-      .attr("class", "title")
-      .text("Actual versus synthetic fatal alcohol-related motor vehicle crashes as a share of total crashes in Illinois")
-      .attr("x", 0)
-      .attr("y", height*.07)
-      .attr("dy", 0)
-      .call(wrapText, width)
-    d3.select("#graphic svg").append("g")
-      .append("text")
-      .attr("class", "subtitle")
-      .text("With border counties")
-      .attr("x", 0)
-      .attr("y", height*.25)
-      .attr("dy", 0)
-      .call(wrapText, width)
-
+    // d3.select("#graphic svg").append("g")
+    //   .append("text")
+    //   .attr("class", "title")
+    //   .text("Actual versus synthetic fatal alcohol-related motor vehicle crashes as a share of total crashes in Illinois")
+    //   .attr("x", 0)
+    //   .attr("y", height*.07)
+    //   .attr("dy", 0)
+    //   .call(wrapText, titleWidth)
+    // d3.select("#graphic svg").append("g")
+    //   .append("text")
+    //   .attr("class", "subtitle")
+    //   .text("With border counties")
+    //   .attr("x", 0)
+    //   .attr("y", height*.25)
+    //   .attr("dy", 0)
+    //   .call(wrapText, width)
+    // var titleWidth = (IS_MOBILE) ? 100 : width;
+    // console.log(titleWidth)
     svg.append("g")
       .attr("class", "grid")
       .call(make_y_gridlines()
@@ -188,7 +175,7 @@ function drawLineGraph(container_width) {
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x)
         .tickFormat(function(d) {
-          if (isMobile == true || isPhone == true) {
+          if (isPhone == true) {
             var string = d.toString()
             return "'" + string.slice(2,4)
           }else {
@@ -245,13 +232,18 @@ function drawLineGraph(container_width) {
       })
       .append("text")
       .text("Actual")
-    svg.append("text")
-      .attr("x", width/1.7)
-      .attr("y", 0)
-      .text(step1Text)
-      .attr("dy", 0)
-      .attr("class", "step-text step1-text")
-      .call(wrapText, 170)
+    if (IS_PHONE) {
+      $("#description-actual").text(step1Text)
+
+    }else {
+      svg.append("text")
+        .attr("x", width/1.7)
+        .attr("y", 0)
+        .text(step1Text)
+        .attr("dy", 0)
+        .attr("class", "step-text step1-text")
+        .call(wrapText, 170)
+    }
 
     //when changing the step, change the graph
     function changeStep(direction){
@@ -328,17 +320,23 @@ function drawLineGraph(container_width) {
         .ease(d3.easeLinear)
         .attr("stroke-dashoffset", 0)
         .on("end", function() {
-          svg.append("text")
-            .attr("x", width/1.5)
-            .attr("y", height/2)
-            .text(step2Text)
-            .attr("dy", 0)
-            .attr("class", "step-text step2-text")
-            .call(wrapText, 180)
-            .style("opacity", 0)
-            .transition()
-            .duration(500)
-            .style("opacity", 1)
+          if (IS_PHONE) {
+            $("#description-synthetic").text(step2Text)
+          }else {
+            svg.append("text")
+              .attr("x", function(){
+                return (IS_PHONE) ? width/2 : width/1.5;
+              })
+              .attr("y", height/2)
+              .text(step2Text)
+              .attr("dy", 0)
+              .attr("class", "step-text step2-text")
+              .call(wrapText, 180)
+              .style("opacity", 0)
+              .transition()
+              .duration(500)
+              .style("opacity", 1)
+          }
           svg.append("g")
             .attr("class", "synthetic-label")
             .attr("transform", function() {
@@ -423,7 +421,7 @@ function drawLineGraph(container_width) {
         svg.append("g")
           .attr("class", "actual-label")
           .attr("transform", function() { 
-            return "translate("+(width)+","+ y((dataset1a)[18]["actual"])+")"
+            return (IS_PHONE) ? "translate("+(width)+","+ y((dataset1a)[0]["actual"])+")" : "translate("+(width)+","+ y((dataset1a)[18]["actual"])+")";
           })
           .append("text")
           .text("Actual")
@@ -444,7 +442,10 @@ function drawLineGraph(container_width) {
           .duration(duration)
           .style("opacity", 1)
         svg.append("text")
-          .attr("x", width/1.5)
+          .attr("x", function() {
+            return (IS_PHONE) ? width/2 : width/1.5;
+
+          })
           .attr("y", height/2)
           .text(step2Text)
           .attr("dy", 0)
@@ -476,7 +477,7 @@ function drawLineGraph(container_width) {
           .duration(604)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isMobile == true || isPhone == true){
+              if (isPhone == true){
                 var string = d.toString()
                 console.log(string.slice(2,4))
                 return "'" + string.slice(2,4)
@@ -486,8 +487,11 @@ function drawLineGraph(container_width) {
             })
           .ticks(19)
           )
-          .on('end', addText(550))
-          .on('interrupt', addText(0))
+          .on('end', function() {addText(550)
+          })
+          .on('interrupt', function() {addText(0)
+          })
+
         d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
           if(i%2 == 0) {
               return false
@@ -525,7 +529,9 @@ function drawLineGraph(container_width) {
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
-          .attr("x", width/1.5)
+          .attr("x", function() {
+            return (IS_PHONE) ? width/2 : width/1.5;
+          })
           .attr("y", height/1.7)
           .text(step3Text)
           .attr("dy", 0)
@@ -596,9 +602,8 @@ function drawLineGraph(container_width) {
           .duration(1000)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isMobile == true || isPhone == true){
+              if (isPhone == true){
                 var string = d.toString()
-                console.log(string.slice(2,4))
                 return "'" + string.slice(2,4)
               }else {
                 return d
@@ -630,7 +635,8 @@ function drawLineGraph(container_width) {
           })
         var ticks = svg.selectAll(".tick text");
         d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
-          if(i%2 == 0) {
+          var number = (IS_PHONE) ? 4 : 2;
+          if(i%number == 0) {
               return false
           }else {
               return true
@@ -698,7 +704,9 @@ function drawLineGraph(container_width) {
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
-          .attr("x", width/1.5)
+          .attr("x", function() {
+            return (IS_PHONE) ? width/2 : width/1.5;
+          })
           .attr("y", height/1.7)
           .text(step3Text)
           .attr("dy", 0)
@@ -734,9 +742,8 @@ function drawLineGraph(container_width) {
           .duration(412)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isMobile == true || isPhone == true) {
+              if ( isPhone == true) {
                 var string = d.toString()
-                console.log(string.slice(2,4))
                 return "'" + string.slice(2,4)
               }else {
                 return d
@@ -773,7 +780,9 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
         function addText_Lines() {
           svg.append("text")
-            .attr("x", width/1.6)
+            .attr("x", function() {
+              return (IS_PHONE) ? width/2 : width/1.6;
+            })
             .attr("y", height/1.8)
             .text(step4Text)
             .attr("dy", 0)
@@ -841,7 +850,7 @@ function drawLineGraph(container_width) {
           .duration(1000)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isMobile == true || isPhone == true){
+              if (isPhone == true){
                 var string = d.toString()
                 return "'" + string.slice(2,4)
               }else {
@@ -963,7 +972,9 @@ function drawLineGraph(container_width) {
           .duration(500)
           .style("opacity", 1)
         svg.append("text")
-          .attr("x", width/1.6)
+          .attr("x", function() {
+            return (IS_PHONE) ? width/2 : width/1.6;
+          })
           .attr("y", height/1.8)
           .text(step4Text)
           .attr("dy", 0)
