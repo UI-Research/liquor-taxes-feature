@@ -492,6 +492,7 @@ function drawLineGraph(container_width) {
           .on('interrupt', function() {addText(0)
           })
 
+
         d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
           if(i%2 == 0) {
               return false
