@@ -108,7 +108,12 @@ g.grid path.domain {
   font-style: italic;
   font-size: 12px;
 }
-
+  #description-actual {
+    display: none;
+  }
+  #description-synthetic {
+    display: none;
+  }
   #isPhone{
     display: none;
   }
@@ -121,6 +126,12 @@ g.grid path.domain {
 }
 @media screen and (max-width: 500px) {
   #isPhone{
+    display: block;
+  }
+  #description-actual {
+    display: block;
+  }
+  #description-synthetic {
     display: block;
   }
   g.y-axis, g.x-axis {

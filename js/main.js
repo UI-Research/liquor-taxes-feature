@@ -9,7 +9,16 @@ var MOBILE_THRESHOLD = 600,
     step4Text = "Researchers tracked the same data for the years after the second excise tax increase, enacted in 2009.",
     step5Text = "Once again, the number of drunk-driving deaths in the real Illinois and the hypothetical Illinois were closely aligned, indicating the policy didn’t reduce such deaths.",
     step6Text = "When border counties were removed from consideration, the data showed a steep drop in drunk-driving fatalities immediately after the 2009 tax increase. However, that drop was short lived, and drunk-driving deaths returned to previous levels (and aligned with the synthetic state’s trajectory) in 2013.";
+transitionStatus(false)
+interruptStatus(false)
 
+function transitionStatus(status) {
+  console.log('hi')
+  running = status;
+}
+function interruptStatus(status) {
+  interrupt = status;
+}
 function buttonStyle(step) {
     d3.select("#page-nav").text(step + " of 6")
     // d3.selectAll(".button.num").classed("greyed", true);
@@ -96,17 +105,16 @@ function drawLineGraph(container_width) {
 
     if (IS_PHONE) {
         isPhone = true;
-        console.log('phone')
         var chart_aspect_height = .9;
         var margin = {
             top: 10,
             right: 60,
             bottom: 15,
-            left: 30
+            left: 35
         };
         var width = container_width - margin.left - margin.right,
             height = Math.min(500, (Math.ceil(width * chart_aspect_height))) - margin.top - margin.bottom - padding,
-            graphWidth = width*1.2;
+            graphWidth = width*1.1;
     }
      else {
         var chart_aspect_height = 0.7;
@@ -214,21 +222,47 @@ function drawLineGraph(container_width) {
       .style("stroke-width", "2px")
       .attr("d", lineActual)
       .attr("class", "line line-actual");
-  
+  d3.selection.prototype.getTransition = function() {
+    if(this[0][0].__transition__) {
+      return this[0][0].__transition__[1];
+    } else return undefined;
+  }
+
     d3.select('#btnnext')
       .on("click", function () {
+        // if (running == true) { console.log(running)
+        //   svg.selectAll("path")
+        //     .interrupt()
+        //     .on('end', function() {
+        //       changeStep("next");
+        //     })
+        // }else {
+        //   changeStep("next");
+
+        // }
           changeStep("next");
+
       });
 
     d3.select('#btnprev')
       .on("click", function () {
+        if (running == true) { console.log(running)
+          interruptStatus(true)
+          svg.selectAll('path')
+            .interrupt()
+            // .on('end', function() {
+            //   changeStep("prev");
+            // })
+        }else {
           changeStep("prev");
+        }
+        // changeStep("prev")
       });
 
     var actualG = svg.append("g")
       .attr("class", "actual-label")
       .attr("transform", function() { 
-        return "translate("+(width) +","+ y((dataset1a)[18]["actual"])+")"
+        return (IS_PHONE) ? "translate("+(width) +","+ y((dataset1a)[14]["actual"])+")" : "translate("+(width) +","+ y((dataset1a)[18]["actual"])+")";
       })
       .append("text")
       .text("Actual")
@@ -252,8 +286,9 @@ function drawLineGraph(container_width) {
       }else if (direction == "prev") {
         step = step > 1 ? step - 1 : step;
       }
+      console.log("step: " + step)
       buttonStyle(step);
-      switch(step){
+      switch(step){ 
       case 1:
         step1(direction);
         break;
@@ -279,7 +314,7 @@ function drawLineGraph(container_width) {
     function step1(direction) {
       if (direction == "next"){
 
-      }else if (direction == "prev"){ console.log("1-prev")
+      }else if (direction == "prev"){ console.log('1-prev')
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
         d3.select(".line-actual")
           .transition()
@@ -292,6 +327,7 @@ function drawLineGraph(container_width) {
           .style("opacity", 0)
           .remove()
         $("#notes").css("opacity", "0")
+        $("#description-synthetic").text("")
 
       }
 
@@ -340,7 +376,7 @@ function drawLineGraph(container_width) {
           svg.append("g")
             .attr("class", "synthetic-label")
             .attr("transform", function() {
-              return "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")"
+              return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1a)[14]["synthetic"]) + 15)+")" : "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")";
             })
             .append("text")
             .attr("transform", "translate(0,"+ 10+")")
@@ -353,165 +389,193 @@ function drawLineGraph(container_width) {
 
 
       }else if (direction == "prev"){
-        d3.selectAll(".line-actual-ext, .line-synthetic-ext")
-          .transition()
-          .ease(d3.easeLinear)
-          .duration(2000)
-          .attr("transform", function() { 
-            return "translate("+(width)+",0)"
+        svg
+          .call(function() {
+            transitionElements(200, 604)
           })
-          .style("opacity", 0)
-          .remove()
-        d3.selectAll(".step3-text, .actual-label, .synthetic-label")
-          .transition()
-          .duration(200)
-          .style("opacity", 0)
-          .remove()
-        //ATTEMPT AT SIMULTANEOUS TRANSITIONS
-        // var a = {};
-        // var b = {}
-
-        // var actualLength = d3.select(".line-actual-ext").node().getTotalLength();
-        // d3.selectAll(".line-actual-ext, .line-synthetic-ext")
-        //   .each(function() { console.log(d3.select(this).node())
-        //     d3.select(this)
-        //       .call(move, 1300)
-        //       .call(remove, 1300)
-        //   })
-
-        // // d3.select(".line-synthetic-ext")
-        // //   .call(move, 1300)
-        // //   .call(remove, 1300)
-        // function move(selection, duration) {
-        //   d3.select(a)
-        //     .transition()
-        //     .ease(d3.easeLinear)
-        //     .duration(duration)
-        //     .tween("attr:transform", function() {
-        //       var i = d3.interpolateString("translate(0)", "translate(350)");
-        //       return function(t) { selection.attr("transform", i(t)); };
-        //     });
-        // }
-
-        // function remove(selection, duration) {
-        //   d3.select(b)
-        //     .transition()
-        //     .duration(2000)
-        //     .ease(d3.easeLinear)
-        //     // .attr("stroke-dashoffset", actualLength)
-        //     .tween("attr:stroke-dashoffset", function() {
-        //       var i = d3.interpolateRound(0, actualLength);
-        //       console.log(i);
-        //       return function(t) { selection.attr("stroke-dashoffset", i(t)); };
-        //     });
-        // }
-        function addText(duration) {
-        svg.append("g")
-          .attr("class", "synthetic-label")
-          .attr("transform", function() { 
-            return "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")"
-          })
-          .append("text")
-          .attr("transform", "translate(0,"+ 10+")")
-          .text("Synthetic")
-          .style("opacity", 0)
-          .transition()
-          .duration(duration)
-          .style("opacity", 1)
-        svg.append("g")
-          .attr("class", "actual-label")
-          .attr("transform", function() { 
-            return (IS_PHONE) ? "translate("+(width)+","+ y((dataset1a)[0]["actual"])+")" : "translate("+(width)+","+ y((dataset1a)[18]["actual"])+")";
-          })
-          .append("text")
-          .text("Actual")
-          .style("opacity", 0)
-          .transition()
-          .duration(duration)
-          .style("opacity", 1)
-
-        svg.append("text")
-          .attr("x", width/1.7)
-          .attr("y", 0)
-          .text(step1Text)
-          .attr("dy", 0)
-          .attr("class", "step-text step1-text")
-          .call(wrapText, 170)
-          .style("opacity", 0)
-          .transition()
-          .duration(duration)
-          .style("opacity", 1)
-        svg.append("text")
-          .attr("x", function() {
-            return (IS_PHONE) ? width/2 : width/1.5;
-
-          })
-          .attr("y", height/2)
-          .text(step2Text)
-          .attr("dy", 0)
-          .attr("class", "step-text step2-text")
-          .call(wrapText, 180)
-          .style("opacity", 0)
-          .transition()
-          .duration(duration)
-          .style("opacity", 1)
-        }
-        d3.select("#graphic svg g")
-          .data(dataset1a)
-        x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
-        d3.select(".line-actual")
-          .transition()
-          .ease(d3.easeLinear)
-          .duration(604)
-          .attr("d", lineActual(dataset1a))
-        d3.select(".line-synthetic")
-          .attr("stroke-dasharray", "none")
-          .transition()
-          .ease(d3.easeLinear)
-          .duration(604)
-          .attr("d", lineSynthetic(dataset1a))
-
-
-        d3.selectAll("#graphic .x-axis")
-          .transition()
-          .duration(604)
-          .call(d3.axisBottom(x)
-            .tickFormat(function(d) {
-              if (isPhone == true){
-                var string = d.toString()
-                console.log(string.slice(2,4))
-                return "'" + string.slice(2,4)
-              }else {
-                return d
-              }
+         
+        function addElements(duration) {console.log(duration)
+          svg.append("g")
+            .attr("class", "synthetic-label")
+            .attr("transform", function() { 
+              return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1a)[18]["synthetic"]) + 10)+")" : "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")";
             })
-          .ticks(19)
-          )
-          .on('end', function() {addText(550)
-          })
-          .on('interrupt', function() {addText(0)
-          })
+            .append("text")
+            .attr("transform", "translate(0,"+ 10+")")
+            .text("Synthetic")
+            .style("opacity", 0)
+            .transition()
+            .duration(duration)
+            .style("opacity", 1)
+          svg.append("g")
+            .attr("class", "actual-label")
+            .attr("transform", function() { 
+              return (IS_PHONE) ? "translate("+(width) +","+ y((dataset1a)[14]["actual"])+")" : "translate("+(width) +","+ y((dataset1a)[18]["actual"])+")";
+            })
+            .append("text")
+            .text("Actual")
+            .style("opacity", 0)
+            .transition()
+            .duration(duration)
+            .style("opacity", 1)
+            if (IS_PHONE) {
+              $("#description-actual").text(step1Text)
+              $("#description-synthetic").text(step2Text)
+            }else {
+              svg.append("text")
+                .attr("x", width/1.7)
+                .attr("y", 0)
+                .text(step1Text)
+                .attr("dy", 0)
+                .attr("class", "step-text step1-text")
+                .call(wrapText, 170)
+                .style("opacity", 0)
+                .transition()
+                .duration(duration)
+                .style("opacity", 1)
+              svg.append("text")
+                .attr("x", function() {
+                  return (IS_PHONE) ? width/2 : width/1.5;
+                })
+                .attr("y", height/2)
+                .text(step2Text)
+                .attr("dy", 0)
+                .attr("class", "step-text step2-text")
+                .call(wrapText, 180)
+                .style("opacity", 0)
+                .transition()
+                .duration(duration)
+                .style("opacity", 1)
+            }
+        }
+        function transitionElements(duration1, duration2) { console.log('duration: ' + duration1)
+          d3.selectAll(".line-actual-ext, .line-synthetic-ext")
+            .transition()
+            .ease(d3.easeLinear)
+            .duration(duration1)
+            .attr("transform", function() { 
+              return "translate("+(width)+",0)"
+            })
+            .style("opacity", 0)
+            .remove()
+          d3.selectAll(".step3-text, .actual-label, .synthetic-label")
+            .transition()
+            .duration(duration1)
+            .style("opacity", 0)
+            .remove()
+          //ATTEMPT AT SIMULTANEOUS TRANSITIONS
+          // var a = {};
+          // var b = {}
+
+          // var actualLength = d3.select(".line-actual-ext").node().getTotalLength();
+          // d3.selectAll(".line-actual-ext, .line-synthetic-ext")
+          //   .each(function() { console.log(d3.select(this).node())
+          //     d3.select(this)
+          //       .call(move, 1300)
+          //       .call(remove, 1300)
+          //   })
+
+          // // d3.select(".line-synthetic-ext")
+          // //   .call(move, 1300)
+          // //   .call(remove, 1300)
+          // function move(selection, duration) {
+          //   d3.select(a)
+          //     .transition()
+          //     .ease(d3.easeLinear)
+          //     .duration(duration)
+          //     .tween("attr:transform", function() {
+          //       var i = d3.interpolateString("translate(0)", "translate(350)");
+          //       return function(t) { selection.attr("transform", i(t)); };
+          //     });
+          // }
+
+          // function remove(selection, duration) {
+          //   d3.select(b)
+          //     .transition()
+          //     .duration(2000)
+          //     .ease(d3.easeLinear)
+          //     // .attr("stroke-dashoffset", actualLength)
+          //     .tween("attr:stroke-dashoffset", function() {
+          //       var i = d3.interpolateRound(0, actualLength);
+          //       console.log(i);
+          //       return function(t) { selection.attr("stroke-dashoffset", i(t)); };
+          //     });
+          // }
+          d3.select("#graphic svg g")
+            .data(dataset1a)
+          x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
+          d3.select(".line-actual")
+            .transition()
+            .ease(d3.easeLinear)
+            .duration(duration2)
+            .attr("d", lineActual(dataset1a))
+            .on('start', function() { 
+              transitionStatus(true)
+              console.log(running)
+            })
+            .on('end', function() {
+              transitionStatus(false)
+              if (interrupt == true) {
+                addElements(0)
+                interruptStatus(false)
+                changeStep("prev")
+              }else {
+                addElements(500)
+              }
+              console.log(interrupt)
+
+            })
+            .on('interrupt', function() {console.log('interrupt')
+              transitionStatus(false)
+              transitionElements(0,0)
+              // addElements(0)
+              // step1("prev")
+            })
+
+          d3.select(".line-synthetic")
+            .attr("stroke-dasharray", "none")
+            .transition()
+            .ease(d3.easeLinear)
+            .duration(duration2)
+            .attr("d", lineSynthetic(dataset1a))
 
 
-        d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
-          if(i%2 == 0) {
-              return false
-          }else {
-              return true
-          }
-        });
-        d3.selectAll("#graphic .y-axis")
-          .transition()
-          // .delay(500)
-          .duration(608)
-          .call(d3.axisLeft(y)
-            .tickFormat(d3.format(".0%"))
-          )
+          d3.selectAll("#graphic .x-axis")
+            .transition()
+            .duration(duration2)
+            .call(d3.axisBottom(x)
+              .tickFormat(function(d) {
+                if (isPhone == true){
+                  var string = d.toString()
+                  return "'" + string.slice(2,4)
+                }else {
+                  return d
+                }
+              })
+            .ticks(19)
+            )
+
+
+          d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+            if(i%2 == 0) {
+                return false
+            }else {
+                return true
+            }
+          });
+          d3.selectAll("#graphic .y-axis")
+            .transition()
+            // .delay(500)
+            .duration(duration2)
+            .call(d3.axisLeft(y)
+              .tickFormat(d3.format(".0%"))
+            )
+        }
       }
     }
 
     function step3(direction) {
-      if (direction == "next"){console.log('3')
+      if (direction == "next"){
         d3.selectAll(".step1-text, .step2-text, .actual-label, .synthetic-label")
           .transition()
           .duration(500)
@@ -521,7 +585,7 @@ function drawLineGraph(container_width) {
         svg.append("g")
           .attr("class", "actual-label")
           .attr("transform", function() { 
-            return "translate("+(width)+","+ y((dataset1c)[5]["actual"])+")"
+            return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[5]["actual"]) - 15)+")" : "translate("+(width)+","+ y((dataset1c)[5]["actual"])+")";
           })
           .append("text")
           .text("Actual")
@@ -529,23 +593,29 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(500)
           .style("opacity", 1)
-        svg.append("text")
-          .attr("x", function() {
-            return (IS_PHONE) ? width/2 : width/1.5;
-          })
-          .attr("y", height/1.7)
-          .text(step3Text)
-          .attr("dy", 0)
-          .attr("class", "step-text step3-text")
-          .call(wrapText, 190)
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
+        if (IS_PHONE) {
+          $("#description-synthetic").text("")
+          $("#description-actual").text(step3Text)
+
+        }else {
+          svg.append("text")
+            .attr("x", function() {
+              return (IS_PHONE) ? width/2 : width/1.5;
+            })
+            .attr("y", height/1.7)
+            .text(step3Text)
+            .attr("dy", 0)
+            .attr("class", "step-text step3-text")
+            .call(wrapText, 190)
+            .style("opacity", 0)
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
+        }
         svg.append("g")
           .attr("class", "synthetic-label")
           .attr("transform", function() { 
-            return "translate("+(width)+","+ (5+ y((dataset1c)[8]["synthetic"]))+")"
+            return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[8]["synthetic"]) + 10)+")" : "translate("+(width)+","+ (5+ y((dataset1c)[8]["synthetic"]))+")";
           })
           .append("text")
           .text("Synthetic")
@@ -651,128 +721,161 @@ function drawLineGraph(container_width) {
           )
         // Add extended line from 2000-2008
 
-      }else if (direction == "prev"){ console.log('3-prev')
+      }else if (direction == "prev"){ 
+        svg
+          .call(function() {
+            transitionElements(412, 500)
+          })
         var synG = svg.append("g")
           .attr("class", "synthetic-label")
           .attr("transform", function() { 
-            return "translate("+(width)+","+ y((dataset1c)[5]["synthetic"])+")"
+            return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[8]["synthetic"]) + 5)+")" : "translate("+(width)+","+ (5+ y((dataset1c)[8]["synthetic"]))+")";
           })
-      
-        d3.selectAll(".step4-text, .actual-label")
-          .transition()
-          .duration(300)
-          .style("opacity", 0)
-          .remove()
-        function addText_Lines() {
-        var synthetic = d3.select("#graphic svg g")
-          .append("path")
-          .attr("fill", "none")
-          .attr("stroke", "#fcb64b")
-          .style("stroke-width", "2.25px")
-          .attr("d", lineSynthetic(dataset1a))
-          .attr("class", "line line-synthetic")
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
-        var syntheticExt = d3.select("#graphic svg g").append("path")
-          .attr("fill", "none")
-          .attr("stroke", "#fcb64b")
-          .style("stroke-width", "2.25px")
-          .attr("d", lineSynthetic(dataset1c))
-          .attr("class", "line line-synthetic-ext")    
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
-        synG.append("text")
-          .attr("transform", "translate(0,"+ 10+")")
-          .text("Synthetic")
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
-        svg.append("g")
-          .attr("class", "actual-label")
-          .attr("transform", function() { 
-            return "translate("+(width)+","+ y((dataset1c)[7]["actual"])+")"
-          })
-          .append("text")
-          .attr("transform", "translate(0,"+ 10+")")
-          .text("Actual")
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
-        svg.append("text")
-          .attr("x", function() {
-            return (IS_PHONE) ? width/2 : width/1.5;
-          })
-          .attr("y", height/1.7)
-          .text(step3Text)
-          .attr("dy", 0)
-          .attr("class", "step-text step3-text")
-          .call(wrapText, 190)
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
-        }
-        d3.select("#graphic svg g")
-          .data(dataset1b)
-        x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
-        d3.selectAll("#graphic .y-axis")
-          .transition()
-          .duration(1000)
-          .call(d3.axisLeft(y)
-            .tickFormat(d3.format(".0%"))
-          )
+        function transitionElements(duration1, duration2){ console.log(duration1)
+        
+          d3.selectAll(".step4-text, .actual-label")
+            .transition()
+            .duration(duration1)
+            .style("opacity", 0)
+            .remove()
 
-        d3.select(".line-actual-ext2")
-          .transition()
-          .ease(d3.easeLinear)
-          .duration(2000)
-          .attr("transform", function() { 
-            return "translate("+(width)+",0)"
-          })
-          .style("opacity", 0)
-          .remove()
-        x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
-        d3.selectAll("#graphic .x-axis")
-          .transition()
-          .duration(412)
-          .call(d3.axisBottom(x)
-            .tickFormat(function(d) {
-              if ( isPhone == true) {
-                var string = d.toString()
-                return "'" + string.slice(2,4)
-              }else {
-                return d
-              }
+          d3.select("#graphic svg g")
+            .data(dataset1b)
+          x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
+          d3.selectAll("#graphic .y-axis")
+            .transition()
+            .duration(duration2)
+            .call(d3.axisLeft(y)
+              .tickFormat(d3.format(".0%"))
+            )
+
+          d3.select(".line-actual-ext2")
+            .transition()
+            .ease(d3.easeLinear)
+            .duration(duration2)
+            .attr("transform", function() { 
+              return "translate("+(width)+",0)"
             })
-          .ticks(27)
-          )
-        d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
-          if(i%2 == 0) {
-              return false
+            .style("opacity", 0)
+            .remove()
+            .on('start', function() { 
+              transitionStatus(true)
+              console.log(running)
+            })
+            .on('end', function() {
+              transitionStatus(false)
+              if (interrupt == true) {
+                addElements(0)
+                interruptStatus(false)
+                changeStep("prev")
+              }else {
+                addElements(500)
+              }
+              console.log(interrupt)
+
+            })
+            .on('interrupt', function() {console.log('interrupt')
+              transitionStatus(false)
+              transitionElements(0,0)
+              // addElements(0)
+              // step1("prev")
+            })
+          x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
+          d3.selectAll("#graphic .x-axis")
+            .transition()
+            .duration(duration1)
+            .call(d3.axisBottom(x)
+              .tickFormat(function(d) {
+                if ( isPhone == true) {
+                  var string = d.toString()
+                  return "'" + string.slice(2,4)
+                }else {
+                  return d
+                }
+              })
+            .ticks(27)
+            )
+          d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+            if(i%2 == 0) {
+                return false
+            }else {
+                return true
+            }
+          });
+          d3.select(".line-actual")
+            .transition()
+            // .delay(300)
+            .ease(d3.easeLinear)
+            .duration(duration1)
+            .attr("d", lineActual(dataset1a))
+          d3.select(".line-actual-ext")
+            .transition()
+            // .delay(300)
+            .ease(d3.easeLinear)
+            .duration(duration1)
+            .attr("stroke-dasharray", "none")
+            .attr("d", lineActual(dataset1c))
+            .on('end', addText_Lines)
+        }
+        function addElements(duration) {
+          var synthetic = d3.select("#graphic svg g")
+            .append("path")
+            .attr("fill", "none")
+            .attr("stroke", "#fcb64b")
+            .style("stroke-width", "2.25px")
+            .attr("d", lineSynthetic(dataset1a))
+            .attr("class", "line line-synthetic")
+            .style("opacity", 0)
+            .transition()
+            .duration(duration)
+            .style("opacity", 1)
+          var syntheticExt = d3.select("#graphic svg g").append("path")
+            .attr("fill", "none")
+            .attr("stroke", "#fcb64b")
+            .style("stroke-width", "2.25px")
+            .attr("d", lineSynthetic(dataset1c))
+            .attr("class", "line line-synthetic-ext")    
+            .style("opacity", 0)
+            .transition()
+            .duration(duration)
+            .style("opacity", 1)
+          synG.append("text")
+            .attr("transform", "translate(0,"+ 10+")")
+            .text("Synthetic")
+            .style("opacity", 0)
+            .transition()
+            .duration(duration)
+            .style("opacity", 1)
+          svg.append("g")
+            .attr("class", "actual-label")
+            .attr("transform", function() { 
+              return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[5]["actual"]) - 20)+")" : "translate("+(width)+","+ y((dataset1c)[5]["actual"])+")";
+            })
+            .append("text")
+            .attr("transform", "translate(0,"+ 10+")")
+            .text("Actual")
+            .style("opacity", 0)
+            .transition()
+            .duration(duration)
+            .style("opacity", 1)
+          if (IS_PHONE) {
+            $("#description-actual").text(step3Text)
           }else {
-              return true
+            svg.append("text")
+              .attr("x", function() {
+                return (IS_PHONE) ? width/2 : width/1.5;
+              })
+              .attr("y", height/1.7)
+              .text(step3Text)
+              .attr("dy", 0)
+              .attr("class", "step-text step3-text")
+              .call(wrapText, 190)
+              .style("opacity", 0)
+              .transition()
+              .duration(500)
+              .style("opacity", 1)
           }
-        });
-        d3.select(".line-actual")
-          .transition()
-          // .delay(300)
-          .ease(d3.easeLinear)
-          .duration(412)
-          .attr("d", lineActual(dataset1a))
-        d3.select(".line-actual-ext")
-          .transition()
-          // .delay(300)
-          .ease(d3.easeLinear)
-          .duration(412)
-          .attr("stroke-dasharray", "none")
-          .attr("d", lineActual(dataset1c))
-          .on('end', addText_Lines)
+        }
 
       }
     }
@@ -780,23 +883,29 @@ function drawLineGraph(container_width) {
     function step4(direction) {
       if (direction == "next"){
         function addText_Lines() {
-          svg.append("text")
-            .attr("x", function() {
-              return (IS_PHONE) ? width/2 : width/1.6;
-            })
-            .attr("y", height/1.8)
-            .text(step4Text)
-            .attr("dy", 0)
-            .attr("class", "step-text step4-text")
-            .call(wrapText, 180)
-            .style("opacity", 0)
-            .transition()
-            .duration(500)
-            .style("opacity", 1)
+          if (IS_PHONE) {
+            $("#description-actual").text(step4Text)
+            $("#description-synthetic").text("")
+          }else {
+            svg.append("text")
+              .attr("x", function() {
+                return (IS_PHONE) ? width/2 : width/1.6;
+              })
+              .attr("y", height/1.8)
+              .text(step4Text)
+              .attr("dy", 0)
+              .attr("class", "step-text step4-text")
+              .call(wrapText, 180)
+              .style("opacity", 0)
+              .transition()
+              .duration(500)
+              .style("opacity", 1)
+          }
+
           svg.append("g")
             .attr("class", "actual-label")
             .attr("transform", function() { 
-              return "translate("+(width)+","+ y((dataset2b)[6]["actual"])+")"
+              return (IS_PHONE) ? "translate("+(width*.9)+","+ (y((dataset2b)[6]["actual"]) + 5)+")" : "translate("+(width)+","+ y((dataset2b)[6]["actual"])+")";
             })
             .append("text")
             .attr("transform", "translate(0,"+ 10+")")
@@ -862,9 +971,10 @@ function drawLineGraph(container_width) {
           )
         var ticks = svg.selectAll(".tick text");
         d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
-          if(i%2 == 0) {
+          var number = (IS_PHONE) ? 4 : 2;
+          if(i%number == 0) {
               return false
-          }else {
+          }else { 
               return true
           }
         });
@@ -876,6 +986,7 @@ function drawLineGraph(container_width) {
           )
 
       }else if (direction == "prev"){
+        $("#description-synthetic").text("")
         d3.selectAll(".line-synthetic, .step5-text, .synthetic-label")
           .transition()
           .duration(500)
@@ -905,9 +1016,9 @@ function drawLineGraph(container_width) {
         var synG = svg.append("g")
           .attr("class", "synthetic-label")
           .attr("transform", function() { 
-            return "translate("+(width)+","+ y((dataset2a)[33]["synthetic"])+")"
+            return (IS_PHONE) ? "translate("+(width*.85)+","+ (y((dataset2a)[28]["synthetic"]) - 20)+")" : "translate("+(width)+","+ y((dataset2a)[33]["synthetic"])+")";
           })
-        function addText(){
+        function addElements(){
         synG.append("text")
           .attr("transform", "translate(0,"+ 10+")")
           .text("Synthetic")
@@ -915,17 +1026,22 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(500)
           .style("opacity", 1)
-        svg.append("text")
-          .attr("x", width/1.8)
-          .attr("y", height/13)
-          .text(step5Text)
-          .attr("dy", 0)
-          .attr("class", "step-text step5-text")
-          .call(wrapText, 190)
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
+        if (IS_PHONE) {
+          $("#description-synthetic").text(step5Text)
+        }else {
+          svg.append("text")
+            .attr("x", width/1.8)
+            .attr("y", height/13)
+            .text(step5Text)
+            .attr("dy", 0)
+            .attr("class", "step-text step5-text")
+            .call(wrapText, 190)
+            .style("opacity", 0)
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
+        }
+
         }
         var synthetic = d3.select("#graphic svg g").append("path")
           .attr("fill", "none")
@@ -941,7 +1057,7 @@ function drawLineGraph(container_width) {
           .duration(1000)
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0)
-          .on('end', addText)
+          .on('end', addElements)
         d3.selectAll(".line-actual, .line-actual-ext, .line-actual-ext2")
           .remove()
         d3.select("#graphic svg g").append("path")
@@ -954,37 +1070,44 @@ function drawLineGraph(container_width) {
       }else if (direction == "prev"){
         $("#notes").html("<b>Notes:</b>" + " The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
 
-        function addText() {
+        function addElements() {
         d3.select(".subtitle")
           .style("opacity", 0)
           .transition()
           .duration(500)
           .text("With border counties")
           .style("opacity", 1)
-        svg.append("text")
-          .attr("x", width/1.8)
-          .attr("y", height/13)
-          .text(step5Text)
-          .attr("dy", 0)
-          .attr("class", "step-text step5-text")
-          .call(wrapText, 190)
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
-        svg.append("text")
-          .attr("x", function() {
-            return (IS_PHONE) ? width/2 : width/1.6;
-          })
-          .attr("y", height/1.8)
-          .text(step4Text)
-          .attr("dy", 0)
-          .attr("class", "step-text step4-text")
-          .call(wrapText, 180)
-          .style("opacity", 0)
-          .transition()
-          .duration(500)
-          .style("opacity", 1)
+        
+        if (IS_PHONE) {
+          $("#description-actual").text(step4Text)
+          $("#description-synthetic").text(step5Text)
+        }else {
+          svg.append("text")
+            .attr("x", width/1.8)
+            .attr("y", height/13)
+            .text(step5Text)
+            .attr("dy", 0)
+            .attr("class", "step-text step5-text")
+            .call(wrapText, 190)
+            .style("opacity", 0)
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
+          svg.append("text")
+            .attr("x", function() {
+              return (IS_PHONE) ? width/2 : width/1.6;
+            })
+            .attr("y", height/1.8)
+            .text(step4Text)
+            .attr("dy", 0)
+            .attr("class", "step-text step4-text")
+            .call(wrapText, 180)
+            .style("opacity", 0)
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
+        }
+          
         }
         d3.selectAll(".step6-text")
           .transition()
@@ -997,7 +1120,7 @@ function drawLineGraph(container_width) {
           .transition()
           .duration(1000)
           .attr("d", lineSynthetic(dataset2a))
-          .on('end', addText)
+          .on('end', addElements)
 
         d3.select(".line-actual")
           .transition()
@@ -1010,35 +1133,45 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
         if (d3.select(".step6-text").node() == undefined) {
           $("#notes").html("<b>Notes:</b>" + " For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk driving fatality rates.")
-          d3.select(".subtitle")
-            .style("opacity", 0)
-            .transition()
-            .delay(700)
-            .duration(500)
-            .text("Without border counties")
-            .style("opacity", 1)
+          function addElements(duration) {
+            d3.select(".subtitle")
+              .style("opacity", 0)
+              .transition()
+              .duration(duration)
+              .text("Without border counties")
+              .style("opacity", 1)
+            if (IS_PHONE) {
+              $("#description-actual").text(step6Text)
+              $("#description-synthetic").text("")
+            }else {
+              svg.append("text")
+                .attr("x", width/2.3)
+                .attr("y", height/1.7)
+                .text(step6Text)
+                .attr("dy", 0)
+                .attr("class", "step-text step6-text")
+                .call(wrapText, 230)
+                .style("opacity", 0)
+                .transition()
+                .duration(duration)
+                .style("opacity", 1)
+            }
+          }
+          
           d3.selectAll(".step5-text, .step4-text")
             .transition()
             .duration(500)
             .style("opacity", 0)
             .remove()
-          svg.append("text")
-            .attr("x", width/2.3)
-            .attr("y", height/1.7)
-            .text(step6Text)
-            .attr("dy", 0)
-            .attr("class", "step-text step6-text")
-            .call(wrapText, 230)
-            .style("opacity", 0)
-            .transition()
-            .delay(700)
-            .duration(500)
-            .style("opacity", 1)
+         
           d3.select(".line-synthetic")
             .attr("stroke-dasharray", "none")
             .transition()
             .duration(1000)
             .attr("d", lineSynthetic(dataset3))
+            .on('end', function() {
+              addElements(500)
+            })
           d3.select(".line-actual")
             .transition()
             .duration(1000)
