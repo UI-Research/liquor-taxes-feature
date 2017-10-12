@@ -13,7 +13,6 @@ transitionStatus(false)
 interruptStatus(false)
 
 function transitionStatus(status) {
-  console.log('hi')
   running = status;
 }
 function interruptStatus(status) {
@@ -84,6 +83,9 @@ function drawLineGraph(container_width) {
     })
     var dataset1c = dataset1b.filter(function(d) {
       return d.year > 1999; //DATA FROM 2000-2008
+    })
+    var dataset1d = dataset1b.filter(function(d) {
+      return d.year > 1999 && d.year < 2001; //DATA FROM 2000-2008
     })
     //FILTER DATA FOR STEPS 4-5
     var dataset2a = data.filter(function(d) { 
@@ -246,7 +248,7 @@ function drawLineGraph(container_width) {
 
     d3.select('#btnprev')
       .on("click", function () {
-        if (running == true) { console.log(running)
+        if (running == true) { 
           interruptStatus(true)
           svg.selectAll('path')
             .interrupt()
@@ -286,7 +288,6 @@ function drawLineGraph(container_width) {
       }else if (direction == "prev") {
         step = step > 1 ? step - 1 : step;
       }
-      console.log("step: " + step)
       buttonStyle(step);
       switch(step){ 
       case 1:
@@ -314,7 +315,7 @@ function drawLineGraph(container_width) {
     function step1(direction) {
       if (direction == "next"){
 
-      }else if (direction == "prev"){ console.log('1-prev')
+      }else if (direction == "prev"){ 
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
         d3.select(".line-actual")
           .transition()
@@ -394,7 +395,7 @@ function drawLineGraph(container_width) {
             transitionElements(200, 604)
           })
          
-        function addElements(duration) {console.log(duration)
+        function addElements(duration) {
           svg.append("g")
             .attr("class", "synthetic-label")
             .attr("transform", function() { 
@@ -448,7 +449,7 @@ function drawLineGraph(container_width) {
                 .style("opacity", 1)
             }
         }
-        function transitionElements(duration1, duration2) { console.log('duration: ' + duration1)
+        function transitionElements(duration1, duration2) { 
           d3.selectAll(".line-actual-ext, .line-synthetic-ext")
             .transition()
             .ease(d3.easeLinear)
@@ -458,49 +459,18 @@ function drawLineGraph(container_width) {
             })
             .style("opacity", 0)
             .remove()
+        /*ATTEMPT BUT TRANSITIONING TO A SMALLER PATH DOESN'T SEEM TO WORK */
+            // d3.select(".line-actual-ext")
+            //   .transition()
+            //   .ease(d3.easeLinear)
+            //   .duration(20000)
+            //   .attr("d", lineActual(dataset1d))
+
           d3.selectAll(".step3-text, .actual-label, .synthetic-label")
             .transition()
             .duration(duration1)
             .style("opacity", 0)
-            .remove()
-          //ATTEMPT AT SIMULTANEOUS TRANSITIONS
-          // var a = {};
-          // var b = {}
-
-          // var actualLength = d3.select(".line-actual-ext").node().getTotalLength();
-          // d3.selectAll(".line-actual-ext, .line-synthetic-ext")
-          //   .each(function() { console.log(d3.select(this).node())
-          //     d3.select(this)
-          //       .call(move, 1300)
-          //       .call(remove, 1300)
-          //   })
-
-          // // d3.select(".line-synthetic-ext")
-          // //   .call(move, 1300)
-          // //   .call(remove, 1300)
-          // function move(selection, duration) {
-          //   d3.select(a)
-          //     .transition()
-          //     .ease(d3.easeLinear)
-          //     .duration(duration)
-          //     .tween("attr:transform", function() {
-          //       var i = d3.interpolateString("translate(0)", "translate(350)");
-          //       return function(t) { selection.attr("transform", i(t)); };
-          //     });
-          // }
-
-          // function remove(selection, duration) {
-          //   d3.select(b)
-          //     .transition()
-          //     .duration(2000)
-          //     .ease(d3.easeLinear)
-          //     // .attr("stroke-dashoffset", actualLength)
-          //     .tween("attr:stroke-dashoffset", function() {
-          //       var i = d3.interpolateRound(0, actualLength);
-          //       console.log(i);
-          //       return function(t) { selection.attr("stroke-dashoffset", i(t)); };
-          //     });
-          // }
+        
           d3.select("#graphic svg g")
             .data(dataset1a)
           x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
@@ -511,7 +481,6 @@ function drawLineGraph(container_width) {
             .attr("d", lineActual(dataset1a))
             .on('start', function() { 
               transitionStatus(true)
-              console.log(running)
             })
             .on('end', function() {
               transitionStatus(false)
@@ -522,10 +491,9 @@ function drawLineGraph(container_width) {
               }else {
                 addElements(500)
               }
-              console.log(interrupt)
 
             })
-            .on('interrupt', function() {console.log('interrupt')
+            .on('interrupt', function() {
               transitionStatus(false)
               transitionElements(0,0)
               // addElements(0)
@@ -683,7 +651,6 @@ function drawLineGraph(container_width) {
           .ticks(27)
           )
           .on('interrupt', function(){
-            console.log('interrupt')
             var actualExtLength = actualExt.node().getTotalLength();
             actualExt
               .attr("d", lineActual(dataset1c))
@@ -731,7 +698,7 @@ function drawLineGraph(container_width) {
           .attr("transform", function() { 
             return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[8]["synthetic"]) + 5)+")" : "translate("+(width)+","+ (5+ y((dataset1c)[8]["synthetic"]))+")";
           })
-        function transitionElements(duration1, duration2){ console.log(duration1)
+        function transitionElements(duration1, duration2){ 
         
           d3.selectAll(".step4-text, .actual-label")
             .transition()
