@@ -1,6 +1,16 @@
 body, html {
-font-family: "Avenir", sans-serif;
+font-family: "AvenirLTPro", sans-serif;
 font-size: 12px;
+}
+
+@font-face {
+  font-family: "AvenirLTPro";
+  src: url(fonts/AvenirLTPro-Roman.ttf) format("truetype");
+}
+@font-face {
+  font-family: "AvenirLTPro";
+  src: url(fonts/AvenirLTPro-Medium.ttf) format("truetype");
+  font-weight: bold;
 }
 #buttons {
   display: block;
