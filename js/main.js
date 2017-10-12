@@ -185,7 +185,7 @@ function drawLineGraph(container_width) {
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x)
         .tickFormat(function(d) {
-          if (isPhone == true) {
+          if (IS_PHONE) {
             var string = d.toString()
             return "'" + string.slice(2,4)
           }else {
@@ -195,6 +195,20 @@ function drawLineGraph(container_width) {
         .ticks(19)
       )
       .attr("class", "x-axis")
+    $(window).on('resize', function() {
+      svg.select(".x-axis").selectAll(".tick > text")
+        .each(function(d) {
+            d3.select(this)
+              .text(function() {
+                if (IS_PHONE) {
+                  var string = d.toString()
+                  return "'" + string.slice(2,4)
+                }else { 
+                  return d
+                }
+              })
+          })
+    })
     d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
       if(i%2 == 0) {
           return false
@@ -512,7 +526,7 @@ function drawLineGraph(container_width) {
             .duration(duration2)
             .call(d3.axisBottom(x)
               .tickFormat(function(d) {
-                if (isPhone == true){
+                if (IS_PHONE){
                   var string = d.toString()
                   return "'" + string.slice(2,4)
                 }else {
@@ -521,7 +535,20 @@ function drawLineGraph(container_width) {
               })
             .ticks(19)
             )
-
+          $(window).on('resize', function() {
+            svg.select(".x-axis").selectAll(".tick > text")
+              .each(function(d) {
+                  d3.select(this)
+                    .text(function() {
+                      if (IS_PHONE) {
+                        var string = d.toString()
+                        return "'" + string.slice(2,4)
+                      }else { console.log(d)
+                        return d
+                      }
+                    })
+                })
+          })
 
           d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
             if(i%2 == 0) {
@@ -594,7 +621,7 @@ function drawLineGraph(container_width) {
             .duration(1000)
             .call(d3.axisBottom(x)
               .tickFormat(function(d) {
-                if (isPhone == true){
+                if (IS_PHONE){
                   var string = d.toString()
                   return "'" + string.slice(2,4)
                 }else {
@@ -603,6 +630,20 @@ function drawLineGraph(container_width) {
               })
             .ticks(27)
             )
+          $(window).on('resize', function() {
+            svg.select(".x-axis").selectAll(".tick > text")
+              .each(function(d) {
+                  d3.select(this)
+                    .text(function() {
+                      if (IS_PHONE) {
+                        var string = d.toString()
+                        return "'" + string.slice(2,4)
+                      }else { console.log(d)
+                        return d
+                      }
+                    })
+                })
+          })
               // .on('interrupt', function(){
               //   var actualExtLength = actualExt.node().getTotalLength();
               //   actualExt
@@ -633,6 +674,18 @@ function drawLineGraph(container_width) {
                 return true
             }
           });
+          $(window).on('resize', function () {
+            var ticks = svg.selectAll(".tick text");
+            d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+              var number = (IS_PHONE) ? 4 : 2;
+              if(i%number == 0) {
+                  return false
+              }else {
+                  return true
+              }
+            });
+          });
+                    
           d3.selectAll("#graphic .y-axis")
             .transition()
             .duration(1000)
@@ -779,7 +832,7 @@ function drawLineGraph(container_width) {
             .duration(duration1)
             .call(d3.axisBottom(x)
               .tickFormat(function(d) {
-                if ( isPhone == true) {
+                if (IS_PHONE) {
                   var string = d.toString()
                   return "'" + string.slice(2,4)
                 }else {
@@ -788,6 +841,20 @@ function drawLineGraph(container_width) {
               })
             .ticks(27)
             )
+          $(window).on('resize', function() {
+            svg.select(".x-axis").selectAll(".tick > text")
+              .each(function(d) {
+                  d3.select(this)
+                    .text(function() {
+                      if (IS_PHONE) {
+                        var string = d.toString()
+                        return "'" + string.slice(2,4)
+                      }else { console.log(d)
+                        return d
+                      }
+                    })
+                })
+          })
           d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
             if(i%2 == 0) {
                 return false
@@ -953,7 +1020,7 @@ function drawLineGraph(container_width) {
           .duration(1000)
           .call(d3.axisBottom(x)
             .tickFormat(function(d) {
-              if (isPhone == true){
+              if (IS_PHONE){
                 var string = d.toString()
                 return "'" + string.slice(2,4)
               }else {
@@ -962,6 +1029,20 @@ function drawLineGraph(container_width) {
             })
           .ticks(34)
           )
+        $(window).on('resize', function() {
+          svg.select(".x-axis").selectAll(".tick > text")
+            .each(function(d) {
+                d3.select(this)
+                  .text(function() {
+                    if (IS_PHONE) {
+                      var string = d.toString()
+                      return "'" + string.slice(2,4)
+                    }else { console.log(d)
+                      return d
+                    }
+                  })
+              })
+        })
         var ticks = svg.selectAll(".tick text");
         d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
           var number = (IS_PHONE) ? 4 : 2;
@@ -970,6 +1051,16 @@ function drawLineGraph(container_width) {
           }else { 
               return true
           }
+        });
+        $(window).on('resize', function () {
+          d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+            var number = (IS_PHONE) ? 4 : 2;
+            if(i%number == 0) {
+                return false
+            }else { 
+                return true
+            }
+          });
         });
         d3.selectAll("#graphic .y-axis")
           .transition()
