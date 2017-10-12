@@ -232,17 +232,16 @@ function drawLineGraph(container_width) {
 
     d3.select('#btnnext')
       .on("click", function () {
-        // if (running == true) { console.log(running)
-        //   svg.selectAll("path")
-        //     .interrupt()
-        //     .on('end', function() {
-        //       changeStep("next");
-        //     })
-        // }else {
-        //   changeStep("next");
-
-        // }
+        if (running == true) { 
+          interruptStatus(true)
+          svg.selectAll('path')
+            .interrupt()
+            // .on('end', function() {
+            //   changeStep("prev");
+            // })
+        }else {
           changeStep("next");
+        }
 
       });
 
@@ -543,13 +542,105 @@ function drawLineGraph(container_width) {
     }
 
     function step3(direction) {
-      if (direction == "next"){
-        d3.selectAll(".step1-text, .step2-text, .actual-label, .synthetic-label")
-          .transition()
-          .duration(500)
-          .style("opacity", 0)
-          .remove()
-      function addText_Lines() {
+        if (direction == "next"){
+        svg
+          .call(function() {
+            transitionElements(200, 604)
+          })
+        function transitionElements(duration1) {
+          d3.selectAll(".step1-text, .step2-text, .actual-label, .synthetic-label")
+            .transition()
+            .duration(duration1)
+            .style("opacity", 0)
+            .remove()
+          d3.select("#graphic svg g")
+              .data(dataset1b)
+            x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
+            //Keep line data up to 2000
+            d3.select(".line-actual")
+              .transition()
+              .duration(1000)
+              .attr("d", lineActual(dataset1a))
+              .on('end', function() {
+                addElements(500)
+              })
+              .on('start', function() { 
+                transitionStatus(true)
+              })
+              .on('end', function() {
+                transitionStatus(false)
+                if (interrupt == true) {
+                  addElements(0)
+                  interruptStatus(false)
+                  changeStep("next")
+                }else {
+                  addElements(500)
+                }
+
+              })
+              .on('interrupt', function() {console.log('interrupt')
+                transitionStatus(false)
+                transitionElements(0,0)
+                // addElements(0)
+                // step1("prev")
+              })
+          d3.select(".line-synthetic")
+            .attr("stroke-dasharray", "none")
+            .transition()
+            .duration(1000)
+            .attr("d", lineSynthetic(dataset1a))
+          d3.selectAll("#graphic .x-axis")
+            .transition()
+            .duration(1000)
+            .call(d3.axisBottom(x)
+              .tickFormat(function(d) {
+                if (isPhone == true){
+                  var string = d.toString()
+                  return "'" + string.slice(2,4)
+                }else {
+                  return d
+                }
+              })
+            .ticks(27)
+            )
+              // .on('interrupt', function(){
+              //   var actualExtLength = actualExt.node().getTotalLength();
+              //   actualExt
+              //     .attr("d", lineActual(dataset1c))
+              //     .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
+              //     .attr("stroke-dashoffset", actualExtLength)
+              //     // .transition()
+              //     // .delay(1000)
+              //     // .duration(600)
+              //     // .ease(d3.easeLinear)
+              //     .attr("stroke-dashoffset", 0);
+              //   var syntheticExtLength = syntheticExt.node().getTotalLength();
+              //   syntheticExt
+              //     .attr("stroke-dasharray", syntheticExtLength + ", " + syntheticExtLength)
+              //     .attr("stroke-dashoffset", syntheticExtLength)
+              //     // .transition()
+              //     // .delay(1000)
+              //     // .duration(600)
+              //     // .ease(d3.easeLinear)
+              //     .attr("stroke-dashoffset", 0);
+              // })
+          var ticks = svg.selectAll(".tick text");
+          d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
+            var number = (IS_PHONE) ? 4 : 2;
+            if(i%number == 0) {
+                return false
+            }else {
+                return true
+            }
+          });
+          d3.selectAll("#graphic .y-axis")
+            .transition()
+            .duration(1000)
+            .call(d3.axisLeft(y)
+              .tickFormat(d3.format(".0%"))
+            )
+      }
+      function addElements(duration) {
         svg.append("g")
           .attr("class", "actual-label")
           .attr("transform", function() { 
@@ -559,7 +650,7 @@ function drawLineGraph(container_width) {
           .text("Actual")
           .style("opacity", 0)
           .transition()
-          .duration(500)
+          .duration(duration)
           .style("opacity", 1)
         if (IS_PHONE) {
           $("#description-synthetic").text("")
@@ -577,7 +668,7 @@ function drawLineGraph(container_width) {
             .call(wrapText, 190)
             .style("opacity", 0)
             .transition()
-            .duration(500)
+            .duration(duration)
             .style("opacity", 1)
         }
         svg.append("g")
@@ -589,7 +680,7 @@ function drawLineGraph(container_width) {
           .text("Synthetic")
           .style("opacity", 0)
           .transition()
-          .duration(500)
+          .duration(duration)
           .style("opacity", 1)
         var syntheticExt = d3.select("#graphic svg g").append("path")
           .datum(dataset1c)
@@ -603,7 +694,7 @@ function drawLineGraph(container_width) {
           .attr("stroke-dasharray", syntheticExtLength + ", " + syntheticExtLength)
           .attr("stroke-dashoffset", syntheticExtLength)
           .transition()
-          .duration(600)
+          .duration(duration)
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0);
         var actualExt = d3.select("#graphic svg g").append("path")
@@ -618,74 +709,11 @@ function drawLineGraph(container_width) {
           .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
           .attr("stroke-dashoffset", actualExtLength)
           .transition()
-          .duration(600)
+          .duration(duration)
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0);
-        }
-        d3.select("#graphic svg g")
-          .data(dataset1b)
-        x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
-        //Keep line data up to 2000
-        d3.select(".line-actual")
-          .transition()
-          .duration(1000)
-          .attr("d", lineActual(dataset1a))
-          .on('end', addText_Lines)
-        d3.select(".line-synthetic")
-          .attr("stroke-dasharray", "none")
-          .transition()
-          .duration(1000)
-          .attr("d", lineSynthetic(dataset1a))
-        d3.selectAll("#graphic .x-axis")
-          .transition()
-          .duration(1000)
-          .call(d3.axisBottom(x)
-            .tickFormat(function(d) {
-              if (isPhone == true){
-                var string = d.toString()
-                return "'" + string.slice(2,4)
-              }else {
-                return d
-              }
-            })
-          .ticks(27)
-          )
-          .on('interrupt', function(){
-            var actualExtLength = actualExt.node().getTotalLength();
-            actualExt
-              .attr("d", lineActual(dataset1c))
-              .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
-              .attr("stroke-dashoffset", actualExtLength)
-              // .transition()
-              // .delay(1000)
-              // .duration(600)
-              // .ease(d3.easeLinear)
-              .attr("stroke-dashoffset", 0);
-            var syntheticExtLength = syntheticExt.node().getTotalLength();
-            syntheticExt
-              .attr("stroke-dasharray", syntheticExtLength + ", " + syntheticExtLength)
-              .attr("stroke-dashoffset", syntheticExtLength)
-              // .transition()
-              // .delay(1000)
-              // .duration(600)
-              // .ease(d3.easeLinear)
-              .attr("stroke-dashoffset", 0);
-          })
-        var ticks = svg.selectAll(".tick text");
-        d3.selectAll(".x-axis .tick text").classed("remove", function(d,i){ 
-          var number = (IS_PHONE) ? 4 : 2;
-          if(i%number == 0) {
-              return false
-          }else {
-              return true
-          }
-        });
-        d3.selectAll("#graphic .y-axis")
-          .transition()
-          .duration(1000)
-          .call(d3.axisLeft(y)
-            .tickFormat(d3.format(".0%"))
-          )
+      }
+     
         // Add extended line from 2000-2008
 
       }else if (direction == "prev"){ 
@@ -727,7 +755,6 @@ function drawLineGraph(container_width) {
             .remove()
             .on('start', function() { 
               transitionStatus(true)
-              console.log(running)
             })
             .on('end', function() {
               transitionStatus(false)
@@ -738,10 +765,9 @@ function drawLineGraph(container_width) {
               }else {
                 addElements(500)
               }
-              console.log(interrupt)
 
             })
-            .on('interrupt', function() {console.log('interrupt')
+            .on('interrupt', function() {
               transitionStatus(false)
               transitionElements(0,0)
               // addElements(0)
@@ -782,7 +808,7 @@ function drawLineGraph(container_width) {
             .duration(duration1)
             .attr("stroke-dasharray", "none")
             .attr("d", lineActual(dataset1c))
-            .on('end', addText_Lines)
+
         }
         function addElements(duration) {
           var synthetic = d3.select("#graphic svg g")
@@ -980,18 +1006,67 @@ function drawLineGraph(container_width) {
 
     function step5(direction) {
       if (direction == "next"){
-        var synG = svg.append("g")
-          .attr("class", "synthetic-label")
-          .attr("transform", function() { 
-            return (IS_PHONE) ? "translate("+(width*.85)+","+ (y((dataset2a)[28]["synthetic"]) - 20)+")" : "translate("+(width)+","+ y((dataset2a)[33]["synthetic"])+")";
-          })
-        function addElements(){
+      var synG = svg.append("g")
+        .attr("class", "synthetic-label")
+        .attr("transform", function() { 
+          return (IS_PHONE) ? "translate("+(width*.85)+","+ (y((dataset2a)[28]["synthetic"]) - 20)+")" : "translate("+(width)+","+ y((dataset2a)[33]["synthetic"])+")";
+        })
+      var synthetic = d3.select("#graphic svg g").append("path")
+        .attr("fill", "none")
+        .attr("stroke", "#fcb64b")
+        .style("stroke-width", "2.25px")
+        .attr("d", lineSynthetic(dataset2a))
+        .attr("class", "line line-synthetic");
+      var syntheticLength = synthetic.node().getTotalLength();
+      d3.selectAll(".line-actual, .line-actual-ext, .line-actual-ext2")
+        .remove()
+      d3.select("#graphic svg g").append("path")
+          .datum(dataset2a)
+          .attr("fill", "none")
+          .attr("stroke", "#008bb0")
+          .style("stroke-width", "2.25px")
+          .attr("d", lineActual)
+          .attr("class", "line line-actual");
+      svg
+        .call(function() {
+          transitionElements(1000)
+        })
+      function transitionElements(duration1){
+        synthetic
+          .attr("stroke-dasharray", syntheticLength + ", " + syntheticLength)
+          .attr("stroke-dashoffset", syntheticLength)
+          .transition()
+          .duration(duration1)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0)
+          .on('start', function() { 
+              transitionStatus(true)
+            })
+            .on('end', function() {
+              transitionStatus(false)
+              if (interrupt == true) {
+                addElements(0)
+                interruptStatus(false)
+                changeStep("next")
+              }else {
+                addElements(500)
+              }
+
+            })
+            .on('interrupt', function() {
+              transitionStatus(false)
+              transitionElements(0)
+              // addElements(0)
+              // step1("prev")
+            })
+      }
+      function addElements(duration){
         synG.append("text")
           .attr("transform", "translate(0,"+ 10+")")
           .text("Synthetic")
           .style("opacity", 0)
           .transition()
-          .duration(500)
+          .duration(duration)
           .style("opacity", 1)
         if (IS_PHONE) {
           $("#description-synthetic").text(step5Text)
@@ -1005,35 +1080,13 @@ function drawLineGraph(container_width) {
             .call(wrapText, 190)
             .style("opacity", 0)
             .transition()
-            .duration(500)
+            .duration(duration)
             .style("opacity", 1)
         }
 
-        }
-        var synthetic = d3.select("#graphic svg g").append("path")
-          .attr("fill", "none")
-          .attr("stroke", "#fcb64b")
-          .style("stroke-width", "2.25px")
-          .attr("d", lineSynthetic(dataset2a))
-          .attr("class", "line line-synthetic");
-        var syntheticLength = synthetic.node().getTotalLength();
-        synthetic
-          .attr("stroke-dasharray", syntheticLength + ", " + syntheticLength)
-          .attr("stroke-dashoffset", syntheticLength)
-          .transition()
-          .duration(1000)
-          .ease(d3.easeLinear)
-          .attr("stroke-dashoffset", 0)
-          .on('end', addElements)
-        d3.selectAll(".line-actual, .line-actual-ext, .line-actual-ext2")
-          .remove()
-        d3.select("#graphic svg g").append("path")
-            .datum(dataset2a)
-            .attr("fill", "none")
-            .attr("stroke", "#008bb0")
-            .style("stroke-width", "2.25px")
-            .attr("d", lineActual)
-            .attr("class", "line line-actual");
+      }
+     
+
       }else if (direction == "prev"){
         $("#notes").html("<b>Notes:</b>" + " The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
 
