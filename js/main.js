@@ -245,7 +245,7 @@ function drawLineGraph(container_width) {
   }
 
     d3.select('#btnnext')
-      .on("click", function () {console.log('click')
+      .on("click", function () {
         if (running == true) { 
           interruptStatus(true)
           svg.selectAll('path')
@@ -543,7 +543,7 @@ function drawLineGraph(container_width) {
                       if (IS_PHONE) {
                         var string = d.toString()
                         return "'" + string.slice(2,4)
-                      }else { console.log(d)
+                      }else { 
                         return d
                       }
                     })
@@ -605,7 +605,7 @@ function drawLineGraph(container_width) {
               }
 
             })
-            .on('interrupt', function() {console.log('interrupt')
+            .on('interrupt', function() {
               transitionStatus(false)
               transitionElements(0,0)
               // addElements(0)
@@ -638,7 +638,7 @@ function drawLineGraph(container_width) {
                       if (IS_PHONE) {
                         var string = d.toString()
                         return "'" + string.slice(2,4)
-                      }else { console.log(d)
+                      }else { 
                         return d
                       }
                     })
@@ -786,7 +786,7 @@ function drawLineGraph(container_width) {
               .remove()
             d3.select(".line-actual-ext2")
               .remove()
-          }else {console.log(duration1)
+          }else {
             d3.selectAll(".step4-text, .actual-label") 
               .transition()
               .duration(duration1)
@@ -857,7 +857,7 @@ function drawLineGraph(container_width) {
                       if (IS_PHONE) {
                         var string = d.toString()
                         return "'" + string.slice(2,4)
-                      }else { console.log(d)
+                      }else { 
                         return d
                       }
                     })
@@ -954,6 +954,12 @@ function drawLineGraph(container_width) {
           .call(function() {
             transitionElements(500,1000)
           })
+
+        function addElements(duration) {
+          if (IS_PHONE) {
+            $("#description-actual").text(step4Text)
+            $("#description-synthetic").text("")
+          }else {
         var actualExt = d3.select("#graphic svg g").append("path")
             .datum(dataset2b)
             .attr("fill", "none")
@@ -961,11 +967,6 @@ function drawLineGraph(container_width) {
             .style("stroke-width", "2.25px")
             .attr("d", lineActual)
             .attr("class", "line line-actual-ext2");
-        function addElements(duration) {
-          if (IS_PHONE) {
-            $("#description-actual").text(step4Text)
-            $("#description-synthetic").text("")
-          }else {
             svg.append("text")
               .attr("x", function() {
                 return (IS_PHONE) ? width/2 : width/1.6;
@@ -1003,7 +1004,7 @@ function drawLineGraph(container_width) {
             .attr("stroke-dashoffset", 0);
         }
 
-        function transitionElements(duration1, duration2) {console.log(duration2)
+        function transitionElements(duration1, duration2) {
           d3.select("#graphic svg g")
             .data(dataset2a)
           x.domain(d3.extent(dataset2a, function(d) { return d.year; }));
@@ -1076,7 +1077,7 @@ function drawLineGraph(container_width) {
                       if (IS_PHONE) {
                         var string = d.toString()
                         return "'" + string.slice(2,4)
-                      }else { console.log(d)
+                      }else { 
                         return d
                       }
                     })
@@ -1128,7 +1129,7 @@ function drawLineGraph(container_width) {
             .style("stroke-width", "2.25px")
             .attr("d", lineActual(dataset2b))
             .attr("class", "line line-actual-ext2")
-        function transitionElements(duration) {console.log(duration)
+        function transitionElements(duration) {
           if (duration == 0) {
             d3.select(".line-actual")
               .attr("d", lineActual(dataset1a))
@@ -1136,7 +1137,6 @@ function drawLineGraph(container_width) {
                 .remove()
                 if (interrupt == true) {
                   interruptStatus(false)
-                  console.log('hi')
                   changeStep("prev")
                 }
               // .on('start', function() { 
