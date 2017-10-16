@@ -464,13 +464,13 @@ function drawLineGraph(container_width) {
         }
         function transitionElements(duration1, duration2) { 
           d3.selectAll(".line-actual-ext, .line-synthetic-ext")
-            .transition()
-            .ease(d3.easeLinear)
-            .duration(duration1)
-            .attr("transform", function() { 
-              return "translate("+(width)+",0)"
-            })
-            .style("opacity", 0)
+            // .transition()
+            // .ease(d3.easeLinear)
+            // .duration(duration1)
+            // .attr("transform", function() { 
+            //   return "translate("+(width)+",0)"
+            // })
+            // .style("opacity", 0)
             .remove()
         /*ATTEMPT BUT TRANSITIONING TO A SMALLER PATH DOESN'T SEEM TO WORK */
             // d3.select(".line-actual-ext")
@@ -793,13 +793,13 @@ function drawLineGraph(container_width) {
               .style("opacity", 0)
               .remove()
             d3.select(".line-actual-ext2")
-              .transition()
-              .ease(d3.easeLinear)
-              .duration(duration2)
-              .attr("transform", function() { 
-                return "translate("+(width)+",0)"
-              })
-              .style("opacity", 0)
+              // .transition()
+              // .ease(d3.easeLinear)
+              // .duration(duration2)
+              // .attr("transform", function() { 
+              //   return "translate("+(width)+",0)"
+              // })
+              // .style("opacity", 0)
               .remove()
           }
 
