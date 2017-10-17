@@ -93,11 +93,11 @@ g.grid .tick line {
 }
 
 g.grid path.domain {
-  stroke: #fff;
+  stroke: none;
 }
 
 .y-axis g.tick line {
-  stroke: #fff;
+  stroke: none;
 }
 
 .step-text {
