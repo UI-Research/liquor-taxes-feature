@@ -18,11 +18,8 @@ function transitionStatus(status) {
 function interruptStatus(status) {
   interrupt = status;
 }
-function buttonStyle(step) {
+function buttonStyle(step) { 
     d3.select("#page-nav").text(step + " of 6")
-    // d3.selectAll(".button.num").classed("greyed", true);
-    // d3.select(".button.b" + step).classed("greyed", false);
-
     if (step == 1) {
         d3.select("#btnprev").classed("greyed", true);
     } else if (step != 1) {
@@ -64,7 +61,7 @@ function wrapText(text, width) {
 
 buttonStyle(1);
 
-function drawLineGraph(container_width) {
+function drawLineGraph(container_width) { 
   var IS_PHONE = d3.select("#isPhone").style("display") == "block";
    
   d3.csv("data/step-data.csv", function(data) {
@@ -157,24 +154,6 @@ function drawLineGraph(container_width) {
     }
 
 
-    // d3.select("#graphic svg").append("g")
-    //   .append("text")
-    //   .attr("class", "title")
-    //   .text("Actual versus synthetic fatal alcohol-related motor vehicle crashes as a share of total crashes in Illinois")
-    //   .attr("x", 0)
-    //   .attr("y", height*.07)
-    //   .attr("dy", 0)
-    //   .call(wrapText, titleWidth)
-    // d3.select("#graphic svg").append("g")
-    //   .append("text")
-    //   .attr("class", "subtitle")
-    //   .text("With border counties")
-    //   .attr("x", 0)
-    //   .attr("y", height*.25)
-    //   .attr("dy", 0)
-    //   .call(wrapText, width)
-    // var titleWidth = (IS_MOBILE) ? 100 : width;
-    // console.log(titleWidth)
     svg.append("g")
       .attr("class", "grid")
       .call(make_y_gridlines()
@@ -196,6 +175,7 @@ function drawLineGraph(container_width) {
       )
       .attr("class", "x-axis")
     $(window).on('resize', function() {
+      step = 1;
       svg.select(".x-axis").selectAll(".tick > text")
         .each(function(d) {
             d3.select(this)
@@ -238,6 +218,10 @@ function drawLineGraph(container_width) {
       .style("stroke-width", "2px")
       .attr("d", lineActual)
       .attr("class", "line line-actual");
+    $(window).on('resize', function() {
+      buttonStyle(1)
+    })
+
   d3.selection.prototype.getTransition = function() {
     if(this[0][0].__transition__) {
       return this[0][0].__transition__[1];
@@ -295,7 +279,7 @@ function drawLineGraph(container_width) {
     }
 
     //when changing the step, change the graph
-    function changeStep(direction){
+    function changeStep(direction){ 
       if (direction == "next"){
         step = step < 6 ? step + 1 : step;
       }else if (direction == "prev") {
