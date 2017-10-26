@@ -387,6 +387,8 @@ function drawLineGraph(container_width) {
 
 
       }else if (direction == "prev"){
+        d3.select(".threshold")
+          .remove()
         svg
           .call(function() {
             transitionElements(200, 604)
@@ -678,6 +680,14 @@ function drawLineGraph(container_width) {
             )
       }
       function addElements(duration) {
+        var threshold = d3.select("#graphic svg g").append("line")
+          .attr("y1", 0)
+          .attr("x1", x('2000'))
+          .attr("y2", height)
+          .attr("x2", x('2000'))
+          .style("stroke-dasharray", 5)
+          .attr("stroke", "#5c5859")
+          .attr("class", "threshold")
         svg.append("g")
           .attr("class", "actual-label")
           .attr("transform", function() { 
@@ -696,13 +706,13 @@ function drawLineGraph(container_width) {
         }else {
           svg.append("text")
             .attr("x", function() {
-              return (IS_PHONE) ? width/2 : width/1.5;
+              return (IS_PHONE) ? width/2 : width/1.4;
             })
             .attr("y", height/1.7)
             .text(step3Text)
             .attr("dy", 0)
             .attr("class", "step-text step3-text")
-            .call(wrapText, 190)
+            .call(wrapText, 170)
             .style("opacity", 0)
             .transition()
             .duration(duration)
@@ -792,6 +802,11 @@ function drawLineGraph(container_width) {
           d3.select("#graphic svg g")
             .data(dataset1b)
           x.domain(d3.extent(dataset1b, function(d) { return d.year; }));
+          d3.select(".threshold")
+            .transition()
+            .duration(duration2)
+            .attr("x1", x('2000'))
+            .attr("x2", x('2000'))
           d3.selectAll("#graphic .y-axis")
             .transition()
             .duration(duration2)
@@ -916,13 +931,13 @@ function drawLineGraph(container_width) {
           }else {
             svg.append("text")
               .attr("x", function() {
-                return (IS_PHONE) ? width/2 : width/1.5;
+                return (IS_PHONE) ? width/2 : width/1.4;
               })
               .attr("y", height/1.7)
               .text(step3Text)
               .attr("dy", 0)
               .attr("class", "step-text step3-text")
-              .call(wrapText, 190)
+              .call(wrapText, 170)
               .style("opacity", 0)
               .transition()
               .duration(500)
@@ -995,6 +1010,12 @@ function drawLineGraph(container_width) {
             .data(dataset2a)
           x.domain(d3.extent(dataset2a, function(d) { return d.year; }));
           //Keep line data up to 2000
+          d3.select(".threshold")
+            .transition()
+            .duration(duration2)
+            .attr("x1", x('2000'))
+            .attr("x2", x('2000'))
+
           d3.select(".line-actual")
             .transition()
             .duration(duration2)
