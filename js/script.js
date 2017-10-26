@@ -152,12 +152,12 @@ $(document).ready(function () {
                 categories: years,
                 plotLines: [{
                     className: "line-1",
-                    value: 17,
+                    value: 18,
                     color: '#f0573e', 
                     width: 2,
                     dashStyle: "Dash"},
                     {className: "line-2",
-                    value: 27,
+                    value: 28,
                     color: '#f0573e', 
                     width: 2,
                     dashStyle: "Dash"

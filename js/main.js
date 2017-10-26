@@ -5,9 +5,9 @@ var MOBILE_THRESHOLD = 600,
     step = 1,
     step1Text = "Researchers studied the number of fatal alcohol-related motor vehicle crashes in the years leading up to the state’s two major alcohol excise tax increases.",
     step2Text = "The synthetic control method allowed the researchers to map out a trajectory of drunk-driving fatalities in the hypothetical Illinois that closely aligned with the actual state.",
-    step3Text = "This alignment between the actual and synthetic Illinois continued in the years after the policy was enacted in 2000, signaling that drunk-driving fatalities were not affected by the higher excise tax.",
+    step3Text = "As the actual number of vehicle crashes never dipped below the synthetic line after the policy took effect in 2000, this signaled that drunk-driving fatalities were not affected by the higher excise tax.",
     step4Text = "Researchers tracked the same data for the years after the second excise tax increase, enacted in 2009.",
-    step5Text = "Once again, the number of drunk-driving deaths in the real Illinois and the hypothetical Illinois were closely aligned, indicating the policy didn’t reduce such deaths.",
+    step5Text = "Once again, the number of drunk-driving deaths in the actual Illinois never dipped below the hypothetical Illinois, indicating the policy didn’t reduce such deaths.",
     step6Text = "When border counties were removed from consideration, the data showed a steep drop in drunk-driving fatalities immediately after the 2009 tax increase. However, that drop was short lived, and drunk-driving deaths returned to previous levels (and aligned with the synthetic state’s trajectory) in 2013.";
 transitionStatus(false)
 interruptStatus(false)
@@ -754,6 +754,7 @@ function drawLineGraph(container_width) {
         // Add extended line from 2000-2008
 
       }else if (direction == "prev"){ 
+        $("#notes").html("<b>Notes:</b>" + " We highlight 2000 to reflect the year the new alcohol prices took effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
         svg
           .call(function() {
             transitionElements(412, 500)
@@ -934,6 +935,7 @@ function drawLineGraph(container_width) {
 
     function step4(direction) {
       if (direction == "next"){
+        $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the year the new alcohol prices took effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
         svg
           .call(function() {
             transitionElements(500,1000)
@@ -1255,7 +1257,7 @@ function drawLineGraph(container_width) {
      
 
       }else if (direction == "prev"){
-        $("#notes").html("<b>Notes:</b>" + " The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+        $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the year the new alcohol prices took effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
         svg
           .call(function() {
             transitionElements(500, 1000)
@@ -1344,7 +1346,7 @@ function drawLineGraph(container_width) {
     function step6(direction){
       if (direction == "next"){
         if (d3.select(".step6-text").node() == undefined) {
-          $("#notes").html("<b>Notes:</b>" + " For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk driving fatality rates.")
+          $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the year the new alcohol prices took effect. For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk driving fatality rates.")
           function addElements(duration) {
             d3.select(".subtitle")
               .style("opacity", 0)
