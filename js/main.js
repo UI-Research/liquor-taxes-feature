@@ -1018,7 +1018,7 @@ function drawLineGraph(container_width) {
         function transitionElements(duration1, duration2) {
           d3.select(".threshold")
             .transition()
-            .duration(duration1)
+            // .duration(duration1)
             .remove()
           d3.select("#graphic svg g")
             .data(dataset2a)
