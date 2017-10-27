@@ -9,9 +9,12 @@ background-color: #ffffff;
   src: url(fonts/AvenirLTPro-Roman.ttf) format("truetype");
 }
 @font-face {
-  font-family: "AvenirLTPro";
-  src: url(fonts/AvenirLTPro-Medium.ttf) format("truetype");
-  font-weight: bold;
+  font-family: "AvenirLTPro-bold";
+  src: url(fonts/AvenirLTPro-Black.ttf) format("truetype");
+  font-weight: 400;
+}
+b {
+  font-family: "AvenirLTPro-bold", sans-serif;
 }
 #buttons {
   display: block;
