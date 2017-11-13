@@ -144,6 +144,9 @@ g.grid path.domain {
   #isPhone{
     display: block;
   }
+  #description-div {
+    height: 70px;
+  }
   #description-actual {
     display: block;
   }
@@ -158,5 +161,16 @@ g.grid path.domain {
   }
   .title {
     font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  #description-div {
+    height: 90px;
+  }
+}
+@media screen and (max-width: 360px) {
+  #description-div {
+    height: 115px;
   }
 }

@@ -104,7 +104,7 @@ function drawLineGraph(container_width) {
 
     if (IS_PHONE) {
         isPhone = true;
-        var chart_aspect_height = .9;
+        var chart_aspect_height = 1.1;
         var margin = {
             top: 10,
             right: 60,
@@ -175,7 +175,7 @@ function drawLineGraph(container_width) {
       )
       .attr("class", "x-axis")
     $(window).on('resize', function() {
-      step = 1;
+      // step = 1;
       svg.select(".x-axis").selectAll(".tick > text")
         .each(function(d) {
             d3.select(this)
@@ -219,7 +219,7 @@ function drawLineGraph(container_width) {
       .attr("d", lineActual)
       .attr("class", "line line-actual");
     $(window).on('resize', function() {
-      buttonStyle(1)
+      // buttonStyle(1)
     })
 
   d3.selection.prototype.getTransition = function() {
@@ -959,10 +959,24 @@ function drawLineGraph(container_width) {
           })
 
         function addElements(duration) {
-          if (IS_PHONE) {
+          if (IS_PHONE) { console.log(IS_PHONE)
             $("#description-actual").text(step4Text)
             $("#description-synthetic").text("")
-          }else {
+          }else { 
+            svg.append("text")
+              .attr("x", function() {
+                return (IS_PHONE) ? width/2 : width/1.6;
+              })
+              .attr("y", height/1.8)
+              .text(step4Text)
+              .attr("dy", 0)
+              .attr("class", "step-text step4-text")
+              .call(wrapText, 180)
+              .style("opacity", 0)
+              .transition()
+              .duration(duration)
+              .style("opacity", 1)
+          }
         var actualExt = d3.select("#graphic svg g").append("path")
             .datum(dataset2b)
             .attr("fill", "none")
@@ -970,19 +984,6 @@ function drawLineGraph(container_width) {
             .style("stroke-width", "2.25px")
             .attr("d", lineActual)
             .attr("class", "line line-actual-ext2");
-          svg.append("text")
-            .attr("x", function() {
-              return (IS_PHONE) ? width/2 : width/1.6;
-            })
-            .attr("y", height/1.8)
-            .text(step4Text)
-            .attr("dy", 0)
-            .attr("class", "step-text step4-text")
-            .call(wrapText, 180)
-            .style("opacity", 0)
-            .transition()
-            .duration(duration)
-            .style("opacity", 1)
           var threshold = d3.select("#graphic svg g").append("line")
             .attr("y1", 0)
             .attr("x1", x('2010'))
@@ -991,12 +992,12 @@ function drawLineGraph(container_width) {
             .style("stroke-dasharray", 5)
             .attr("stroke", "#5c5859")
             .attr("class", "threshold")
-          }
+
 
           svg.append("g")
             .attr("class", "actual-label")
             .attr("transform", function() { 
-              return (IS_PHONE) ? "translate("+(width*.9)+","+ (y((dataset2b)[6]["actual"]) + 5)+")" : "translate("+(width)+","+ y((dataset2b)[6]["actual"])+")";
+              return (IS_PHONE) ? "translate("+(width*.8)+","+ (y((dataset2b)[6]["actual"]) + 5)+")" : "translate("+(width)+","+ y((dataset2b)[6]["actual"])+")";
             })
             .append("text")
             .attr("transform", "translate(0,"+ 10+")")
@@ -1006,6 +1007,7 @@ function drawLineGraph(container_width) {
             .duration(500)
             .style("opacity", 1)
           var actualExtLength = actualExt.node().getTotalLength();
+          console.log(actualExtLength)
           actualExt
             .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
             .attr("stroke-dashoffset", actualExtLength)
@@ -1261,7 +1263,9 @@ function drawLineGraph(container_width) {
       }
       function addElements(duration){
         synG.append("text")
-          .attr("transform", "translate(0,"+ 10+")")
+          .attr("transform", function() {
+            return (IS_PHONE) ? "translate(0,"+ 5+")" : "translate(0,"+ 10+")"
+          })
           .text("Synthetic")
           .style("opacity", 0)
           .transition()
