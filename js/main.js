@@ -175,7 +175,7 @@ function drawLineGraph(container_width) {
       )
       .attr("class", "x-axis")
     $(window).on('resize', function() {
-      // step = 1;
+     
       svg.select(".x-axis").selectAll(".tick > text")
         .each(function(d) {
             d3.select(this)
@@ -219,7 +219,10 @@ function drawLineGraph(container_width) {
       .attr("d", lineActual)
       .attr("class", "line line-actual");
     $(window).on('resize', function() {
-      // buttonStyle(1)
+
+      step1("next")
+      step = 1
+      buttonStyle(1)
     })
 
   d3.selection.prototype.getTransition = function() {
@@ -311,6 +314,7 @@ function drawLineGraph(container_width) {
 
     function step1(direction) {
       if (direction == "next"){
+        d3.select("#notes").style("opacity", 0)
 
       }else if (direction == "prev"){ 
         x.domain(d3.extent(dataset1a, function(d) { return d.year; }));
@@ -328,6 +332,7 @@ function drawLineGraph(container_width) {
         $("#description-synthetic").text("")
 
       }
+
 
     }
 
@@ -959,7 +964,7 @@ function drawLineGraph(container_width) {
           })
 
         function addElements(duration) {
-          if (IS_PHONE) { console.log(IS_PHONE)
+          if (IS_PHONE) {
             $("#description-actual").text(step4Text)
             $("#description-synthetic").text("")
           }else { 
@@ -1007,7 +1012,6 @@ function drawLineGraph(container_width) {
             .duration(500)
             .style("opacity", 1)
           var actualExtLength = actualExt.node().getTotalLength();
-          console.log(actualExtLength)
           actualExt
             .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
             .attr("stroke-dashoffset", actualExtLength)
