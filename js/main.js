@@ -971,7 +971,7 @@ function drawLineGraph(container_width) {
           }else { 
             svg.append("text")
               .attr("x", function() {
-                return (IS_PHONE) ? width/2 : width/1.6;
+                return (IS_PHONE) ? width/2 : width/1.8;
               })
               .attr("y", height/1.8)
               .text(step4Text)
@@ -1366,7 +1366,7 @@ function drawLineGraph(container_width) {
               .style("opacity", 1)
             svg.append("text")
               .attr("x", function() {
-                return (IS_PHONE) ? width/2 : width/1.6;
+                return (IS_PHONE) ? width/2 : width/1.8;
               })
               .attr("y", height/1.8)
               .text(step4Text)
