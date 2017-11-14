@@ -141,7 +141,7 @@ g.grid path.domain {
 
 
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
   #isPhone{
     display: block;
   }
