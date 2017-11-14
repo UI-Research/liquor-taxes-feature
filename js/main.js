@@ -379,7 +379,7 @@ function drawLineGraph(container_width) {
           svg.append("g")
             .attr("class", "synthetic-label")
             .attr("transform", function() {
-              return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1a)[14]["synthetic"]) + 15)+")" : "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")";
+              return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1a)[14]["synthetic"]) + 20)+")" : "translate("+(width)+","+ y((dataset1a)[18]["synthetic"])+")";
             })
             .append("text")
             .attr("transform", "translate(0,"+ 10+")")
@@ -700,7 +700,7 @@ function drawLineGraph(container_width) {
         svg.append("g")
           .attr("class", "actual-label")
           .attr("transform", function() { 
-            return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[5]["actual"]) - 15)+")" : "translate("+(width)+","+ y((dataset1c)[5]["actual"])+")";
+            return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[5]["actual"]) - 23)+")" : "translate("+(width)+","+ y((dataset1c)[5]["actual"])+")";
           })
           .append("text")
           .text("Actual")
@@ -1271,7 +1271,7 @@ function drawLineGraph(container_width) {
       function addElements(duration){
         synG.append("text")
           .attr("transform", function() {
-            return (IS_PHONE) ? "translate(0,"+ 5+")" : "translate(0,"+ 10+")"
+            return (IS_PHONE) ? "translate("+(-12)+","+ -5+")" : "translate(0,"+ 10+")"
           })
           .text("Synthetic")
           .style("opacity", 0)
