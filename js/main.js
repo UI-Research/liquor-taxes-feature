@@ -392,6 +392,8 @@ function drawLineGraph(container_width) {
 
 
       }else if (direction == "prev"){
+        $("#notes").html("<b>Notes:</b>" + " The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+
         d3.select(".threshold")
           .remove()
         svg
@@ -957,12 +959,11 @@ function drawLineGraph(container_width) {
 
     function step4(direction) {
       if (direction == "next"){
-        $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
         svg
           .call(function() {
             transitionElements(500,1000)
           })
-
+        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were effect.")
         function addElements(duration) {
           if (IS_PHONE) {
             $("#description-actual").text(step4Text)
@@ -1135,6 +1136,7 @@ function drawLineGraph(container_width) {
 
       }else if (direction == "prev"){
         $("#description-synthetic").text("")
+        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect.")
         svg
         .call(function() {
           transitionElements(500)
@@ -1211,59 +1213,60 @@ function drawLineGraph(container_width) {
 
     function step5(direction) {
       if (direction == "next"){
-      var synG = svg.append("g")
-        .attr("class", "synthetic-label")
-        .attr("transform", function() { 
-          return (IS_PHONE) ? "translate("+(width*.85)+","+ (y((dataset2a)[28]["synthetic"]) - 20)+")" : "translate("+(width)+","+ y((dataset2a)[33]["synthetic"])+")";
-        })
-      var synthetic = d3.select("#graphic svg g").append("path")
-        .attr("fill", "none")
-        .attr("stroke", "#fcb64b")
-        .style("stroke-width", "2.25px")
-        .attr("d", lineSynthetic(dataset2a))
-        .attr("class", "line line-synthetic");
-      var syntheticLength = synthetic.node().getTotalLength();
-      d3.selectAll(".line-actual, .line-actual-ext, .line-actual-ext2")
-        .remove()
-      d3.select("#graphic svg g").append("path")
-          .datum(dataset2a)
+        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+        var synG = svg.append("g")
+          .attr("class", "synthetic-label")
+          .attr("transform", function() { 
+            return (IS_PHONE) ? "translate("+(width*.85)+","+ (y((dataset2a)[28]["synthetic"]) - 20)+")" : "translate("+(width)+","+ y((dataset2a)[33]["synthetic"])+")";
+          })
+        var synthetic = d3.select("#graphic svg g").append("path")
           .attr("fill", "none")
-          .attr("stroke", "#008bb0")
+          .attr("stroke", "#fcb64b")
           .style("stroke-width", "2.25px")
-          .attr("d", lineActual)
-          .attr("class", "line line-actual");
-      svg
-        .call(function() {
-          transitionElements(1000)
-        })
-      function transitionElements(duration1){
-        synthetic
-          .attr("stroke-dasharray", syntheticLength + ", " + syntheticLength)
-          .attr("stroke-dashoffset", syntheticLength)
-          .transition()
-          .duration(duration1)
-          .ease(d3.easeLinear)
-          .attr("stroke-dashoffset", 0)
-          .on('start', function() { 
-              transitionStatus(true)
-            })
-            .on('end', function() {
-              transitionStatus(false)
-              if (interrupt == true) {
-                addElements(0)
-                interruptStatus(false)
-                changeStep("next")
-              }else {
-                addElements(500)
-              }
+          .attr("d", lineSynthetic(dataset2a))
+          .attr("class", "line line-synthetic");
+        var syntheticLength = synthetic.node().getTotalLength();
+        d3.selectAll(".line-actual, .line-actual-ext, .line-actual-ext2")
+          .remove()
+        d3.select("#graphic svg g").append("path")
+            .datum(dataset2a)
+            .attr("fill", "none")
+            .attr("stroke", "#008bb0")
+            .style("stroke-width", "2.25px")
+            .attr("d", lineActual)
+            .attr("class", "line line-actual");
+        svg
+          .call(function() {
+            transitionElements(1000)
+          })
+        function transitionElements(duration1){
+          synthetic
+            .attr("stroke-dasharray", syntheticLength + ", " + syntheticLength)
+            .attr("stroke-dashoffset", syntheticLength)
+            .transition()
+            .duration(duration1)
+            .ease(d3.easeLinear)
+            .attr("stroke-dashoffset", 0)
+            .on('start', function() { 
+                transitionStatus(true)
+              })
+              .on('end', function() {
+                transitionStatus(false)
+                if (interrupt == true) {
+                  addElements(0)
+                  interruptStatus(false)
+                  changeStep("next")
+                }else {
+                  addElements(500)
+                }
 
-            })
-            .on('interrupt', function() {
-              transitionStatus(false)
-              transitionElements(0)
-              // addElements(0)
-              // step1("prev")
-            })
+              })
+              .on('interrupt', function() {
+                transitionStatus(false)
+                transitionElements(0)
+                // addElements(0)
+                // step1("prev")
+              })
       }
       function addElements(duration){
         synG.append("text")
@@ -1295,7 +1298,7 @@ function drawLineGraph(container_width) {
      
 
       }else if (direction == "prev"){
-        $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
         svg
           .call(function() {
             transitionElements(500, 1000)
@@ -1384,7 +1387,7 @@ function drawLineGraph(container_width) {
     function step6(direction){
       if (direction == "next"){
         if (d3.select(".step6-text").node() == undefined) {
-          $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the first full year the new alcohol prices were in effect;. For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk driving fatality rates.")
+          $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the first full year the new alcohol prices were in effect. For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk driving fatality rates.")
           function addElements(duration) {
             d3.select(".subtitle")
               .style("opacity", 0)
