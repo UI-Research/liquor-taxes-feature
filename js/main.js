@@ -926,10 +926,10 @@ function drawLineGraph(container_width) {
           svg.append("g")
             .attr("class", "actual-label")
             .attr("transform", function() { 
-              return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[5]["actual"]) - 20)+")" : "translate("+(width)+","+ y((dataset1c)[5]["actual"])+")";
+              return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[5]["actual"]) - 23)+")" : "translate("+(width)+","+ y((dataset1c)[5]["actual"])+")";
             })
             .append("text")
-            .attr("transform", "translate(0,"+ 10+")")
+            // .attr("transform", "translate(0,"+ 10+")")
             .text("Actual")
             .style("opacity", 0)
             .transition()
