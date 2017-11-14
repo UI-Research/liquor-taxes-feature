@@ -963,7 +963,7 @@ function drawLineGraph(container_width) {
           .call(function() {
             transitionElements(500,1000)
           })
-        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were effect.")
+        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect.")
         function addElements(duration) {
           if (IS_PHONE) {
             $("#description-actual").text(step4Text)
