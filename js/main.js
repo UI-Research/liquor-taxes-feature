@@ -392,7 +392,7 @@ function drawLineGraph(container_width) {
 
 
       }else if (direction == "prev"){
-        $("#notes").html("<b>Notes:</b>" + " The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+        $("#notes").html("<b>Notes:</b>" + " The synthetic Illinois is constructed by combining several untreated states based on historic drunk-driving fatality rates and other variables.")
 
         d3.select(".threshold")
           .remove()
@@ -563,7 +563,7 @@ function drawLineGraph(container_width) {
 
     function step3(direction) {
       if (direction == "next"){
-        $("#notes").html("<b>Notes:</b>" + " We highlight 2000 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+        $("#notes").html("<b>Notes:</b>" + " We highlight 2000 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk-driving fatality rates and other variables.")
 
         svg
           .call(function() {
@@ -773,7 +773,7 @@ function drawLineGraph(container_width) {
         // Add extended line from 2000-2008
 
       }else if (direction == "prev"){ 
-        $("#notes").html("<b>Notes:</b>" + " We highlight 2000 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+        $("#notes").html("<b>Notes:</b>" + " We highlight 2000 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk-driving fatality rates and other variables.")
         svg
           .call(function() {
             transitionElements(412, 500)
@@ -1213,7 +1213,7 @@ function drawLineGraph(container_width) {
 
     function step5(direction) {
       if (direction == "next"){
-        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk-driving fatality rates and other variables.")
         var synG = svg.append("g")
           .attr("class", "synthetic-label")
           .attr("transform", function() { 
@@ -1298,7 +1298,7 @@ function drawLineGraph(container_width) {
      
 
       }else if (direction == "prev"){
-        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk driving fatality rates and other variables.")
+        $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk-driving fatality rates and other variables.")
         svg
           .call(function() {
             transitionElements(500, 1000)
@@ -1387,7 +1387,7 @@ function drawLineGraph(container_width) {
     function step6(direction){
       if (direction == "next"){
         if (d3.select(".step6-text").node() == undefined) {
-          $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the first full year the new alcohol prices were in effect. For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk driving fatality rates.")
+          $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the first full year the new alcohol prices were in effect. For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk-driving fatality rates.")
           function addElements(duration) {
             d3.select(".subtitle")
               .style("opacity", 0)
