@@ -398,10 +398,10 @@ function drawLineGraph(container_width) {
           .remove()
         svg
           .call(function() {
-            transitionElements(200, 604)
+            transitionElements2P(200, 604)
           })
          
-        function addElements(duration) {
+        function addElements2P(duration) {
           svg.append("g")
             .attr("class", "synthetic-label")
             .attr("transform", function() { 
@@ -455,7 +455,7 @@ function drawLineGraph(container_width) {
                 .style("opacity", 1)
             }
         }
-        function transitionElements(duration1, duration2) { 
+        function transitionElements2P(duration1, duration2) { 
           d3.selectAll(".line-actual-ext, .line-synthetic-ext")
             // .transition()
             // .ease(d3.easeLinear)
@@ -491,17 +491,17 @@ function drawLineGraph(container_width) {
             .on('end', function() {
               transitionStatus(false)
               if (interrupt == true) {
-                addElements(0)
+                addElements2P(0)
                 interruptStatus(false)
                 changeStep("prev")
               }else {
-                addElements(500)
+                addElements2P(500)
               }
 
             })
             .on('interrupt', function() {
               transitionStatus(false)
-              transitionElements(0,0)
+              transitionElements2P(0,0)
               // addElements(0)
               // step1("prev")
             })
@@ -562,14 +562,14 @@ function drawLineGraph(container_width) {
     }
 
     function step3(direction) {
-      if (direction == "next"){
+      if (direction == "next"){console.log(direction)
         $("#notes").html("<b>Notes:</b>" + " We highlight 2000 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk-driving fatality rates and other variables.")
 
-        svg
-          .call(function() {
-            transitionElements(500,1000)
-          })
-        function transitionElements(duration1, duration2) {
+        // svg
+        //   .call(function() {
+            transitionElements3N(500,1000)
+          // })
+        function transitionElements3N(duration1, duration2) {console.log('transition')
           d3.selectAll(".step1-text, .step2-text, .actual-label, .synthetic-label")
             .transition()
             .duration(duration1)
@@ -584,7 +584,7 @@ function drawLineGraph(container_width) {
             .duration(duration2)
             .attr("d", lineActual(dataset1a))
             .on('end', function() {
-              addElements(duration1)
+              addElements3N(duration1)
             })
             .on('start', function() { 
               transitionStatus(true)
@@ -596,13 +596,13 @@ function drawLineGraph(container_width) {
                 interruptStatus(false)
                 changeStep("next")
               }else {
-                addElements(500)
+                addElements3N(500)
               }
 
             })
             .on('interrupt', function() {
               transitionStatus(false)
-              transitionElements(0,0)
+              transitionElements3N(0,0)
               // addElements(0)
               // step1("prev")
             })
@@ -688,7 +688,7 @@ function drawLineGraph(container_width) {
               .tickFormat(d3.format(".0%"))
             )
       }
-      function addElements(duration) {
+      function addElements3N(duration) {console.log('add')
         var threshold = d3.select("#graphic svg g").append("line")
           .attr("y1", 0)
           .attr("x1", x('2000'))
@@ -761,6 +761,7 @@ function drawLineGraph(container_width) {
           .attr("d", lineActual)
           .attr("class", "line line-actual-ext")
         var actualExtLength = actualExt.node().getTotalLength();
+        console.log(actualExtLength)
         actualExt
           .attr("stroke-dasharray", actualExtLength + ", " + actualExtLength)
           .attr("stroke-dashoffset", actualExtLength)
@@ -776,7 +777,7 @@ function drawLineGraph(container_width) {
         $("#notes").html("<b>Notes:</b>" + " We highlight 2000 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk-driving fatality rates and other variables.")
         svg
           .call(function() {
-            transitionElements(412, 500)
+            transitionElements3P(412, 500)
           })
         var synG = svg.append("g")
           .attr("class", "synthetic-label")
@@ -784,7 +785,7 @@ function drawLineGraph(container_width) {
             return (IS_PHONE) ? "translate("+(width)+","+ (y((dataset1c)[8]["synthetic"]) + 5)+")" : "translate("+(width)+","+ (5+ y((dataset1c)[8]["synthetic"]))+")";
           })
 
-        function transitionElements(duration1, duration2){ 
+        function transitionElements3P(duration1, duration2){ 
           if (duration1 == 0){
             d3.selectAll(".step4-text, .actual-label") 
               .remove()
@@ -828,17 +829,17 @@ function drawLineGraph(container_width) {
             .on('end', function() {
               transitionStatus(false)
               if (interrupt == true) {
-                addElements(0)
+                addElements3P(0)
                 interruptStatus(false)
                 changeStep("prev")
               }else {
-                addElements(500)
+                addElements3P(500)
               }
 
             })
             .on('interrupt', function() {
               transitionStatus(false)
-              transitionElements(0,0)
+              transitionElements3P(0,0)
               // addElements(0)
               // step1("prev")
             })
@@ -894,7 +895,7 @@ function drawLineGraph(container_width) {
             .attr("d", lineActual(dataset1c))
 
         }
-        function addElements(duration) {
+        function addElements3P(duration) {
           var synthetic = d3.select("#graphic svg g")
             .append("path")
             .attr("fill", "none")
@@ -916,7 +917,7 @@ function drawLineGraph(container_width) {
             .transition()
             .duration(duration)
             .style("opacity", 1)
-          synG.append("text")
+          d3.select(".synthetic-label").append("text")
             .attr("transform", "translate(0,"+ 10+")")
             .text("Synthetic")
             .style("opacity", 0)
@@ -961,10 +962,10 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
         svg
           .call(function() {
-            transitionElements(500,1000)
+            transitionElements4N(500,1000)
           })
         $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect.")
-        function addElements(duration) {
+        function addElements4N(duration) {
           if (IS_PHONE) {
             $("#description-actual").text(step4Text)
             $("#description-synthetic").text("")
@@ -1022,7 +1023,7 @@ function drawLineGraph(container_width) {
             .attr("stroke-dashoffset", 0);
         }
 
-        function transitionElements(duration1, duration2) {
+        function transitionElements4N(duration1, duration2) {
           d3.select(".threshold")
             .transition()
             // .duration(duration1)
@@ -1042,17 +1043,17 @@ function drawLineGraph(container_width) {
             .on('end', function() {
               transitionStatus(false)
               if (interrupt == true) {
-                addElements(0)
+                addElements4N(0)
                 interruptStatus(false)
                 changeStep("next")
               }else {
-                addElements(500)
+                addElements4N(500)
               }
 
             })
             .on('interrupt', function() {
               transitionStatus(false)
-              transitionElements(0, 0)
+              transitionElements4N(0, 0)
               // addElements(0)
               // step1("prev")
             })
@@ -1139,7 +1140,7 @@ function drawLineGraph(container_width) {
         $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect.")
         svg
         .call(function() {
-          transitionElements(500)
+          transitionElements4P(500)
         })
         d3.select("#graphic svg g").append("path")
             .attr("fill", "none")
@@ -1153,7 +1154,7 @@ function drawLineGraph(container_width) {
             .style("stroke-width", "2.25px")
             .attr("d", lineActual(dataset2b))
             .attr("class", "line line-actual-ext2")
-        function transitionElements(duration) {
+        function transitionElements4P(duration) {
           if (duration == 0) {
             d3.select(".line-actual")
               .attr("d", lineActual(dataset1a))
@@ -1163,18 +1164,7 @@ function drawLineGraph(container_width) {
                   interruptStatus(false)
                   changeStep("prev")
                 }
-              // .on('start', function() { 
-              //   transitionStatus(true)
-              // })
-              // .on('end', function() {
-              //   transitionStatus(false)
-              //   if (interrupt == true) {
-              //     interruptStatus(false)
-              //     changeStep("prev")
-              //   }else {
-              //     // addElements(500)
-              //   }
-              // })
+
           }else {
           d3.select(".line-actual")
             .attr("d", lineActual(dataset1a))
@@ -1198,7 +1188,7 @@ function drawLineGraph(container_width) {
               })
               .on('interrupt', function() {
                 transitionStatus(false)
-                transitionElements(0)
+                transitionElements4P(0)
                 // addElements(0)
                 // step1("prev")
               })
@@ -1237,9 +1227,9 @@ function drawLineGraph(container_width) {
             .attr("class", "line line-actual");
         svg
           .call(function() {
-            transitionElements(1000)
+            transitionElements5N(1000)
           })
-        function transitionElements(duration1){
+        function transitionElements5N(duration1){
           synthetic
             .attr("stroke-dasharray", syntheticLength + ", " + syntheticLength)
             .attr("stroke-dashoffset", syntheticLength)
@@ -1253,23 +1243,23 @@ function drawLineGraph(container_width) {
               .on('end', function() {
                 transitionStatus(false)
                 if (interrupt == true) {
-                  addElements(0)
+                  addElements5N(0)
                   interruptStatus(false)
                   changeStep("next")
                 }else {
-                  addElements(500)
+                  addElements5N(500)
                 }
 
               })
               .on('interrupt', function() {
                 transitionStatus(false)
-                transitionElements(0)
+                transitionElements5N(0)
                 // addElements(0)
                 // step1("prev")
               })
       }
-      function addElements(duration){
-        synG.append("text")
+      function addElements5N(duration){
+        d3.select(".synthetic-label").append("text")
           .attr("transform", function() {
             return (IS_PHONE) ? "translate("+(-12)+","+ -5+")" : "translate(0,"+ 10+")"
           })
@@ -1301,9 +1291,9 @@ function drawLineGraph(container_width) {
         $("#notes").html("<b>Notes:</b> We highlight 2010 to reflect the first full year the new alcohol prices were in effect. The synthetic Illinois is constructed by combining several untreated states based on historic drunk-driving fatality rates and other variables.")
         svg
           .call(function() {
-            transitionElements(500, 1000)
+            transitionElements5P(500, 1000)
           })
-        function transitionElements(duration1, duration2) {
+        function transitionElements5P(duration1, duration2) {
           d3.selectAll(".step6-text")
             .transition()
             .duration(duration1)
@@ -1321,17 +1311,17 @@ function drawLineGraph(container_width) {
             .on('end', function() {
               transitionStatus(false)
               if (interrupt == true) {
-                addElements(0)
+                addElements5P(0)
                 interruptStatus(false)
                 changeStep("prev")
               }else {
-                addElements(500)
+                addElements5P(500)
               }
 
             })
             .on('interrupt', function() {
               transitionStatus(false)
-              transitionElements(0,0)
+              transitionElements5P(0,0)
               // addElements(0)
               // step1("prev")
             })
@@ -1342,7 +1332,7 @@ function drawLineGraph(container_width) {
             .duration(duration2)
             .attr("d", lineActual(dataset2a))
         }
-        function addElements(duration) {
+        function addElements5P(duration) {
           d3.select(".subtitle")
             .style("opacity", 0)
             .transition()
@@ -1388,7 +1378,7 @@ function drawLineGraph(container_width) {
       if (direction == "next"){
         if (d3.select(".step6-text").node() == undefined) {
           $("#notes").html("<b>Notes:</b>" + " We highlight 2010 to reflect the first full year the new alcohol prices were in effect. For the borderless Illinois, our synthetic state is created by combining several untreated states based only on historic drunk-driving fatality rates.")
-          function addElements(duration) {
+          function addElements6N(duration) {
             d3.select(".subtitle")
               .style("opacity", 0)
               .transition()
@@ -1425,7 +1415,7 @@ function drawLineGraph(container_width) {
             .duration(1000)
             .attr("d", lineSynthetic(dataset3))
             .on('end', function() {
-              addElements(500)
+              addElements6N(500)
             })
           d3.select(".line-actual")
             .transition()
