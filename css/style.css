@@ -92,7 +92,7 @@ g.y-axis .domain {
   stroke: none;
 }
 g.tick text {
-  font-weight: 550;
+  font-weight: 400;
 }
 
 g.grid .tick line {

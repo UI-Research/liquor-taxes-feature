@@ -7,7 +7,7 @@ var MOBILE_THRESHOLD = 600,
     step2Text = "The synthetic control method allowed the researchers to map out a trajectory of drunk-driving fatalities in the hypothetical Illinois that closely aligned with the actual state.",
     step3Text = "As the actual number of vehicle crashes never dipped below the synthetic line after the policy were in effect in 2000, this signaled that drunk-driving fatalities were not reduced by the higher excise tax.",
     step4Text = "Researchers tracked the same data for the years after the second excise tax increase, enacted in 2009.",
-    step5Text = "Once again, the number of drunk-driving deaths in the actual Illinois never dipped below the hypothetical Illinois, indicating the policy didn’t reduce such deaths.",
+    step5Text = "The number of drunk driving deaths in the actual Illinois does not deviate significantly from the deaths in the hypothetical Illinois, indicating the policy didn’t reduce such deaths.",
     step6Text = "When border counties were removed from consideration, the data showed a steep drop in drunk-driving fatalities immediately after the 2009 tax increase. However, that drop was short lived, and drunk-driving deaths returned to previous levels (and aligned with the synthetic state’s trajectory) in 2013.";
 transitionStatus(false)
 interruptStatus(false)
